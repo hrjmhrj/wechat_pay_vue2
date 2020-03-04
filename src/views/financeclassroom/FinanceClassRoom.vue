@@ -1,6 +1,6 @@
 <template>
-    <div>
-      {{openid}}
+    <div v-if="haveCode">
+        123123123
     </div>
 </template>
 
@@ -11,7 +11,8 @@
     name: "finance-class-room",
     data(){
       return {
-        openid:"123"
+        openid:"123",
+        haveCode:false,
       }
     },
     methods:{
@@ -43,10 +44,27 @@
       getUrlKey(name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
       },
-
+      testajax(){
+        axios.post(`/aisino/2?code=`+this.code, null).then(response => {
+          if(!response.data.obj){
+            var newUrl = location.href;
+            location.href = newUrl.substring(0,newUrl.indexOf("?"));
+            return;
+          }else{
+            this.$store.commit('set_openid', response.data.obj);
+          }
+        });
+      }
+    },
+    created(){
+      if(this.getUrlKey('code') != null && this.getUrlKey('code') != ""){
+        this.haveCode = true;
+      }
     },
     mounted(){
-      //this.getOpenId()
+      if(this.getUrlKey('code') == null || this.getUrlKey('code') == ""){
+        this.$router.push({ path: '/' ,query:{code:123}});
+      }
     }
   }
 </script>
