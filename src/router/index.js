@@ -12,7 +12,7 @@ import serverError from '../views/500'
 export default new Router({
   routes: [
     {
-      path: '/FinanceClassRoom',
+      path: '/',
       name: 'FinanceClassRoom',
       meta: {
         title: '财税小讲堂首页',
