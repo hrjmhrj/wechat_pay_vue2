@@ -1,11 +1,35 @@
 <template>
   <div class="block">
-    <div style="width: 100vw;height: 6vh;line-height: 6vh;position: fixed;top: 0;z-index: 999;background: #fff;">
-      <van-grid>
-        <van-grid-item icon="photo-o" text="文字" />
-        <van-grid-item icon="photo-o" text="文字" />
-        <van-grid-item icon="photo-o" text="文字" />
-        <van-grid-item icon="photo-o" text="文字" />
+
+    <div style="width: 100%; height: 7%;position: absolute;z-index: 10;">
+    <van-nav-bar
+      :fixed="true"
+      title="标题"
+      left-text="返回"
+      left-arrow
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+      left-arrow>
+      <van-icon name="ellipsis" slot="right" />
+    </van-nav-bar>
+    </div>
+
+    <div style="width: 100%;height: 100%;z-index: 9;margin-top: 12%;">
+      <van-grid :column-num="4" :border="false" style="width: 100%; height: 100%">
+        <div style="width: 48%; height: 25%" v-for="value in 12">
+          <div style="position: absolute;z-index: 8;">
+            <van-tag round type="danger">标签</van-tag>
+            <van-tag round type="warning">标签</van-tag>
+          </div>
+          <div style="z-index: 7;">
+          <van-grid-item
+            whith="40%"
+            :key="value"
+            icon="photo-o"
+            text="文字"
+          />
+          </div>
+        </div>
       </van-grid>
     </div>
 
@@ -62,7 +86,7 @@
 
 <script>
 
-    import {Notify,Popup,Dialog,Grid,GridItem } from 'vant';
+    import {Notify,Popup,Dialog,Grid,GridItem,Toast } from 'vant';
     import axios from 'axios'
     import Bus from "../utils/bus";
 
@@ -101,6 +125,12 @@
             }
         },
         methods: {
+          onClickLeft() {
+            Toast('返回');
+          },
+          onClickRight() {
+            Toast('按钮');
+          }
           /*
                     //查看联系方式
                     ContractRow(item){
