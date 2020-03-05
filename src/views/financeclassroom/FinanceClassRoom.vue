@@ -59,6 +59,8 @@
               this.haveOpenid = true;
               alert(response.data.obj)
             }
+          }).error(error=>{
+            alert(error)
           });
         }
       },
@@ -70,7 +72,7 @@
     created(){
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid == null||this.$store.state.openid == '')){
-        alert(1+this.getUrlKey('code'))
+        alert("www"+this.getUrlKey('code'))
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "666666");
