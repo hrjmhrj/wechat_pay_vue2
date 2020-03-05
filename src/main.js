@@ -4,9 +4,6 @@ import App from './App';
 import Router from 'vue-router';
 import router from './router';
 
-// Vant样式
-import 'vant/lib/index.css';
-
 // 引入axios ajax请求
 import axios from 'axios';
 

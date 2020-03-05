@@ -1,17 +1,31 @@
 <template>
     <div v-if="haveOpenid">
-      内容
+      <van-button type="danger">危险按钮</van-button>
+      <van-tabs v-model="active">
+        <van-tab title="标签 1">内容 1</van-tab>
+        <van-tab title="标签 2">内容 2</van-tab>
+        <van-tab title="标签 3">内容 3</van-tab>
+        <van-tab title="标签 4">内容 4</van-tab>
+      </van-tabs>
     </div>
 </template>
 
 <script>
   import axios from 'axios';
+  import {Button} from 'vant'
+  import { Tab, Tabs } from 'vant';
 
   export default {
     name: "finance-class-room",
+    components: {
+      [Button.name]:Button,
+      [Tab.name]:Tab,
+      [Tabs.name]:Tabs
+    },
     data(){
       return {
         haveOpenid:false,
+        active: 2
       }
     },
     methods:{
@@ -62,8 +76,9 @@
       if(this.$store.state.openid !== null||this.$store.state.openid != ''){
         this.haveOpenid = true;
       }
-    }
+    },
   }
+
 </script>
 
 <style scoped>
