@@ -1,6 +1,6 @@
 <template>
     <div v-if="haveOpenid">
-      <van-button type="danger">危险按钮</van-button>
+      <van-button type="danger" @click="clickBtn">{{openid}}</van-button>
       <van-tabs v-model="active">
         <van-tab title="标签 1">内容 1</van-tab>
         <van-tab title="标签 2">内容 2</van-tab>
@@ -25,10 +25,14 @@
     data(){
       return {
         haveOpenid:false,
-        active: 2
+        active: 2,
+        openid:"123"
       }
     },
     methods:{
+      clickBtn(){
+        alert(123)
+      },
       //获取openid
       getOpenId(){
         var fromurl;
@@ -43,7 +47,7 @@
             + "&state=STATE#wechat_redirect";
           location.href=url;
         }else{
-          axios.post(`/aisino/getOpenidByCode?code=`+this.code, null).then(response => {
+          axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
             if(!response.data.obj){
               var newUrl = location.href;
               location.href = newUrl.substring(0,newUrl.indexOf("?"));
@@ -51,7 +55,10 @@
             }else{
               this.$store.commit('set_openid', response.data.obj);
               this.haveOpenid = true;
+              this.openid = response.data.obj;
             }
+          }).catch(function (error) {
+            alert(error);
           });
         }
       },
@@ -62,7 +69,7 @@
     },
     created(){
       let urlTemp = process.env.API_ROOT
-      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid === null||this.$store.state.openid == '')){
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid == null||this.$store.state.openid == '')){
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "666666");
