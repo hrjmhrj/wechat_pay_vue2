@@ -1,6 +1,6 @@
 <template>
     <div v-if="haveOpenid">
-      <van-button type="danger" @click="clickBtn">危险按钮</van-button>
+      <van-button type="danger" @click="clickBtn">{{openid}}</van-button>
       <van-tabs v-model="active">
         <van-tab title="标签 1">内容 1</van-tab>
         <van-tab title="标签 2">内容 2</van-tab>
@@ -25,7 +25,8 @@
     data(){
       return {
         haveOpenid:false,
-        active: 2
+        active: 2,
+        openid:""
       }
     },
     methods:{
@@ -57,7 +58,7 @@
               alert(5)
               this.$store.commit('set_openid', response.data.obj);
               this.haveOpenid = true;
-              alert(response.data.obj)
+              this.openid = response.data.obj;
             }
           }).error(error=>{
             alert(error)
