@@ -26,7 +26,7 @@
       return {
         haveOpenid:false,
         active: 2,
-        openid:""
+        openid:"123"
       }
     },
     methods:{
@@ -51,6 +51,7 @@
           alert(3)
           axios.post(`/aisino/getOpenidByCode?code=`+this.code, null).then(response => {
             if(!response.data.obj){
+              alert(6)
               var newUrl = location.href;
               location.href = newUrl.substring(0,newUrl.indexOf("?"));
               return;
@@ -60,8 +61,8 @@
               this.haveOpenid = true;
               this.openid = response.data.obj;
             }
-          }).error(error=>{
-            alert(error)
+          }).catch(function (error) {
+            alert(error.response);
           });
         }
       },
