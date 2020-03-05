@@ -47,9 +47,7 @@
             + "&state=STATE#wechat_redirect";
           location.href=url;
         }else{
-          alert("code:"+this.code)
           axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
-            alert(JSON.stringify(response.data))
             if(!response.data.obj){
               var newUrl = location.href;
               location.href = newUrl.substring(0,newUrl.indexOf("?"));
@@ -70,13 +68,6 @@
       },
     },
     created(){
-      axios.post('/aisino/test3', null).then(response => {
-        alert("test3"+JSON.stringify(response.data))
-      }).catch(function (error) {
-        alert("test3"+error);
-      });
-
-
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid == null||this.$store.state.openid == '')){
         this.getOpenId();
