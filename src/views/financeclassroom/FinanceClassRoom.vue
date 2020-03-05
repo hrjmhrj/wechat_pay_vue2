@@ -54,6 +54,7 @@
             }else{
               this.$store.commit('set_openid', response.data.obj);
               this.haveOpenid = true;
+              alert(response.data.obj)
             }
           });
         }
@@ -65,8 +66,6 @@
     },
     created(){
       let urlTemp = process.env.API_ROOT
-      alert(urlTemp.indexOf("localhost") == -1);
-      alert((this.$store.state.openid == null||this.$store.state.openid == ''))
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid == null||this.$store.state.openid == '')){
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
