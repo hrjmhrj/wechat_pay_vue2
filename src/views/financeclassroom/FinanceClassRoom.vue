@@ -48,7 +48,7 @@
           location.href=url;
         }else{
           alert("code:"+this.code)
-          axios.post(`/aisino/getOpenidByCode?code=`+this.code, null).then(response => {
+          axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
             alert(JSON.stringify(response.data))
             if(!response.data.obj){
               var newUrl = location.href;
