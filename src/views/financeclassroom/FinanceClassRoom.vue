@@ -38,6 +38,7 @@
         var appid = "wx4d4e347e23a5f170";
         this.code = this.getUrlKey('code');
         if(!this.code){
+          alert(2)
           fromurl=location.href;
           var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
             + "&redirect_uri="+ encodeURIComponent(fromurl)
@@ -46,6 +47,7 @@
             + "&state=STATE#wechat_redirect";
           location.href=url;
         }else{
+          alert(3)
           axios.post(`/aisino/getOpenidByCode?code=`+this.code, null).then(response => {
             if(!response.data.obj){
               var newUrl = location.href;
@@ -67,6 +69,7 @@
     created(){
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid == null||this.$store.state.openid == '')){
+        alert(1+this.getUrlKey('code'))
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "666666");
