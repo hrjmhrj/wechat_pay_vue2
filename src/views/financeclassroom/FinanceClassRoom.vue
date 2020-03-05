@@ -65,6 +65,7 @@
     },
     created(){
       let urlTemp = process.env.API_ROOT
+      alert(urlTemp)
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid === null||this.$store.state.openid == '')){
         alert(1+urlTemp)
         this.getOpenId();
