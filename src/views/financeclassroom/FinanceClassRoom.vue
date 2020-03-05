@@ -65,12 +65,11 @@
     },
     created(){
       let urlTemp = process.env.API_ROOT
-      alert(urlTemp)
-      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid === null||this.$store.state.openid == '')){
-        alert(1+urlTemp)
+      alert(urlTemp.indexOf("localhost") == -1);
+      alert((this.$store.state.openid == null||this.$store.state.openid == ''))
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid == null||this.$store.state.openid == '')){
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
-        alert(2+urlTemp)
         this.$store.commit('set_openid', "666666");
         this.haveOpenid = true;
       }
