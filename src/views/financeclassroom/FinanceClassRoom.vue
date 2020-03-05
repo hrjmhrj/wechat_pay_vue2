@@ -62,7 +62,7 @@
               this.openid = response.data.obj;
             }
           }).catch(function (error) {
-            alert(error.response);
+            alert(error);
           });
         }
       },
