@@ -54,6 +54,7 @@
               location.href = newUrl.substring(0,newUrl.indexOf("?"));
               return;
             }else{
+              alert(5)
               this.$store.commit('set_openid', response.data.obj);
               this.haveOpenid = true;
               alert(response.data.obj)
