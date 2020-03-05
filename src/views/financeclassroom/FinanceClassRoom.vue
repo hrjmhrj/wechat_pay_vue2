@@ -1,6 +1,6 @@
 <template>
-    <div v-if="haveCode">
-        123123123
+    <div v-if="haveOpenid">
+      内容
     </div>
 </template>
 
@@ -11,11 +11,11 @@
     name: "finance-class-room",
     data(){
       return {
-        openid:"123",
-        haveCode:false,
+        haveOpenid:false,
       }
     },
     methods:{
+      //获取openid
       getOpenId(){
         var fromurl;
         var appid = "wx4d4e347e23a5f170";
@@ -36,6 +36,7 @@
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);
+              this.haveOpenid = true;
             }
           });
         }
@@ -44,26 +45,22 @@
       getUrlKey(name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
       },
-      testajax(){
-        axios.post(`/aisino/2?code=`+this.code, null).then(response => {
-          if(!response.data.obj){
-            var newUrl = location.href;
-            location.href = newUrl.substring(0,newUrl.indexOf("?"));
-            return;
-          }else{
-            this.$store.commit('set_openid', response.data.obj);
-          }
-        });
-      }
     },
     created(){
-      if(this.getUrlKey('code') != null && this.getUrlKey('code') != ""){
-        this.haveCode = true;
+      let urlTemp = process.env.API_ROOT
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid === null||this.$store.state.openid == '')){
+        this.getOpenId();
+      }else if(urlTemp.indexOf("localhost") != -1){
+        this.$store.commit('set_openid', "666666");
+        this.haveOpenid = true;
+      }
+      if(this.haveOpenid){
+        // 初始化的操作请求
       }
     },
     mounted(){
-      if(this.getUrlKey('code') == null || this.getUrlKey('code') == ""){
-        this.$router.push({ path: '/' ,query:{code:123}});
+      if(this.$store.state.openid !== null||this.$store.state.openid != ''){
+        this.haveOpenid = true;
       }
     }
   }

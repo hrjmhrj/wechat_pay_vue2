@@ -4,6 +4,7 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 import FinanceClassRoom from '../views/financeclassroom/FinanceClassRoom'
+
 import notFound from '../views/404'
 import notAllowed from '../views/405'
 import serverError from '../views/500'
