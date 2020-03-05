@@ -63,10 +63,10 @@
     created(){
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.openid === null||this.$store.state.openid == '')){
-        alert(1)
+        alert(1+urlTemp)
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
-        alert(2)
+        alert(2+urlTemp)
         this.$store.commit('set_openid', "666666");
         this.haveOpenid = true;
       }
