@@ -1,6 +1,6 @@
 <template>
     <div v-if="haveOpenid">
-      <van-button type="danger">危险按钮</van-button>
+      <van-button type="danger" @click="clickBtn">危险按钮</van-button>
       <van-tabs v-model="active">
         <van-tab title="标签 1">内容 1</van-tab>
         <van-tab title="标签 2">内容 2</van-tab>
@@ -29,6 +29,9 @@
       }
     },
     methods:{
+      clickBtn(){
+        alert(123)
+      },
       //获取openid
       getOpenId(){
         var fromurl;
