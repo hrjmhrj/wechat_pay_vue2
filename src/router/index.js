@@ -10,6 +10,7 @@ import notFound from '../views/404'
 import notAllowed from '../views/405'
 import serverError from '../views/500'
 
+import VideoClassRoom from '../components/VideoClassRoom/VideoClassRoom'
 
 export default new Router({
   routes: [
@@ -44,6 +45,14 @@ export default new Router({
     }, {
       path: "*", // 此处需特别注意置于最底部
       redirect: "/404"
+    }, {
+      path: '/VideoClassRoom',
+      name: 'VideoClassRoom',
+      meta: {
+        title: '财税小讲堂视频',
+        requireAuth: false // 判断该路由的访问是否需要登录
+      },
+      component: VideoClassRoom
     }
   ]
 });
