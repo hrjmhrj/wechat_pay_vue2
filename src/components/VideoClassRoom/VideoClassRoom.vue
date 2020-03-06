@@ -1,83 +1,54 @@
 <template>
   <div class="block">
 
-<!--    <div style="width: 100%; height: 7%;position: absolute;z-index: 10;">
-    <van-nav-bar
-      :fixed="true"
-      title="标题"
-      left-text="返回"
-      left-arrow
-      @click-left="onClickLeft"
-      @click-right="onClickRight"
-      left-arrow>
-      <van-icon name="ellipsis" slot="right" />
-    </van-nav-bar>
-    </div>-->
-
+    <!--财税小讲堂首页-->
     <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
-      <van-grid :column-num="4" :border="false" style="width: 100%; height: 100%">
-        <div style="width: 48%; height: 25%" v-for="value in 12">
-          <div style="position: absolute;z-index: 8;margin: 1% 1%;">
-            <van-tag round type="danger">标签</van-tag>
-            <van-tag round type="warning">标签</van-tag>
+      <van-grid :clickable="true" :column-num="2" :square="false" :border="false" style="width: 100%; height: 100%"  :center="true">
+        <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="value in 12">
+          <div style="position: absolute;z-index: 8;margin:1% 4%;">
+            <van-tag round type="danger">免费</van-tag>
+            <van-tag round type="warning">付费</van-tag>
           </div>
           <div style="z-index: 7;height: 100%;">
-          <van-grid-item style="height: 100%;"
-            :key="value"
-            icon="photo-o"
-            text="文字"
-          />
+            <van-grid-item style="height: 100%;" :key="value" @click="videobf(value)">
+              <div style="height: 100%;width: 100%;">
+                <van-image src="https://img.yzcdn.cn/vant/apple-2.jpg" style=" width: 100%;height: 76%;margin-top: -7%;"/>
+                <div style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
+                  TVB 优酷同步热播剧《法证先锋4》第13集预告片_标清.mp4</div>
+              </div>
+            </van-grid-item>
           </div>
         </div>
       </van-grid>
     </div>
 
-    <!--详情弹框-->
-    <!-- <van-popup v-model="show" closeable round position="center" :style="{ height: '85%' ,width: '75%',background: '#fcfcfc'}">
-      <div :name="item.SFH" :label-disabled="true" class="tab-checkbox-info" v-for="(item, index) in OrderDetail"
-           :key="index" style="margin-top: 5%;margin-left: 3%;">
-      <van-card style="background-color: #FFF"
-        :key="index"
-        :num="item.FOOD_NUM"
-        :price="item.FOOD_MONEY.toFixed(2)"
-        :desc="'菜品单价'+item.FOOD_PRICE.toFixed(2)+'元'"
-        :title="item.FOOD_NAME"
-        :thumb="item.FOOD_PIC_URL == ''?'null':item.FOOD_PIC_URL"
-      >
-       <div slot="tags">
-        <van-tag plain type="danger">菜品状态：{{item.FOOD_STATUS}}</van-tag>
-      </div>
-      </van-card>
+    <!--点击视频 跳转播放页面-->
+    <div v-show="videoshow" style="z-index: 10;position: absolute;top: 0;left: 0;">
 
-      </div>
-      &lt;!&ndash; <van-cell :name="item.SFH" :label-disabled="true" class="tab-checkbox-info" v-for="(item, index) in OrderDetail"
-                 :key="index" style="margin-top: 5%">
+      <div class="wrapper">
+        <div class="block">
+          <div>
+            <div style="width: 100vw;height: 6vh;line-height: 6vh;position: fixed;top: 0;z-index: 999;background: #fff;">
+              <span style="display: inline-block;width: 14vw;text-align: right;">
+                <van-icon name="arrow-left" @click="fanhuiVD">返回</van-icon>
+              </span>
+              <span style="display: inline-block;width: 82vw;text-align: center;font-size: 4vw;font-weight: bold;color: red;">
+                视频播放
+              </span>
+            </div>
 
-          <span class="checkbox-text-span">
-             　<span class="checkbox-text-span-span">菜品名称：{{item.FOOD_NAME}}</span>
-                 </span>
-         <van-divider dashed hairline :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 0 0 0',width: '100%' }"></van-divider>
-         <span class="checkbox-text-span">
-             　<span class="checkbox-text-span-span">菜品数量：{{item.FOOD_NUM}}</span>
-                 </span>
-         <van-divider dashed hairline :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 0 0 0',width: '100%' }"></van-divider>
-         <span class="checkbox-text-span">
-             　<span class="checkbox-text-span-span"> 菜品单价：{{item.FOOD_PRICE}}元</span>
-                 </span>
-         <van-divider dashed hairline :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 0 0 0',width: '100%' }"></van-divider>
-         <span class="checkbox-text-span">
-             <span class="checkbox-text-span-span"> 菜品总价：{{item.FOOD_MONEY}}元</span>
-                 </span>
-         <van-divider dashed hairline :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 0 0 0',width: '100%' }"></van-divider>
-         <span class="checkbox-text-span">
-             <span class="checkbox-text-span-span">菜品状态：{{item.FOOD_STATUS}}</span>
-                 </span>
-       </van-cell>&ndash;&gt;
-      <div style="color: white;width: 33%;height: 4%;text-align: center;padding: 1vh 1vw;margin-left: 32%;margin-bottom: 5%;margin-top: 4%;border-radius: 999vw;background: linear-gradient(to right, rgb(255, 96, 52), rgb(238, 10, 36));" @click="goback" round >
-        <p style="padding: 3% 0% 0% 0%;">返&emsp;回</p>
+            <div>视频播放</div>
+            <div>标题和返回</div>
+            <div>详情</div>
+            <div>推荐</div>
+            <div>如果是付费显示价格和购买和已购买</div>
+          </div>
+        </div>
       </div>
-    </van-popup>
--->
+
+
+    </div>
+
   </div>
 
 
@@ -85,7 +56,7 @@
 
 <script>
 
-    import {Notify,Popup,Dialog,Grid,GridItem,Toast,Tag } from 'vant';
+    import {Notify,Popup,Grid,GridItem,Toast,Tag,Image,Icon } from 'vant';
     import axios from 'axios'
     import Bus from "../utils/bus";
 
@@ -93,6 +64,9 @@
         name: "VideoClassRoom",
         data() {
             return {
+
+                videoshow : false,
+
                 BY1: '',//存店铺号
                 noData:'未查询到数据',
                 nulldataImg: false, // 没有数据时显示
@@ -124,12 +98,16 @@
             }
         },
         methods: {
-          onClickLeft() {
-            Toast('返回');
+          videobf(value){
+            console.log(111111)
+            this.videoshow = true;
+            console.log(value)
           },
-          onClickRight() {
-            Toast('按钮');
-          }
+          //返回财税小讲堂首页
+          fanhuiVD(){
+            this.videoshow = false;
+          },
+
           /*
                     //查看联系方式
                     ContractRow(item){
@@ -238,11 +216,12 @@
         components:{
           [Notify.name]:Notify,
           [Popup.name]:Popup,
-          [Dialog.name]:Dialog,
           [Grid.name]:Grid,
           [GridItem.name]:GridItem,
           [Toast.name]:Toast,
-          [Tag.name]:Tag
+          [Tag.name]:Tag,
+          [Image.name]:Image,
+          [Icon.name]:Icon,
         },
         mounted () {// 两个子组件传递数据
             Bus.$on('DkToYkFlag', res => { // 有待开生成已开标志
@@ -285,9 +264,6 @@
 </script>
 
 <style scoped>
-  .van-image {
-    margin: auto -9%;
-  }
   .list{
     text-align: center;
     background-color: #f4f4f4;
