@@ -13,9 +13,6 @@ import configJson from '../static/json/configJson';
 // 引入权限框架
 import store from './vuex/index';
 
-// Vant
-import Vant from 'vant';
-import 'vant/lib/index.css';
 
 // 配置axios
 Vue.prototype.$axios = axios;
@@ -75,8 +72,6 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-// VUE
-Vue.use(Vant)
 
 new Vue({
   el: '#app',

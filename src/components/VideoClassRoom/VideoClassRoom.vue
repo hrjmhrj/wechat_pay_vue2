@@ -1,7 +1,7 @@
 <template>
   <div class="block">
 
-    <div style="width: 100%; height: 7%;position: absolute;z-index: 10;">
+<!--    <div style="width: 100%; height: 7%;position: absolute;z-index: 10;">
     <van-nav-bar
       :fixed="true"
       title="标题"
@@ -12,18 +12,17 @@
       left-arrow>
       <van-icon name="ellipsis" slot="right" />
     </van-nav-bar>
-    </div>
+    </div>-->
 
-    <div style="width: 100%;height: 100%;z-index: 9;margin-top: 12%;">
+    <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
       <van-grid :column-num="4" :border="false" style="width: 100%; height: 100%">
         <div style="width: 48%; height: 25%" v-for="value in 12">
-          <div style="position: absolute;z-index: 8;">
+          <div style="position: absolute;z-index: 8;margin: 1% 1%;">
             <van-tag round type="danger">标签</van-tag>
             <van-tag round type="warning">标签</van-tag>
           </div>
-          <div style="z-index: 7;">
-          <van-grid-item
-            whith="40%"
+          <div style="z-index: 7;height: 100%;">
+          <van-grid-item style="height: 100%;"
             :key="value"
             icon="photo-o"
             text="文字"
@@ -86,7 +85,7 @@
 
 <script>
 
-    import {Notify,Popup,Dialog,Grid,GridItem,Toast } from 'vant';
+    import {Notify,Popup,Dialog,Grid,GridItem,Toast,Tag } from 'vant';
     import axios from 'axios'
     import Bus from "../utils/bus";
 
@@ -237,11 +236,13 @@
                   },*/
         },
         components:{
-            Notify,
-            Popup,
-            Dialog,
-            Grid,
-            GridItem
+          [Notify.name]:Notify,
+          [Popup.name]:Popup,
+          [Dialog.name]:Dialog,
+          [Grid.name]:Grid,
+          [GridItem.name]:GridItem,
+          [Toast.name]:Toast,
+          [Tag.name]:Tag
         },
         mounted () {// 两个子组件传递数据
             Bus.$on('DkToYkFlag', res => { // 有待开生成已开标志
