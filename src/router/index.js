@@ -4,6 +4,7 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 import FinanceClassRoom from '../views/financeclassroom/FinanceClassRoom'
+import MyInfo from '../views/myinfo/MyInfo'
 
 import notFound from '../views/404'
 import notAllowed from '../views/405'
@@ -21,6 +22,14 @@ export default new Router({
         requireAuth: false // 判断该路由的访问是否需要登录
       },
       component: FinanceClassRoom
+    },{
+      path: '/MyInfo',
+      name: 'MyInfo',
+      meta: {
+        title: '我的',
+        requireAuth: false // 判断该路由的访问是否需要登录
+      },
+      component: MyInfo
     },{
       path: "/404",
       name: "notFound",
