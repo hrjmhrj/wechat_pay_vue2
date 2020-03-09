@@ -7,6 +7,8 @@ import router from './router';
 // 引入axios ajax请求
 import axios from 'axios';
 
+import { Lazyload } from 'vant';
+
 // 引入JSON配置文件
 import configJson from '../static/json/configJson';
 
@@ -72,6 +74,9 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+Vue.use(Lazyload, {
+  lazyComponent: true
+});
 
 new Vue({
   el: '#app',

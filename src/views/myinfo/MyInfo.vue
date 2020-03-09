@@ -10,21 +10,19 @@
         @click-left="onClickBarLeft"
       />
     </van-sticky>
-    <van-tabs v-model="active" animated :offset-top=topBarHeight sticky color="#1989fa" title-active-color="#1989fa">
+    <van-tabs v-model="active" :offset-top=topBarHeight sticky color="#1989fa" title-active-color="#1989fa">
       <van-tab title="购买历史">
         <div class="van-tab-div">
           <purchase-history/>
         </div>
       </van-tab>
-      <van-tab title="未开发票">
-        <div>
-          2
+      <van-tab title="未开发票" name="dk">
+        <div class="van-tab-padding">
+          <WkFp/>
         </div>
       </van-tab>
       <van-tab title="已开发票">
-        <div>
-          3
-        </div>
+
       </van-tab>
     </van-tabs>
   </div>
@@ -32,11 +30,14 @@
 
 <script>
   import purchaseHistory from '../../components/MyInfo/PurchaseHistory'
-  import { NavBar,Tab,Tabs,Sticky } from 'vant';
+  import WkFp from '../../components/MyInfo/WkFp'
+  import { NavBar,Tab,Tabs,Sticky,SubmitBar  } from 'vant';
   export default {
     name: "my-info",
     components:{
+      WkFp,
       purchaseHistory,
+      [SubmitBar.name]:SubmitBar,
       [NavBar.name]:NavBar,
       [Tab.name]:Tab,
       [Tabs.name]:Tabs,
@@ -66,7 +67,9 @@
 
 <style scoped>
   .my-info-div .van-tab-div{
-    min-height: 100vh;
     background: #fdfdfd;
+  }
+  .van-tab-padding{
+    padding:0 0 50px 0;
   }
 </style>

@@ -10,7 +10,7 @@ Vue.use(Vuex);
  */
 const state = {
   userInfo: {
-    openid:"",
+    openid:"123456",
     token:""
   },
 };

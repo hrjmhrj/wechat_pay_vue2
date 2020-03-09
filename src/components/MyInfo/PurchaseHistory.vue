@@ -1,33 +1,23 @@
 <template>
   <!--下拉刷新组件-->
   <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
-    <div style="padding:1vh 2vw;min-height: 100vh;width: 98vw;" class="my-info-div">
+    <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
       <!--列表组件-->
       <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList">
-        <van-grid :column-num="2" :gutter="15" :border="false">
-          <van-grid-item v-for="(index,item) in listData" :key="item">
+        <van-grid :column-num="2" gutter="2vw" :border="false">
+          <van-grid-item v-for="(item,index) in listData" :key="item.VIDEOID">
             <!--骨屏架组件-->
             <van-skeleton :row="4" :loading="skeletonLoading" row-width="50%">
-              <div v-if="index%2==0">
-                <van-image radius="10" fit="contain" src="http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg">
-                  <template v-slot:loading>
-                    <van-loading type="spinner" size="20" />
-                  </template>
-                </van-image>
-              </div>
-              <div v-else>
-                <van-image radius="10" fit="contain" src="http://hywfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg">
-                  <template v-slot:loading>
-                    <van-loading type="spinner" size="20" />
-                  </template>
+              <div>
+                <van-image width="45vw" lazy-load radius="10" fit="contain" :src="item.VIDEOCOVER">
                 </van-image>
               </div>
               <div>
                 <span class="text-overflow text-overflow-title">
-                  销方红字发票信息表开具
+                  {{item.VIDEONAME}}
                 </span>
                 <span class="text-overflow text-overflow-body">
-                  销方红字发票信息表开具示例（20191230）的介绍
+                  {{item.VIDEOMS}}
                 </span>
               </div>
             </van-skeleton>
@@ -38,10 +28,11 @@
   </van-pull-refresh>
 </template>
 <script>
-  import { Skeleton,PullRefresh,List,Grid,GridItem,Image } from 'vant';
+  import { Skeleton,PullRefresh,List,Grid,GridItem,Image,Loading    } from 'vant';
   export default {
     name: "purchase-history",
     components:{
+      [Loading.name]:Loading,
       [Image.name]:Image,
       [Grid .name]:Grid, //
       [GridItem .name]:GridItem, //
@@ -51,31 +42,59 @@
     },
     data(){
       return{
-        skeletonLoading:false, //骨屏架加载标志
-        refreshIsLoading:true, //下拉刷新加载标志
-        listData: [], //列表数据
+        skeletonLoading:true, //骨屏架加载标志
+        refreshIsLoading:false, //下拉刷新加载标志
         listFinished: false, //数据全部加载完毕
         listLoading: false, //列表加载标志
+        listData: [
+          {
+            VIDEOID:"19601a0c5f10c42679ff173f5ccc5583b", //产品ID
+            VIDEONAME:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，这次升级后，部分ie浏览器版本低的客户登录会报错。本视频讲解处理方法，视频中用到的网址：https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads", //产品名称
+            FILENAME:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/af1a78f0-7099-44d0-8072-752bd97a6aac-20191029143658.mp4",// 视频路径名称
+            VIDEOMS:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，",//产品介绍
+            VIDEOCOVER:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
+            COST:"100",//费用
+            TYPE:"video"//视频，产品标识 video/ps
+          },
+          {
+            VIDEOID:"2awdd0c5f10c42679ff173f5ccc5583b", //产品ID
+            VIDEONAME:"24小时在线咨询服务", //产品名称
+            FILENAME:"",// 视频路径名称
+            VIDEOMS:"总部最新录制的销方增值税专用发票红字信息表开具示例指导",//产品介绍
+            VIDEOCOVER:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
+            COST:"200",//费用
+            TYPE:"ps"//视频，产品标识 video/ps
+          },
+          {
+            VIDEOID:"39601a0c5f10c42679ff173f5ccc5583b", //产品ID
+            VIDEONAME:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，这次升级后，部分ie浏览器版本低的客户登录会报错。本视频讲解处理方法，视频中用到的网址：https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads", //产品名称
+            FILENAME:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/af1a78f0-7099-44d0-8072-752bd97a6aac-20191029143658.mp4",// 视频路径名称
+            VIDEOMS:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，这次升级后，部分ie浏览器版本低的客户登录会报错。本视频讲解处理方法，视频中用到的网址：https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads",//产品介绍
+            VIDEOCOVER:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
+            COST:"100",//费用
+            TYPE:"video"//视频，产品标识 video/ps
+          },
+          {
+            VIDEOID:"4awdd0c5f10c42679ff173f5ccc5583b", //产品ID
+            VIDEONAME:"24小时在线咨询服务", //产品名称
+            FILENAME:"",// 视频路径名称
+            VIDEOMS:"总部最新录制的销方增值税专用发票红字信息表开具示例指导",//产品介绍
+            VIDEOCOVER:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
+            COST:"200",//费用
+            TYPE:"ps"//视频，产品标识 video/ps
+          }
+        ], //列表数据
       }
     },
     methods:{
       // 加载列表数据
       onLoadList() {
         setTimeout(() => {
-          if (this.refreshIsLoading) {
-            this.listData = [];
-            this.refreshIsLoading = false;
-          }
-
-          for (let i = 0; i < 10; i++) {
-            this.listData.push(this.listData.length + 1);
-          }
+          this.listFinished = true;
           this.listLoading = false;
-
-          if (this.listData.length >= 40) {
-            this.listFinished = true;
-          }
-        }, 1000);
+          this.refreshIsLoading = false;
+          this.skeletonLoading = false;
+        },1000)
       },
 
       //下拉刷新
@@ -87,6 +106,9 @@
         this.refreshIsLoading = true;
         this.onLoadList();
       }
+    },
+    created(){
+
     }
   }
 
@@ -104,17 +126,22 @@
     overflow: hidden;
   }
   .text-overflow-title {
+    width: 45vw;
     font-size: 13px;
     line-height: 13px;
     height: 26px;
     -webkit-line-clamp: 2;
+    margin-bottom: 5px;
   }
   .text-overflow-body {
+    width: 45vw;
     font-size: 11px;
     line-height: 11px;
     height: 11px;
     color:#8a8a8a;
-    -webkit-line-clamp: 1;
+    overflow : hidden ;
+    text-overflow : ellipsis ;
+    white-space : nowrap ;
   }
 </style>
 <style>
