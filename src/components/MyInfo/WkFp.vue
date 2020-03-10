@@ -21,7 +21,7 @@
           </van-list>
         </van-checkbox-group>
         <!--合计提交按钮-->
-        <van-submit-bar :price="requestSqkpData.ZJE" :button-text="sqkpButtonText" @submit="onSubmit" button-type="info" safe-area-inset-bottom>
+        <van-submit-bar :price="requestSqkpData.ZJE" :button-text="sqkpButtonText" @submit="onSubmit" button-type="info">
           <van-checkbox v-model="allCheckedFlag" style="margin-left:14px;" @click="allCheckedClick">全选</van-checkbox>
         </van-submit-bar>
       </div>
@@ -66,9 +66,9 @@
           <van-field v-model="requestSqkpData.KPXX.YHZH" v-if="requiredFlagList[requestSqkpData.FPLX].YHZH[0]"  :required="requiredFlagList[requestSqkpData.FPLX].YHZH[1]" type="tel" label="银行账户" placeholder="请输入银行账户" maxlength="20"/>
         </van-form>
         <!--点击提交-->
-        <van-submit-bar :price="requestSqkpData.ZJE" :button-text="tjsqButtonTest" @submit="onFormSubmit" button-type="info" safe-area-inset-bottom/>
+        <van-submit-bar :price="requestSqkpData.ZJE" :button-text="tjsqButtonTest" @submit="onFormSubmit" button-type="info"/>
         <!--历史-->
-        <van-action-sheet v-model="actionsShow" :round="false" cancel-text="取消" close-on-click-action :actions="actionsList" @select="onActionSelect" safe-area-inset-bottom/>
+        <van-action-sheet v-model="actionsShow" :round="false" cancel-text="取消" close-on-click-action :actions="actionsList" @select="onActionSelect"/>
       </div>
       <!--加载遮罩层-->
       <van-overlay :show="lodingOverlayShow" z-index="103">
