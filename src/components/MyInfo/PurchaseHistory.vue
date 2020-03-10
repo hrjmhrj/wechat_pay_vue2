@@ -5,7 +5,7 @@
       <!--列表组件-->
       <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList">
         <van-grid :column-num="2" gutter="2vw" :border="false">
-          <van-grid-item v-for="(item,index) in listData" :key="item.VIDEOID">
+          <van-grid-item v-for="(item,index) in listData" :key="item.VIDEOID" @click="clickItem(item.VIDEOID)">
             <!--骨屏架组件-->
             <van-skeleton :row="4" :loading="skeletonLoading" row-width="50%">
               <div>
@@ -96,7 +96,9 @@
           this.skeletonLoading = false;
         },1000)
       },
+      clickItem(VIDEOID){
 
+      },//点击
       //下拉刷新
       onRefresh() {
         // 清空列表数据
