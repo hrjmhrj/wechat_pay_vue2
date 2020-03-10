@@ -131,7 +131,7 @@
     line-height: 13px;
     height: 26px;
     -webkit-line-clamp: 2;
-    margin-bottom: 5px;
+    margin-bottom: 7px;
   }
   .text-overflow-body {
     width: 45vw;
