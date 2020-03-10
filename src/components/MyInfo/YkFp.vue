@@ -23,7 +23,7 @@
       </van-sticky>
       <p/>
       <!--发票信息-->
-      <div>
+      <div style="padding-bottom: 50px;">
         <!--发票类型-->
         <van-field label="发票类型" :value="FplxFn(ykfpxx.FPLX)" input-align="right" readonly required/>
         <!--企业名称(个人)-->
