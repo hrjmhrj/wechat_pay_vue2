@@ -217,7 +217,7 @@
     overflow-y:scroll;
     -webkit-overflow-scrolling: touch;
     width: 100vw;
-    height: 100vh;
+    min-height: 101%;
     position: fixed;
     bottom:0;
     top: 0;
