@@ -1,32 +1,80 @@
 <template>
   <div class="block">
+    <!--播放页面-->
+    <div style="z-index: 10;position: absolute;top: 0;left: 0;">
 
-    <!--财税小讲堂首页-->
-    <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
-      <van-grid :clickable="true" :column-num="2" :square="false" :border="false" style="width: 100%; height: 100%"
-                :center="true">
-        <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="value in 12">
-          <div style="position: absolute;z-index: 8;margin:1% 4%;">
-            <van-tag round type="danger">免费</van-tag>
-            <van-tag round type="warning">付费</van-tag>
+      <div class="wrapper">
+        <div class="block">
+
+          <div class="player"><!--播放器-->
+            <video-player class="video-player vjs-custom-skin"
+                          ref="videoPlayer"
+                          :playsinline="true"
+                          :options="playerOptions"
+            ></video-player>
           </div>
-          <div style="z-index: 7;height: 100%;">
-            <van-grid-item style="height: 100%;" :key="value" @click="videobf(value)">
-              <div style="height: 100%;width: 100%;">
-                <van-image src="https://img.yzcdn.cn/vant/apple-2.jpg"
-                           style=" width: 100%;height: 76%;margin-top: -7%;"/>
-                <div
-                  style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
-                  TVB 优酷同步热播剧《法证先锋4》第13集预告片_标清.mp4
+
+          <div class="caption" style="margin: 2% 2% 2% 2%;"><!--标题和详细介绍内容-->
+            <span style="display: inline-block;width: 80vw;text-align:left;font-size: 4vw;font-weight: bold;">
+                课程名称
+            </span>
+            <span style="display: inline-block;width: 14vw;text-align: right;">
+                <van-button type="warning" @click="fanhuiVD" size="mini" round>返回</van-button>
+            </span>
+
+            <div style="color: darkgray; font-size: x-small;margin-top: 1%;">
+              详情介绍详情介绍详情介绍详情介绍详情介绍详情介绍详情介绍详情介绍详情介绍详情介绍详情介绍详情介绍
+            </div>
+          </div>
+
+          <div style="background-color: #F7F7F7;height: 1.2vh;margin: 2% 0% 2% 0%;"></div>
+
+          <div class="recommend" style="margin: 2% 2% 16% 2%;"><!--推荐的内容-->
+            <div style="display: inline-block;width: 82vw;text-align:left;font-size: 4vw;font-weight: bold;">
+              为您推荐
+            </div>
+            <!--推荐视频-->
+            <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
+              <van-grid :clickable="true" :column-num="2" :square="false" :border="false"
+                        style="width: 100%; height: 100%"
+                        :center="true">
+                <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="value in 12">
+                  <div style="position: absolute;z-index: 8;margin:1% 4%;">
+                    <van-tag round type="danger">免费</van-tag>
+                    <van-tag round type="warning">付费</van-tag>
+                  </div>
+                  <div style="z-index: 7;height: 100%;">
+                    <van-grid-item style="height: 100%;" :key="value" @click="videobf1(value)">
+                      <div style="height: 100%;width: 100%;">
+                        <van-image src="https://img.yzcdn.cn/vant/apple-2.jpg"
+                                   style=" width: 100%;height: 76%;margin-top: -7%;"/>
+                        <div
+                          style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
+                          TVB 优酷同步热播剧《法证先锋4》第13集预告片_标清.mp4
+                        </div>
+                      </div>
+                    </van-grid-item>
+                  </div>
                 </div>
-              </div>
-            </van-grid-item>
+              </van-grid>
+            </div>
           </div>
+
+          <!--购买区-->
+          <van-submit-bar style="background-color:#f7f7f7;"
+                          :price="3050"
+                          button-text="购买"
+                          button-type="info"
+                          @submit="purchase"
+          >
+            <span slot="default"><van-icon name="shopping-cart-o" size="2rem"/></span>
+          </van-submit-bar>
+
+
         </div>
-      </van-grid>
-      <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
-        <van-icon name="user-circle-o" color="#1989fa" size="3rem"/>
       </div>
+
+
     </div>
 
   </div>
@@ -44,7 +92,7 @@
 
 
   export default {
-    name: "VideoClassRoom",
+    name: "VideoPlay",
     data() {
       return {
 
@@ -71,7 +119,6 @@
             fullscreenToggle: true  //全屏按钮
           }
         },
-
 
         BY1: '',//存店铺号
         noData: '未查询到数据',
@@ -104,11 +151,10 @@
       }
     },
     methods: {
-      videobf(value) {
+      /*videobf(value) {
         console.log(value)
         //获取openid  console.log(this.$store.state.userInfo.openid)
-        //this.$router.push({name: 'VideoPlay', params: {BY1: this.BY1, zhuoHao: this.zhuoHao}})
-        this.$router.push({name: 'VideoPlay'})
+        //this.$router.push({name: 'OrderMobilePhone', params: {BY1: this.BY1, zhuoHao: this.zhuoHao}})
         axios.post('/aisino/selectVideoList').then(response => {
           console.log(response);
           console.log(response.data.obj)
@@ -118,7 +164,7 @@
         }, response => {
           console.info('网络异常，请稍候重试！');
         })
-        /*var sdf = []
+        /!*var sdf = []
         var asd = {}
         asd["price"] = this.price
         asd["BY1"] = this.BY1
@@ -139,9 +185,9 @@
             this.allcpshow = false;
           }
           this.WmOrZcshPay()
-        })*/
+        })*!/
 
-      },
+      },*/
       //推荐区播放
       videobf1(value) {
         location.reload();

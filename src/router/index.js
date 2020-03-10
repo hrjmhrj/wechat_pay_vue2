@@ -11,6 +11,7 @@ import notAllowed from '../views/405'
 import serverError from '../views/500'
 
 import VideoClassRoom from '../components/VideoClassRoom/VideoClassRoom'
+import VideoPlay from '../components/VideoClassRoom/VideoPlay'
 
 export default new Router({
   routes: [
@@ -53,6 +54,14 @@ export default new Router({
         requireAuth: false // 判断该路由的访问是否需要登录
       },
       component: VideoClassRoom
+    }, {
+      path: '/VideoPlay',
+      name: 'VideoPlay',
+      meta: {
+        title: '视频播放',
+        requireAuth: false // 判断该路由的访问是否需要登录
+      },
+      component: VideoPlay
     }
   ]
 });
