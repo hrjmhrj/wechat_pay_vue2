@@ -1,20 +1,21 @@
 <template>
     <div class="my-info-wkfp-div">
+      <!--未开列表-->
       <div>
         <!--列表-->
         <van-checkbox-group v-model="wkFpCheckData" @change="checkboxGroupChange">
           <van-list v-model="loading" :finished="finished" :loading-text="loadText" :offset="100" @load="onLoad">
-            <van-cell class="tab-checkbox-info" v-for="(item, index) in wkAllData" :key="index" style="margin: 2vw auto;border: 1px solid #e9eaeb;width: 90vw;">
+            <van-cell class="tab-checkbox-info" v-for="(item, index) in wkAllData" :key="index">
               <van-checkbox :name="index">
-              <span class="checkbox-text-span" >
-                商品名称：<span>{{item.VIDEONAME}}</span>
-              </span>
                 <span class="checkbox-text-span" >
-                商品性质：<span v-html="item.TYPE == 'ps' ? '服务产品' : '视频'"/>
-              </span>
-                <span class="checkbox-text-span" >
-                金　　额：<span>{{item.COST}}</span>元
-              </span>
+                  商品名称：<span>{{item.VIDEONAME}}</span>
+                </span>
+                  <span class="checkbox-text-span" >
+                  商品性质：<span v-html="item.TYPE == 'ps' ? '服务产品' : '视频'"/>
+                </span>
+                  <span class="checkbox-text-span" >
+                  金　　额：<span>{{item.COST}}</span>元
+                </span>
               </van-checkbox>
             </van-cell>
           </van-list>
@@ -24,9 +25,8 @@
           <van-checkbox v-model="allCheckedFlag" style="margin-left:14px;" @click="allCheckedClick">全选</van-checkbox>
         </van-submit-bar>
       </div>
-
       <!--填写开票信息-->
-      <div v-if="showOverlayFlag" style="overflow-x:hidden;overflow-y:scroll;width: 100vw;height: 100vh;position: fixed; bottom:0;top: 0;left: 0;z-index: 102;background: #f6f6f6;">
+      <div v-if="showOverlayFlag" class="write-fpxx">
         <!--头部-->
         <van-sticky :offset-top="0">
           <van-nav-bar title="填写开票信息" left-text="返回" left-arrow @click-left="onClickBarLeft"/>
@@ -54,12 +54,12 @@
           <!--邮寄地址-->
           <van-field v-model="requestSqkpData.KPXX.YJDZ" v-if="requiredFlagList[requestSqkpData.FPLX].YJDZ[0]"  :required="requiredFlagList[requestSqkpData.FPLX].YJDZ[1]" type="text" label="邮寄地址" placeholder="请输入邮寄地址" maxlength="100"/>
           <!--邮箱-->
-          <van-field v-model="requestSqkpData.KPXX.EMAIL" v-if="requiredFlagList[requestSqkpData.FPLX].EMAIL[0]"  :required="requiredFlagList[requestSqkpData.FPLX].EMAIL[1]" type="text" label="邮箱" placeholder="请输入邮箱地址" maxlength="100"/>
+          <van-field v-model="requestSqkpData.KPXX.EMAIL" v-if="requiredFlagList[requestSqkpData.FPLX].EMAIL[0]"  :required="requiredFlagList[requestSqkpData.FPLX].EMAIL[1]" type="text" label="邮箱" placeholder="请输入邮箱地址" maxlength="50"/>
           <p v-if="requestSqkpData.FPLX!=1"/>
           <!--税号-->
           <van-field v-model="requestSqkpData.KPXX.SH" v-if="requiredFlagList[requestSqkpData.FPLX].SH[0]" :required="requiredFlagList[requestSqkpData.FPLX].SH[1]" type="text" label="税号" placeholder="请输入税号" maxlength="20"/>
           <!--公司地址-->
-          <van-field v-model="requestSqkpData.KPXX.GSDZ" v-if="requiredFlagList[requestSqkpData.FPLX].GSDZ[0]"  :required="requiredFlagList[requestSqkpData.FPLX].GSDZ[1]" type="text" label="公司地址" placeholder="请输入公司地址" maxlength="100"/>
+          <van-field v-model="requestSqkpData.KPXX.GSDZ" v-if="requiredFlagList[requestSqkpData.FPLX].GSDZ[0]"  :required="requiredFlagList[requestSqkpData.FPLX].GSDZ[1]" type="text" label="公司地址" placeholder="请输入公司地址" maxlength="89"/>
           <!--开户银行-->
           <van-field v-model="requestSqkpData.KPXX.KHYH" v-if="requiredFlagList[requestSqkpData.FPLX].KHYH[0]"  :required="requiredFlagList[requestSqkpData.FPLX].KHYH[1]" type="text" label="开户银行" placeholder="请输入开户银行" maxlength="100"/>
           <!--银行账户-->
@@ -70,14 +70,23 @@
         <!--历史-->
         <van-action-sheet v-model="actionsShow" :round="false" cancel-text="取消" close-on-click-action :actions="actionsList" @select="onActionSelect"/>
       </div>
+      <!--加载遮罩层-->
+      <van-overlay :show="lodingOverlayShow" z-index="103">
+        <div class="wrapper" @click.stop>
+          <van-loading/>
+        </div>
+      </van-overlay>
     </div>
 </template>
 
 <script>
+  import axios from 'axios';
   import { Checkbox,CheckboxGroup,List,Cell,SubmitBar,Notify,Sticky,NavBar,RadioGroup,Radio,Field } from 'vant';
-  import { Form,Button,ActionSheet } from 'vant';
+  import { Form,Button,ActionSheet,Loading,Overlay  } from 'vant';
   export default {
     components:{
+      [Overlay.name]:Overlay,
+      [Loading.name]:Loading,
       [ActionSheet.name]:ActionSheet,
       [Button.name]:Button,
       [Field.name]:Field,
@@ -222,13 +231,13 @@
             name: '企业名称1',
             obj:{
               QYMC:"企业名称1",//企业名称
-              SH:"11111111111111",//税号
+              SH:"91510105MA6B6FA64H",//税号
               GSDZ:"公司地址1",//公司地址
-              LXDH:"181000001111",//联系电话
+              LXDH:"18108118251",//联系电话
               KHYH:"开户银行1",//开户银行
-              YHZH:"133333333333",//银行账户
+              YHZH:"",//银行账户
               YJDZ:"邮寄地址1",//邮寄地址
-              EMAIL:"电子邮箱1",//电子邮箱
+              EMAIL:"978784945@qq.com",//电子邮箱
             }
           },
           {
@@ -284,6 +293,7 @@
             }
           }
         ], //上弹选择数组历史
+        lodingOverlayShow:false,// 加载中的遮罩层
       }
     },
     methods:{
@@ -331,31 +341,37 @@
       },//点击头部返回
       onFormSubmit(){
         let checkData = this.requiredFlagList[this.requestSqkpData.FPLX];
+        let shReg = new RegExp(/^[A-Z0-9]{15}$|^[A-Z0-9]{18}$|^[A-Z0-9]{20}$/);
+        let emailReg = new RegExp(/^[a-zA-Z0-9_]+[a-zA-Z0-9_\-\.]+[a-zA-Z0-9_]+@[\w-]+\.[\w-]+$|^[a-zA-Z0-9_]+[a-zA-Z0-9_\-\.]+[a-zA-Z0-9_]+@[\w-]+\.[\w-]+\.[\w-]+$/);
+        let yhzhReg = new RegExp(/^(?:[1-9]{1})(?:\d{15}|\d{18})$/);
+        let lxdhSjReg = new RegExp(/^(1[34578]\d{9}$)/);
+        let lxdhZjReg = new RegExp(/^(([0-9]{3,4}[-])?[0-9]{7,8}$)/);
         if(checkData.QYMC[1] && this.requestSqkpData.KPXX.QYMC == ""){
           this.notifyStr("danger","请填写企业名称/个人");
           return;
-        }else if(checkData.SH[1] && this.requestSqkpData.KPXX.SH == ""){
+        }else if((checkData.SH[1] && this.requestSqkpData.KPXX.SH == "") || (this.requestSqkpData.KPXX.SH != "" && !shReg.test(this.requestSqkpData.KPXX.SH))){
           this.notifyStr("danger","请填写正确的税号");
           return;
         }else if(checkData.GSDZ[1] && this.requestSqkpData.KPXX.GSDZ == ""){
           this.notifyStr("danger","请填写公司地址");
           return;
-        }else if(checkData.LXDH[1] && this.requestSqkpData.KPXX.LXDH == ""){
+        }else if((checkData.LXDH[1] && this.requestSqkpData.KPXX.LXDH == "") || (this.requestSqkpData.KPXX.LXDH != "" && (!lxdhSjReg.test(this.requestSqkpData.KPXX.LXDH) && !lxdhZjReg.test(this.requestSqkpData.KPXX.LXDH)))){
           this.notifyStr("danger","请填写正确的联系电话");
           return;
         }else if(checkData.KHYH[1] && this.requestSqkpData.KPXX.KHYH == ""){
           this.notifyStr("danger","请填写开户银行");
           return;
-        }else if(checkData.YHZH[1] && this.requestSqkpData.KPXX.YHZH == ""){
-          this.notifyStr("danger","请填写银行账户");
+        }else if((checkData.YHZH[1] && this.requestSqkpData.KPXX.YHZH == "") || (this.requestSqkpData.KPXX.YHZH != "" && !yhzhReg.test(this.requestSqkpData.KPXX.YHZH))){
+          this.notifyStr("danger","请填写正确的银行账户");
           return;
         }else if(checkData.YJDZ[1] && this.requestSqkpData.KPXX.YJDZ == ""){
           this.notifyStr("danger","邮寄地址");
           return;
-        }else if(checkData.EMAIL[1] && this.requestSqkpData.KPXX.EMAIL == ""){
+        }else if((checkData.EMAIL[1] && this.requestSqkpData.KPXX.EMAIL == "") || (this.requestSqkpData.KPXX.EMAIL != "" && !emailReg.test(this.requestSqkpData.KPXX.EMAIL))){
           this.notifyStr("danger","请填写正确的电子邮箱");
           return;
         }
+        this.requestAxios("/bai/aa/aa",null,"请求失败",this.getHistorySuccess,true)
       },//点击表单提交
       notifyStr(type,msg){
         Notify({ type: type, message: msg });
@@ -363,8 +379,30 @@
       onActionSelect(action){
         this.requestSqkpData.KPXX = action.obj;
       },//选择历史记录的时候
+      requestAxios(url,data,errorMsg,successFn,layFlag){
+        if(layFlag){
+          this.lodingOverlayShow = true;
+        }
+        axios.post(url, data).then(response => {
+          successFn();
+          this.lodingOverlayShow = false;
+        },error => {
+          this.lodingOverlayShow = false;
+          this.notifyStr("danger",errorMsg);
+        });
+      },//请求后台 (路由，数据，失败的msg,成功的执行函数，是否显示加载层)
+      getHistorySuccess(responseData){
+        if(responseData.success){
+
+        }else{
+
+        }
+      },//获取历史填写记录的处理
     },
     created(){
+      this.$store.commit('set_openid', "wwwabcd");
+    },
+    mounted(){
       console.log(JSON.stringify(this.$store.state.userInfo))
     }
   }
@@ -382,6 +420,29 @@
     overflow: hidden;
   }
   .tab-checkbox-info{
-    background: #fff;border-radius: 5px;margin-bottom: 7px;padding:5px 0px 5px 7px;
+    background: #fff;border-radius: 5px;padding:5px 0px 5px 7px;
+    margin: 2vw auto;border: 1px solid #e9eaeb;width: 90vw;
+  }
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .van-cell:not(:last-child)::after{
+    border:none;
+  }
+  .write-fpxx{
+    overflow-x:hidden;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    bottom:0;
+    top: 0;
+    left: 0;
+    z-index: 102;
+    background: #f6f6f6;
   }
 </style>
