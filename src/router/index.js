@@ -10,8 +10,8 @@ import notFound from '../views/404'
 import notAllowed from '../views/405'
 import serverError from '../views/500'
 
-import VideoClassRoom from '../components/VideoClassRoom/VideoClassRoom'
-import VideoPlay from '../components/VideoClassRoom/VideoPlay'
+import VideoClassRoom from '../views/VideoClassRoom/VideoClassRoom'
+import VideoPlay from '../views/VideoClassRoom/VideoPlay'
 
 export default new Router({
   routes: [
