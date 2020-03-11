@@ -400,10 +400,8 @@
       },//获取历史填写记录的处理
     },
     created(){
-      this.$store.commit('set_openid', "wwwabcd");
     },
     mounted(){
-      console.log(JSON.stringify(this.$store.state.userInfo))
     }
   }
 </script>
