@@ -43,16 +43,12 @@ axios.interceptors.response.use(response => {
   // 没有权限 || 非法访问
   if (response.data.status === configJson.badRequestCode) {
     //跳转到非法页面
-    next({
-      path: '/405'
-    });
+    router.push({path: '/405'});
   }
   return response;
 }, error => {
   // 跳转到错误页面
-  next({
-    path: '/500'
-  });
+  router.push({path: '/500'});
   return error;
 });
 
