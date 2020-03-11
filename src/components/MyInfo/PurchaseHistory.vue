@@ -101,7 +101,6 @@
       },// 加载列表数据
       onLoadSuccessFn(responseData){
         if(responseData.success){
-          this.notifyStr("danger",responseData.msg);
           if(responseData.obj[1].length>0){
             this.listData = this.listData.concat(responseData.obj[1])
           }
@@ -117,7 +116,7 @@
       onLoadErrorFn(){
         this.listLoading = false;
         this.listFinished = true;
-        this.skeletonLoading = true;
+        this.skeletonLoading = false;
         this.refreshIsLoading = false;
       },
       requestAxios(url,data,successFn,errorFn){

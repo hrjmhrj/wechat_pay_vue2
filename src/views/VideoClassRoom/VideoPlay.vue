@@ -190,6 +190,19 @@
       //购买
       purchase() {
         console.log("购买")
+        var asd={}
+        //店铺号
+        asd["BY1"]=this.BY1
+        //asd["ZH"]= this.AllCPList[0].deskid
+        //asd["orderNo"]= this.AllCPList[0].orderid
+        asd["price"]= this.AllPrice
+        //asd["zhuoZiName"]= this.zhuoZiName
+        asd["SPMC"]='财税小讲堂'
+        //跳转支付页面
+        axios.post('/nuonuoPay',asd ).then(response=>{
+          let todata=response.data.obj
+          window.location.href=todata
+        })
       },
 
       //根据openid查订单购买信息
