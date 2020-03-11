@@ -91,12 +91,10 @@
         })
 
       },
-
       //用户信息
       userinfo() {
         this.$router.push({name: 'MyInfo', params: {OPEN_ID: this.userData.OPEN_ID}})
       },
-
     },
     components: {
       [Notify.name]: Notify,
@@ -112,7 +110,10 @@
       [SubmitBar.name]: SubmitBar,
     },
     mounted() {
+      this.$store.commit('set_openid', 'olA3Y1bL5BRPMv7K10hsGQQWP0Hc');
+
       this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
+      console.log(this.$store.state.userInfo.openid)
     },
 
     created() {

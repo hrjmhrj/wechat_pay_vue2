@@ -1,81 +1,81 @@
 <template>
-  <div class="block">
+  <div class="block" id="block">
     <!--播放页面-->
-    <div style="z-index: 10;position: absolute;top: 0;left: 0;">
+      <div style="z-index: 10;position: absolute;top: 0;left: 0;">
 
-      <div class="wrapper">
+        <div class="wrapper">
 
-        <div class="player"><!--播放器-->
-          <video-player class="video-player vjs-custom-skin"
-                        ref="videoPlayer"
-                        :playsinline="true"
-                        :options="playerOptions"
-          ></video-player>
-        </div>
+          <div class="player"><!--播放器-->
+            <video-player class="video-player vjs-custom-skin"
+                          ref="videoPlayer"
+                          :playsinline="true"
+                          :options="playerOptions"
+            ></video-player>
+          </div>
 
-        <div class="caption" style="margin: 2% 2% 2% 2%;"><!--标题和详细介绍内容-->
-          <span style="display: inline-block;width: 80vw;text-align:left;font-size: 4vw;font-weight: bold;">
+          <div class="caption" style="margin: 2% 2% 2% 2%;"><!--标题和详细介绍内容-->
+            <span style="display: inline-block;width: 80vw;text-align:left;font-size: 4vw;font-weight: bold;">
                 {{ITEMS.VIDEONAME}}
             </span>
-          <span style="display: inline-block;width: 14vw;text-align: right;">
+            <span style="display: inline-block;width: 14vw;text-align: right;">
                 <van-button type="warning" @click="fanhuiVD" size="mini" round>返回</van-button>
             </span>
 
-          <div style="color: darkgray; font-size: x-small;margin-top: 1%;">
-            {{ITEMS.VIDEOMS}}
-          </div>
-        </div>
-
-        <div style="background-color: #F7F7F7;height: 1.2vh;margin: 2% 0% 2% 0%;"></div>
-
-        <div class="recommend" style="margin: 2% 2% 16% 2%;"><!--推荐的内容-->
-          <div style="display: inline-block;width: 82vw;text-align:left;font-size: 4vw;font-weight: bold;">
-            为您推荐
-          </div>
-
-          <div class="block">
-            <!--推荐视频-->
-            <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
-              <van-grid :clickable="true" :column-num="2" :square="false" :border="false"
-                        style="width: 100%; height: 100%;margin-left: -2%;"
-                        :center="true">
-                <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="(item,index) in VIDEOLIST">
-                  <div style="position: absolute;z-index: 8;margin:2% 4%;">
-                    <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
-                    <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
-                  </div>
-                  <div style="z-index: 7;height: 100%;">
-                    <van-grid-item style="height: 100%;" :key="index" @click="videobf1(item)">
-                      <div style="height: 100%;width: 100%;">
-                        <van-image :src="item.VIDEOCOVER"
-                                   style=" width: 100%;height: 76%;margin-top: -7%;"/>
-                        <div
-                          style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
-                          {{item.VIDEONAME}}
-                        </div>
-                      </div>
-                    </van-grid-item>
-                  </div>
-                </div>
-              </van-grid>
+            <div style="color: darkgray; font-size: x-small;margin-top: 1%;">
+              {{ITEMS.VIDEOMS}}
             </div>
           </div>
 
-          <!--购买区-->
-          <van-submit-bar style="background-color:#f7f7f7;" v-show="ITEMS.IS_FREE != 'Y'"
-                          :price='ITEMS.COST'
-                          button-text="购买"
-                          button-type="info"
-                          @submit="purchase"
-          >
-            <span slot="default"><van-icon name="shopping-cart-o" size="2rem"/></span>
-          </van-submit-bar>
+          <div style="background-color: #F7F7F7;height: 1.2vh;margin: 2% 0% 2% 0%;"></div>
+
+          <div class="recommend" style="margin: 2% 2% 16% 2%;"><!--推荐的内容-->
+            <div style="display: inline-block;width: 82vw;text-align:left;font-size: 4vw;font-weight: bold;">
+              为您推荐
+            </div>
+
+            <div class="block">
+              <!--推荐视频-->
+              <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
+                <van-grid :clickable="true" :column-num="2" :square="false" :border="false"
+                          style="width: 100%; height: 100%;margin-left: -2%;"
+                          :center="true">
+                  <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="(item,index) in VIDEOLIST">
+                    <div style="position: absolute;z-index: 8;margin:2% 4%;">
+                      <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
+                      <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
+                    </div>
+                    <div style="z-index: 7;height: 100%;">
+                      <van-grid-item style="height: 100%;" :key="index" @click="videobf1(item)">
+                        <div style="height: 100%;width: 100%;">
+                          <van-image :src="item.VIDEOCOVER"
+                                     style=" width: 100%;height: 76%;margin-top: -7%;"/>
+                          <div
+                            style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
+                            {{item.VIDEONAME}}
+                          </div>
+                        </div>
+                      </van-grid-item>
+                    </div>
+                  </div>
+                </van-grid>
+              </div>
+            </div>
+
+            <!--购买区-->
+            <van-submit-bar style="background-color:#f7f7f7;" v-show="ITEMS.IS_FREE != 'Y'"
+                            :price='ITEMS.COST'
+                            :button-text='this.STATUS'
+                            button-type="info"
+                            @submit="purchase"
+            >
+              <span slot="default"><van-icon name="shopping-cart-o" size="2rem"/></span>
+            </van-submit-bar>
 
 
+          </div>
         </div>
-      </div>
 
-    </div>
+      </div>
 
   </div>
 
@@ -134,6 +134,7 @@
         COST: '',//费用
         TYPE: '',//视频：video；产品服务（productService）：ps
         ONLINE: '',//是否在线：是Y；否N
+        STATUS: '',//是否支付
 
         noData: '未查询到数据',
         nulldataImg: false, // 没有数据时显示
@@ -162,16 +163,25 @@
 
       //推荐区播放
       videobf1(item) {
-        console.log(item)
         this.ITEMS = item;
         this.playerOptions.sources = item.FILENAME
         this.playerOptions.poster = item.VIDEOCOVER
-        // chrome  页面到顶
-        document.body.scrollTop = 0
-        // firefox
-        document.documentElement.scrollTop = 0
-        // safari
-        window.pageYOffset = 0
+
+        if (item.IS_FREE != 'Y') {//判断是否收费
+          this.userorder();
+        }
+
+        //点击置顶
+        var timer = setInterval(function () {
+          let osTop = document.documentElement.scrollTop || document.body.scrollTop;
+          let ispeed = Math.floor(-osTop / 5);
+          document.documentElement.scrollTop = document.body.scrollTop = osTop + ispeed;
+          this.isTop = true;
+          if (osTop === 0) {
+            clearInterval(timer);
+          }
+        }, 30)
+
       },
       //返回财税小讲堂首页
       fanhuiVD() {
@@ -181,6 +191,37 @@
       purchase() {
         console.log("购买")
       },
+
+      //根据openid查订单购买信息
+      userorder() {
+        let a = {
+          OPEN_ID: this.userData.OPEN_ID,
+          VIDEOID: this.ITEMS.VIDEOID
+        }
+        axios.post('/aisino/selectUserOrder', a).then(response => {
+          if (response.data.success && response.data.obj.length != 0) {
+            //console.log(response.data.obj[0].STATUS)
+            if (response.data.obj[0].STATUS == '已支付') {
+              this.STATUS = '已购'
+              if (this.TYPE == 'ps' || this.ITEMS.TYPE == 'ps') {
+                Toast({
+                  message: '已购买，请联系管理员，联系电话66778811-8645',
+                  duration: 5000
+                });
+              }
+            } else {
+              this.STATUS = '购买'
+              this.playerOptions.sources = "购买后可看"
+            }
+          } else {
+            console.info('网络异常，请稍候重试！');
+          }
+        }).catch(error => {
+          console.info(error + '网络异常，请稍候重试！');
+        })
+      },
+
+
     },
     components: {
       [Notify.name]: Notify,
@@ -200,6 +241,14 @@
       this.getVideoinfo();
       this.playerOptions.sources = this.$route.params.item.FILENAME
       this.playerOptions.poster = this.$route.params.item.VIDEOCOVER
+
+
+      this.$store.commit('set_openid', 'olA3Y1bL5BRPMv7K10hsGQQWP0Hc');
+
+      this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
+      if (this.$route.params.item.IS_FREE != 'Y' || this.ITEMS.IS_FREE != 'Y') {
+        this.userorder();
+      }
     },
   }
 </script>
