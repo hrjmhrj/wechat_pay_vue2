@@ -63,7 +63,7 @@
 
             <!--购买区-->
             <van-submit-bar style="background-color:#f7f7f7;" v-show="ITEMS.IS_FREE != 'Y'"
-                            :price='ITEMS.COST'
+                            :price='ITEMS.COST*100'
                             :button-text='this.STATUS'
                             button-type="info"
                             @submit="purchase"
