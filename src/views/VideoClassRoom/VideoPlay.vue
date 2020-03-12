@@ -192,10 +192,10 @@
         console.log("购买")
         var asd={}
         //店铺号
-        asd["BY1"]=this.BY1
-        //asd["ZH"]= this.AllCPList[0].deskid
+        asd["VIDEOID"]=this.VIDEOID
+        asd["OPEN_ID"]= this.userData.OPEN_ID
         //asd["orderNo"]= this.AllCPList[0].orderid
-        asd["price"]= this.AllPrice
+        asd["price"]= this.COST
         //asd["zhuoZiName"]= this.zhuoZiName
         asd["SPMC"]='财税小讲堂'
         //跳转支付页面
