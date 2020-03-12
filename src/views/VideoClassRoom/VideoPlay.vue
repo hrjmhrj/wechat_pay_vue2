@@ -63,10 +63,11 @@
 
             <!--购买区-->
             <van-submit-bar style="background-color:#f7f7f7;" v-show="ITEMS.IS_FREE != 'Y'"
-                            :price='ITEMS.COST'
+                            :price='ITEMS.COST*100'
                             :button-text='this.STATUS'
                             button-type="info"
                             @submit="purchase"
+                            :disabled="GOUMAI"
             >
               <span slot="default"><van-icon name="shopping-cart-o" size="2rem"/></span>
             </van-submit-bar>
@@ -135,6 +136,7 @@
         TYPE: '',//视频：video；产品服务（productService）：ps
         ONLINE: '',//是否在线：是Y；否N
         STATUS: '',//是否支付
+        GOUMAI: false,//购买是否失效
 
         noData: '未查询到数据',
         nulldataImg: false, // 没有数据时显示
@@ -192,12 +194,14 @@
         console.log("购买")
         var asd={}
         //店铺号
-        asd["VIDEOID"]=this.VIDEOID
+        asd["VIDEOID"]=this.ITEMS.VIDEOID
         asd["OPEN_ID"]= this.userData.OPEN_ID
-        //asd["orderNo"]= this.AllCPList[0].orderid
-        asd["price"]= this.COST
-        //asd["zhuoZiName"]= this.zhuoZiName
+        asd["orderNo"]= ""
+        asd["price"]= this.ITEMS.COST
         asd["SPMC"]='财税小讲堂'
+        console.log(this.ITEMS.VIDEOID)
+        console.log(this.userData.OPEN_ID)
+        console.log(this.ITEMS.COST)
         //跳转支付页面
         axios.post('/nuonuoPay',asd ).then(response=>{
           let todata=response.data.obj
@@ -216,6 +220,7 @@
             //console.log(response.data.obj[0].STATUS)
             if (response.data.obj[0].STATUS == '已支付') {
               this.STATUS = '已购'
+              this.GOUMAI = true
               if (this.TYPE == 'ps' || this.ITEMS.TYPE == 'ps') {
                 Toast({
                   message: '已购买，请联系管理员，联系电话66778811-8645',
