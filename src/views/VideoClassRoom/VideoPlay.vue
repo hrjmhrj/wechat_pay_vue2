@@ -194,12 +194,14 @@
         console.log("购买")
         var asd={}
         //店铺号
-        asd["VIDEOID"]=this.VIDEOID
+        asd["VIDEOID"]=this.ITEMS.VIDEOID
         asd["OPEN_ID"]= this.userData.OPEN_ID
-        //asd["orderNo"]= this.AllCPList[0].orderid
-        asd["price"]= this.COST
-        //asd["zhuoZiName"]= this.zhuoZiName
+        asd["orderNo"]= ""
+        asd["price"]= this.ITEMS.COST
         asd["SPMC"]='财税小讲堂'
+        console.log(this.ITEMS.VIDEOID)
+        console.log(this.userData.OPEN_ID)
+        console.log(this.ITEMS.COST)
         //跳转支付页面
         axios.post('/nuonuoPay',asd ).then(response=>{
           let todata=response.data.obj
