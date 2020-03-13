@@ -1,5 +1,5 @@
 <template>
-  <div class="block" id="block">
+  <div class="block">
     <!--播放页面-->
       <div style="z-index: 10;position: absolute;top: 0;left: 0;">
 
@@ -33,7 +33,7 @@
               为您推荐
             </div>
 
-            <div class="block">
+            <div class="tuijianqu">
               <!--推荐视频-->
               <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
                 <van-grid :clickable="true" :column-num="2" :square="false" :border="false"
@@ -64,7 +64,7 @@
             <!--购买区-->
             <van-submit-bar style="background-color:#f7f7f7;" v-show="ITEMS.IS_FREE != 'Y'"
                             :price='ITEMS.COST*100'
-                            :button-text='this.STATUS'
+                            :button-text='STATUS'
                             button-type="info"
                             @submit="purchase"
                             :disabled="GOUMAI"
@@ -111,7 +111,7 @@
           }],
           poster: "https://img.yzcdn.cn/vant/apple-2.jpg", //你的封面地址
           // width: document.documentElement.clientWidth,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          notSupportedMessage: '此视频暂无法播放，请刷新后再试（格式不支持或未购买）', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {
             timeDivider: true,
             durationDisplay: true,
@@ -166,8 +166,20 @@
       //推荐区播放
       videobf1(item) {
         this.ITEMS = item;
-        this.playerOptions.sources = item.FILENAME
-        this.playerOptions.poster = item.VIDEOCOVER
+        if(item.TYPE != 'ps' & item.FILENAME != null) {
+          this.playerOptions.sources = item.FILENAME
+        }else if(item.TYPE != 'ps' & item.FILENAME == null){
+          this.playerOptions.sources = "没有获取到视频地址"
+        }else {
+          this.playerOptions.sources = "产品服务没有视频地址"
+        }
+        if(item.VIDEOCOVER != null) {
+          this.playerOptions.poster = item.VIDEOCOVER
+        }else if (item.TYPE != 'ps') {
+          this.playerOptions.poster = '../../static/images/spfm.png'
+        }else if (item.TYPE == 'ps'){
+          this.playerOptions.poster = '../../static/images/pxfm.png'
+        }
 
         if (item.IS_FREE != 'Y') {//判断是否收费
           this.userorder();
@@ -229,7 +241,7 @@
               }
             } else {
               this.STATUS = '购买'
-              this.playerOptions.sources = "购买后可看"
+              this.playerOptions.sources = "需购买"
             }
           } else {
             console.info('网络异常，请稍候重试！');
@@ -267,6 +279,9 @@
       if (this.$route.params.item.IS_FREE != 'Y' || this.ITEMS.IS_FREE != 'Y') {
         this.userorder();
       }
+
+      this.videobf1(this.ITEMS)
+
     },
   }
 </script>
