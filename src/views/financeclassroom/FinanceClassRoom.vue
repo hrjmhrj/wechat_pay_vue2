@@ -56,9 +56,10 @@
               this.$store.commit('set_openid', response.data.obj);
               this.haveOpenid = true;
               this.openid = response.data.obj;
+              //只有成功后才能显示页面
             }
           }).catch(function (error) {
-            alert(error);
+            alert("无法获取信息，刷新后重试");
           });
         }
       },
