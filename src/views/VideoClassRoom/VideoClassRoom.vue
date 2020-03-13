@@ -3,31 +3,32 @@
 
     <!--财税小讲堂首页-->
     <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
-    <van-grid :clickable="true" :column-num="2" :square="false" :border="false" style="width: 100%; height: 100%"
-              :center="true">
-      <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="(item,index) in VIDEOLIST">
-        <div style="position: absolute;z-index: 8;margin:2% 4%;">
-          <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
-          <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
-        </div>
-        <div style="z-index: 7;height: 100%;">
-          <van-grid-item style="height: 100%;" :key="index" @click="videobf(item)">
-            <div style="height: 100%;width: 100%;">
-              <van-image :src="item.VIDEOCOVER"
-                         style=" width: 100%;height: 76%;margin-top: -7%;"/>
-              <div
-                style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
-                {{item.VIDEONAME}}
+      <van-grid :clickable="true" :column-num="2" :square="false" :border="false" style="width: 100%; height: 100%"
+                :center="true">
+        <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="(item,index) in VIDEOLIST">
+          <div style="position: absolute;z-index: 8;margin:2% 4%;">
+            <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
+            <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
+          </div>
+          <div style="z-index: 7;height: 100%;">
+            <van-grid-item style="height: 100%;" :key="index" @click="videobf(item)">
+              <div style="height: 100%;width: 100%;">
+                <van-image :src="item.VIDEOCOVER"
+                           style=" width: 100%;height: 76%;margin-top: -7%;"/>
+                <div
+                  style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
+                  {{item.VIDEONAME}}
+                </div>
               </div>
-            </div>
-          </van-grid-item>
+            </van-grid-item>
+          </div>
         </div>
+      </van-grid>
+      <!--用户浮标-->
+      <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
+        <van-icon name='../../static/images/usertb.png' color="#1989fa" size="3rem"/>
       </div>
-    </van-grid>
-    <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
-      <van-icon name="user-circle-o" color="#1989fa" size="3rem"/>
     </div>
-  </div>
 
   </div>
 
