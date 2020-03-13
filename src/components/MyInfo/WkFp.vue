@@ -17,6 +17,9 @@
                   <span class="checkbox-text-span" >
                   金　　额：<span>{{item.COST}}</span>元
                 </span>
+                  <span class="checkbox-text-span" >
+                  时　　间：<span>{{item.CREATETIME}}</span>
+                </span>
                 </van-checkbox>
               </van-cell>
             </van-list>
