@@ -4,12 +4,12 @@
     <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
       <!--列表组件-->
       <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList">
-        <van-grid :column-num="2" gutter="2vw" :border="false">
+        <van-grid :column-num="2" gutter="3vw" :border="false">
           <van-grid-item v-for="(item,index) in listData" :key="index" @click="clickItem(item.VIDEOID)">
             <!--骨屏架组件-->
             <van-skeleton :row="4" :loading="skeletonLoading" row-width="50%">
               <div>
-                <van-image width="45vw" lazy-load radius="10" fit="contain" :src="'http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/'+item.VIDEOCOVER">
+                <van-image width="43.5vw" height="28vw"  lazy-load radius="10" fit="fill" :src="'http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/'+item.VIDEOCOVER" style="border: 1px solid #f3f3f3;box-sizing: border-box">
                 </van-image>
               </div>
               <div>
@@ -48,44 +48,7 @@
         refreshIsLoading:false, //下拉刷新加载标志
         listFinished: false, //数据全部加载完毕
         listLoading: false, //列表加载标志
-        listData: [
-          {
-            VIDEOID:"19601a0c5f10c42679ff173f5ccc5583b", //产品ID
-            VIDEONAME:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，这次升级后，部分ie浏览器版本低的客户登录会报错。本视频讲解处理方法，视频中用到的网址：https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads", //产品名称
-            FILENAME:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/af1a78f0-7099-44d0-8072-752bd97a6aac-20191029143658.mp4",// 视频路径名称
-            VIDEOMS:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，",//产品介绍
-            VIDEOCOVER:"aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
-            COST:"100",//费用
-            TYPE:"video"//视频，产品标识 video/ps
-          },
-          {
-            VIDEOID:"2awdd0c5f10c42679ff173f5ccc5583b", //产品ID
-            VIDEONAME:"24小时在线咨询服务", //产品名称
-            FILENAME:"",// 视频路径名称
-            VIDEOMS:"总部最新录制的销方增值税专用发票红字信息表开具示例指导",//产品介绍
-            VIDEOCOVER:"aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
-            COST:"200",//费用
-            TYPE:"ps"//视频，产品标识 video/ps
-          },
-          {
-            VIDEOID:"39601a0c5f10c42679ff173f5ccc5583b", //产品ID
-            VIDEONAME:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，这次升级后，部分ie浏览器版本低的客户登录会报错。本视频讲解处理方法，视频中用到的网址：https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads", //产品名称
-            FILENAME:"http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/af1a78f0-7099-44d0-8072-752bd97a6aac-20191029143658.mp4",// 视频路径名称
-            VIDEOMS:"2019年9月底，四川税务上线了发票综合服务平台2.0，可以通过云平台的查询平台登录，这次升级后，部分ie浏览器版本低的客户登录会报错。本视频讲解处理方法，视频中用到的网址：https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads",//产品介绍
-            VIDEOCOVER:"aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
-            COST:"100",//费用
-            TYPE:"video"//视频，产品标识 video/ps
-          },
-          {
-            VIDEOID:"4awdd0c5f10c42679ff173f5ccc5583b", //产品ID
-            VIDEONAME:"24小时在线咨询服务", //产品名称
-            FILENAME:"",// 视频路径名称
-            VIDEOMS:"总部最新录制的销方增值税专用发票红字信息表开具示例指导",//产品介绍
-            VIDEOCOVER:"aa62e941-5c01-4714-815c-543d6238a75d-20191029143704.jpg",//产品封面
-            COST:"200",//费用
-            TYPE:"ps"//视频，产品标识 video/ps
-          }
-        ], //列表数据
+        listData: [], //列表数据
         requestData:{
           limit:10, //条数
           page:0, // 页数
@@ -97,7 +60,7 @@
       onLoadList() {
         this.listLoading = true;
         this.requestData.page++;
-        this.requestAxios("/aisino/getPurchaseHistory",this.requestData,this.onLoadSuccessFn,this.onLoadErrorFn());
+        this.requestAxios("/aisino/getPurchaseHistory",this.requestData,this.onLoadSuccessFn,this.onLoadErrorFn);
       },// 加载列表数据
       onLoadSuccessFn(responseData){
         if(responseData.success){
@@ -118,11 +81,12 @@
         this.listFinished = true;
         this.skeletonLoading = false;
         this.refreshIsLoading = false;
+        this.notifyStr("danger","获取购买历史失败");
       },
       requestAxios(url,data,successFn,errorFn){
         axios.post(url, data).then(response => {
           successFn(response.data);
-        },error => {
+        }).catch(error => {
           errorFn();
         });
       },//请求后台 (路由，数据，成功的执行函数，失败的执行函数)
@@ -133,6 +97,7 @@
       onRefresh() {
         // 清空列表数据
         this.listData = [];
+        this.requestData.page = 0;
         this.listFinished = false;
         // 重新加载数据
         // 将 refreshIsLoading 设置为 true，表示处于加载状态
@@ -162,15 +127,15 @@
     overflow: hidden;
   }
   .text-overflow-title {
-    width: 45vw;
+    width: 43.5vw;
     font-size: 13px;
     line-height: 13px;
-    height: 26px;
-    -webkit-line-clamp: 2;
-    margin-bottom: 7px;
+    height: 13px;
+    -webkit-line-clamp: 1;
+    margin: 3px 0 3px 0;
   }
   .text-overflow-body {
-    width: 45vw;
+    width: 43.5vw;
     font-size: 11px;
     line-height: 11px;
     height: 11px;

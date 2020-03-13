@@ -48,7 +48,7 @@ axios.interceptors.response.use(response => {
   return response;
 }, error => {
   // 跳转到错误页面
-  router.push({path: '/500'});
+  //router.push({path: '/500'});
   return error;
 });
 
