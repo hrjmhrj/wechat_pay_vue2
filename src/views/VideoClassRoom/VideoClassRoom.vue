@@ -1,43 +1,44 @@
 <template>
-  <div class="block">
-
-    <!--财税小讲堂首页-->
-    <div style="width: 100%;height: 100%;z-index: 9;margin-top: 2%;">
-      <van-grid :clickable="true" :column-num="2" :square="false" :border="false" style="width: 100%; height: 100%"
-                :center="true">
-        <div style="width: 48%; height: 25%;margin: 0% 1%;" v-for="(item,index) in VIDEOLIST">
-          <div style="position: absolute;z-index: 8;margin:2% 4%;">
-            <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
-            <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
-          </div>
-          <div style="z-index: 7;height: 100%;">
-            <van-grid-item style="height: 100%;" :key="index" @click="videobf(item)">
-              <div style="height: 100%;width: 100%;">
-                <van-image :src="item.VIDEOCOVER"
-                           style=" width: 100%;height: 76%;margin-top: -7%;"/>
-                <div
-                  style="text-overflow: clip;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;display: -webkit-box;line-height: 1.2rem;overflow: hidden;margin-top: 2%;">
-                  {{item.VIDEONAME}}
+    <!--下拉刷新组件-->
+    <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
+      <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
+        <!--列表组件-->
+        <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList">
+          <van-grid :column-num="2" gutter="3vw" :border="false">
+            <van-grid-item v-for="(item,index) in VIDEOLIST" :key="index" @click="videobf(item.VIDEOID)">
+              <!--骨屏架组件-->
+              <van-skeleton :row="4" :loading="skeletonLoading" row-width="50%">
+                <div>
+                  <div style="position: absolute;z-index: 8;margin:2% 4%;">
+                    <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
+                    <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
+                  </div>
+                  <van-image width="43.5vw" height="28vw"  lazy-load radius="10" fit="fill" :src="item.VIDEOCOVER" style="border: 1px solid #f3f3f3;box-sizing: border-box">
+                  </van-image>
                 </div>
-              </div>
+                <div>
+                <span class="text-overflow text-overflow-title">
+                  {{item.VIDEONAME}}
+                </span>
+                  <span class="text-overflow text-overflow-body">
+                  {{item.VIDEOMS}}
+                </span>
+                </div>
+              </van-skeleton>
             </van-grid-item>
-          </div>
+          </van-grid>
+        </van-list>
+        <!--用户浮标-->
+        <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
+          <van-icon name='../../static/images/usertb.png' color="#1989fa" size="3rem"/>
         </div>
-      </van-grid>
-      <!--用户浮标-->
-      <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
-        <van-icon name='../../static/images/usertb.png' color="#1989fa" size="3rem"/>
       </div>
-    </div>
-
-  </div>
-
-
+    </van-pull-refresh>
 </template>
 
 <script>
 
-  import {Notify, Popup, Grid, GridItem, Toast, Tag, Image, Icon, Button, SubmitBar} from 'vant';
+  import {Notify,Popup,Grid,GridItem,Toast,Tag,Image,Icon,Button,SubmitBar,Loading,List,Skeleton,PullRefresh} from 'vant';
   import axios from 'axios'
   import Bus from "../../components/utils/bus";
   import {videoPlayer} from 'vue-video-player'
@@ -64,38 +65,77 @@
         TYPE: '',//视频：video；产品服务（productService）：ps
         ONLINE: '',//是否在线：是Y；否N
 
-        noData: '未查询到数据',
-        nulldataImg: false, // 没有数据时显示
-        loading: false, // 通过loading和finished两个变量控制加载状态
-        finished: false,
-        loadText: '加载中...',
-        limit: 10,//每次加载10条数据
-        page: 1,
-        userData: { // 请求数据传输的参数
-          OPEN_ID: '', //用户ID
+        skeletonLoading:true, //骨屏架加载标志
+        refreshIsLoading:false, //下拉刷新加载标志
+        listFinished: false, //数据全部加载完毕
+        listLoading: false, //列表加载标志
+        requestData: { // 请求数据传输的参数
+          limit:10, //条数
+          page:0, // 页数
+          OPEN_ID: this.$store.state.userInfo.openid, //用户ID
         },
       }
     },
     methods: {
-      videobf(item) {
-        this.$router.push({name: 'VideoPlay', params: {item: item}})
-      },
-      //进页面要加载的数据
-      getVideoinfo() {
-        axios.post('/aisino/selectVideoList').then(response => {
-          if (response.data.success) {
-            this.VIDEOLIST = [];
-            this.VIDEOLIST = response.data.obj
-          }
-        }).catch(error => {
-          console.info(error + '网络异常，请稍候重试！');
+      //点击播放路由跳转
+      videobf(VIDEOID) {
+        this.$router.push({
+          path: `/VideoPlay/${VIDEOID}`,
         })
-
       },
       //用户信息
       userinfo() {
-        this.$router.push({name: 'MyInfo', params: {OPEN_ID: this.userData.OPEN_ID}})
+        this.$router.push({name: 'MyInfo', params: {OPEN_ID: this.requestData.OPEN_ID}})
       },
+      // 加载列表数据
+      onLoadList() {
+        this.listLoading = true;
+        this.requestData.page++;
+        this.requestAxios("/aisino/selectVideoList",this.requestData,this.onLoadSuccessFn,this.onLoadErrorFn);
+      },
+      onLoadSuccessFn(responseData){
+        if(responseData.success){
+          if(responseData.obj[1].length>0){
+            this.VIDEOLIST = this.VIDEOLIST.concat(responseData.obj[1])
+          }
+          responseData.obj[0] == this.VIDEOLIST.length ? this.listFinished = true : null;
+        }else{
+          this.listFinished = true;
+          this.notifyStr("danger",responseData.msg);
+        }
+        this.listLoading = false;
+        this.skeletonLoading = false;
+        this.refreshIsLoading = false;
+      },
+      onLoadErrorFn(){
+        this.listLoading = false;
+        this.listFinished = true;
+        this.skeletonLoading = false;
+        this.refreshIsLoading = false;
+        this.notifyStr("danger","获取视频列表失败");
+      },
+      //请求后台 (路由，数据，成功的执行函数，失败的执行函数)
+      requestAxios(url,data,successFn,errorFn){
+        axios.post(url, data).then(response => {
+          successFn(response.data);
+        }).catch(error => {
+          errorFn();
+        });
+      },
+      //下拉刷新
+      onRefresh() {
+        // 清空列表数据
+        this.VIDEOLIST = [];
+        this.requestData.page = 0;
+        this.listFinished = false;
+        // 重新加载数据
+        // 将 refreshIsLoading 设置为 true，表示处于加载状态
+        this.refreshIsLoading = true;
+        this.onLoadList();
+      }, // 下拉刷新
+      notifyStr(type,msg){
+        Notify({ type: type, message: msg });
+      },//弹出提示
     },
     components: {
       [Notify.name]: Notify,
@@ -109,75 +149,54 @@
       [videoPlayer.name]: videoPlayer,
       [Button.name]: Button,
       [SubmitBar.name]: SubmitBar,
+      [Loading.name]:Loading,
+      [List .name]:List, //列表
+      [Skeleton.name]:Skeleton, //骨屏架
+      [PullRefresh.name]:PullRefresh //下拉刷新
     },
     mounted() {
       this.$store.commit('set_openid', 'olA3Y1bL5BRPMv7K10hsGQQWP0Hc');
-
-      this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
+      this.requestData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
       console.log(this.$store.state.userInfo.openid)
     },
 
     created() {
-      //初始化页面
-      this.getVideoinfo();
     }
   }
 </script>
 
 <style>
-  .video-js .vjs-big-play-button {
-    margin: 17% 35%;
-    /*播放按钮换成圆形 */
-    height: 2em;
-    width: 2em;
-    line-height: 2em;
-    border-radius: 1em;
+  .my-info-div .van-grid-item__content{
+    padding: 0 0 !important;
   }
-
 </style>
 <style scoped>
-  .list {
-    text-align: center;
-    background-color: #f4f4f4;
+  /*超出范围变省略号*/
+  .text-overflow {
+    text-align: left;
+    display:block;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-
-  .van-checkbox .van-checkbox__icon--checked {
-    padding: 0 10px;
+  .text-overflow-title {
+    width: 43.5vw;
+    font-size: 13px;
+    line-height: 13px;
+    height: 13px;
+    -webkit-line-clamp: 1;
+    margin: 3px 0 3px 0;
   }
-
-  .tab-checkbox-info {
-    width: 90%;
-    border-radius: 1vw;
-    margin-bottom: 5px;
-    padding: 5px 5px 5px 5px;
-    margin-left: 5%;
-    border: 1px solid #eee;
-    margin-top: 1%;
-  }
-
-  .checkbox-text-span {
-    display: block;
-    padding: 1px 0;
-    color: #5f5f5f;
-    font-size: 14px;
-    width: 98%;
-  }
-
-  .checkbox-text-span-span {
-    margin-left: 10px;
-    width: 80%;
-    display: inline-block;
-    float: left;
-    text-align: justify;
-  }
-
-  .checkbox-text-span-text {
-    display: inline-flex;
-    min-width: 45vw;
-    max-width: 69vw;
-    overflow: auto; /*规定当内容溢出元素框时发生的事情 auto如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容*/
-    white-space: nowrap; /*设置如何处理元素内的空白 nowrap文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
-    text-overflow: ellipsis; /*规定当文本溢出包含元素时发生的事情  ellipsis显示省略符号来代表被修剪的文本*/
+  .text-overflow-body {
+    width: 43.5vw;
+    font-size: 11px;
+    line-height: 11px;
+    height: 11px;
+    color:#8a8a8a;
+    overflow : hidden ;
+    text-overflow : ellipsis ;
+    white-space : nowrap ;
   }
 
   .block {

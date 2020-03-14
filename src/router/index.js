@@ -55,7 +55,7 @@ export default new Router({
       },
       component: VideoClassRoom
     }, {
-      path: '/VideoPlay',
+      path: '/VideoPlay/:VIDEOID',
       name: 'VideoPlay',
       meta: {
         title: '视频播放',
