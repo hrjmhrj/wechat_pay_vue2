@@ -155,7 +155,8 @@
       [PullRefresh.name]:PullRefresh //下拉刷新
     },
     mounted() {
-      this.$store.commit('set_openid', 'olA3Y1bL5BRPMv7K10hsGQQWP0Hc');
+      let openid = "olA3Y1bL5BRPMv7K10hsGQQWP0Hc";
+      this.$store.commit('set_openid', openid);
       this.requestData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
       console.log(this.$store.state.userInfo.openid)
     },

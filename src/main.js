@@ -21,9 +21,9 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
 // 页面刷新时，重新赋值openid,token
-store.commit('set_openid', {
-  'openid': sessionStorage.getItem('openid')
-});
+store.commit('set_openid',
+  sessionStorage.getItem("openid")
+);
 // store.commit('set_token', {
 //   'token': sessionStorage.getItem('token')
 // });

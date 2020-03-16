@@ -26,7 +26,7 @@ const mutations = {
    */
   set_openid(state, openid) {
     state.userInfo.openid = openid
-    sessionStorage.setItem("openid", openid);
+    sessionStorage.setItem("openid",openid);
   },
   /**
    * 设置全局用户token

@@ -448,7 +448,6 @@
       this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
       //this.getVideoinfo();
       this.getOneVideo();
-      this.$store.commit('set_openid', 'olA3Y1bL5BRPMv7K10hsGQQWP0Hc');
       this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
     },
   }
