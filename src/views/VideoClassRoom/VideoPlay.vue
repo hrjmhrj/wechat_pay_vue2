@@ -398,10 +398,6 @@
         _this.skeletonLoading = false;
         _this.refreshIsLoading = false;
         _this.notifyStr("danger", "获取视频列表失败");
-        Toast({
-          message: '网络异常，请稍候重试！',
-          duration: 3000
-        });
       },
       //请求后台 (路由，数据，成功的执行函数，失败的执行函数)
       requestAxios(url, data, successFn, errorFn) {
