@@ -18,7 +18,7 @@
           ></video-player>
         </div>
         <!--标题和详细介绍内容-->
-        <div class="caption" style="margin: 2% 2% 2% 2%;">
+        <div class="caption" style="padding: 2%;">
           <span style="display: inline-block;width: 80vw;text-align:left;font-size: 4vw;font-weight: bold;">
                 {{ONEVIDEO.VIDEONAME}}
             </span>
@@ -30,10 +30,9 @@
           </div>
         </div>
         <!--分割线-->
-        <div style="background-color: #F7F7F7;height: 1.2vh;margin: 2% 0% 2% 0%;"/>
         <!--推荐的内容-->
-        <div class="recommend" style="margin: 2% 2% 16% 2%;">
-          <div style="display: inline-block;width: 82vw;text-align:left;font-size: 4vw;font-weight: bold;">
+        <div class="recommend">
+          <div style="padding: 2%;display: inline-block;width: 82vw;text-align:left;font-size: 4vw;font-weight: bold;">
             为您推荐
           </div>
           <div class="tuijianqu">
