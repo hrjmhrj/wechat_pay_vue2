@@ -38,7 +38,7 @@
           </div>
           <div class="tuijianqu">
             <!--推荐视频-->
-            <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
+            <van-pull-refresh v-model="refreshIsLoading">
               <div style="padding:1vh 2vw;min-height: 60vh;width: 96vw;" class="my-info-div">
                 <!--列表组件-->
                 <van-list v-model="listLoading" :finished="listFinished" finished-text="" @load="onLoadList">
@@ -284,7 +284,7 @@
       },
       //返回财税小讲堂首页
       fanhuiVD() {
-        this.$router.push({name: 'VideoClassRoom'})
+        this.$router.go(-1);
       },
       //购买
       purchase() {
