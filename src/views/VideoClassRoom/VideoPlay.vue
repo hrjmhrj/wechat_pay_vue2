@@ -123,10 +123,10 @@
           aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
-            src: '/static/video/aaaa.mp4',  // 视频路径
+            src: 'static/video/aaaa.mp4',  // 视频路径
             type: 'video/mp4'  // 类型
           }],
-          poster: "/static/images/spfm.png", //你的封面地址
+          poster: "static/images/spfm.png", //你的封面地址
           // width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂无法播放，请刷新后再试（格式不支持或未购买）', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {
@@ -156,7 +156,7 @@
           GOUMAI: false,//购买是否失效
         },
         STATUS: '购买',//是否支付
-        ZHEZHAOFM: '/static/images/pxfm.png',//遮盖图
+        ZHEZHAOFM: 'static/images/pxfm.png',//遮盖图
         VIDEOCENG: false,//播放层
         ZHEGAICENG: false,//遮盖层
 
@@ -272,9 +272,9 @@
         if (item.VIDEOCOVER != null) {
           _this.playerOptions.poster = item.VIDEOCOVER
         } else if (item.TYPE != 'ps') {
-          _this.playerOptions.poster = '/static/images/spfm.png'
+          _this.playerOptions.poster = 'static/images/spfm.png'
         } else if (item.TYPE == 'ps') {
-          _this.playerOptions.poster = '/static/images/pxfm.png'
+          _this.playerOptions.poster = 'static/images/pxfm.png'
         }
         //点击置顶
         var timer = setInterval(function () {
