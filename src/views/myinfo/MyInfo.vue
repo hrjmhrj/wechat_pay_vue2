@@ -60,9 +60,6 @@
         this.$router.go(-1);
       },
     },
-    created(){
-      this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
-    },
     mounted(){
       this.topBarHeight = document.getElementById('con').offsetHeight;
     }
