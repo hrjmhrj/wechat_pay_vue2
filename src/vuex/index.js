@@ -10,8 +10,8 @@ Vue.use(Vuex);
  */
 const state = {
   userInfo: {
-    openid:"123456",
-    token:""
+    openid:null,
+    token:"123345"
   },
 };
 
@@ -26,7 +26,7 @@ const mutations = {
    */
   set_openid(state, openid) {
     state.userInfo.openid = openid
-    sessionStorage.setItem("openid", openid);
+    sessionStorage.setItem("openid",openid);
   },
   /**
    * 设置全局用户token

@@ -30,7 +30,7 @@
         </van-list>
         <!--用户浮标-->
         <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
-          <van-icon name='/static/images/usertb.png' color="#1989fa" size="3rem"/>
+          <van-icon name='static/images/usertb.png' color="#1989fa" size="3rem"/>
         </div>
       </div>
     </van-pull-refresh>
@@ -80,7 +80,7 @@
       //点击播放路由跳转
       videobf(VIDEOID) {
         this.$router.push({
-          path: `/VideoPlay/${VIDEOID}`,
+          path: `/VideoPlay/${VIDEOID}/goMinusOne`,
         })
       },
       //用户信息
@@ -155,7 +155,8 @@
       [PullRefresh.name]:PullRefresh //下拉刷新
     },
     mounted() {
-      this.$store.commit('set_openid', 'olA3Y1bL5BRPMv7K10hsGQQWP0Hc');
+      let openid = "olA3Y1bL5BRPMv7K10hsGQQWP0Hc";
+      this.$store.commit('set_openid', openid);
       this.requestData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
       console.log(this.$store.state.userInfo.openid)
     },

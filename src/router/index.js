@@ -3,7 +3,6 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-import FinanceClassRoom from '../views/financeclassroom/FinanceClassRoom'
 import MyInfo from '../views/myinfo/MyInfo'
 
 import notFound from '../views/404'
@@ -16,21 +15,30 @@ import VideoPlay from '../views/VideoClassRoom/VideoPlay'
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'FinanceClassRoom',
-      meta: {
-        title: '财税小讲堂首页',
-        requireAuth: false // 判断该路由的访问是否需要登录
-      },
-      component: FinanceClassRoom
-    },{
       path: '/MyInfo',
       name: 'MyInfo',
       meta: {
         title: '我的',
-        requireAuth: false // 判断该路由的访问是否需要登录
+        requireAuth: true // 判断该路由的访问是否需要登录
       },
       component: MyInfo
+    }, {
+      path: '/VideoClassRoom',
+      name: 'VideoClassRoom',
+      meta: {
+        title: '财税小讲堂视频',
+        requireAuth: false, // 判断该路由的访问是否需要登录
+        keepAlive:true
+      },
+      component: VideoClassRoom
+    }, {
+      path: '/VideoPlay/:VIDEOID/:GOFLAG',
+      name: 'VideoPlay',
+      meta: {
+        title: '视频播放',
+        requireAuth: true // 判断该路由的访问是否需要登录
+      },
+      component: VideoPlay
     },{
       path: "/404",
       name: "notFound",
@@ -46,23 +54,6 @@ export default new Router({
     }, {
       path: "*", // 此处需特别注意置于最底部
       redirect: "/404"
-    }, {
-      path: '/VideoClassRoom',
-      name: 'VideoClassRoom',
-      meta: {
-        title: '财税小讲堂视频',
-        requireAuth: false, // 判断该路由的访问是否需要登录
-        keepAlive:true
-      },
-      component: VideoClassRoom
-    }, {
-      path: '/VideoPlay/:VIDEOID',
-      name: 'VideoPlay',
-      meta: {
-        title: '视频播放',
-        requireAuth: false // 判断该路由的访问是否需要登录
-      },
-      component: VideoPlay
     }
   ]
 });

@@ -21,12 +21,12 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
 // 页面刷新时，重新赋值openid,token
-store.commit('set_openid', {
-  'openid': sessionStorage.getItem('openid')
-});
-store.commit('set_token', {
-  'token': sessionStorage.getItem('token')
-});
+store.commit('set_openid',
+  sessionStorage.getItem("openid")
+);
+// store.commit('set_token', {
+//   'token': sessionStorage.getItem('token')
+// });
 
 // 配置默认ajax请求路径  在/config/index.js中配置
 axios.defaults.baseURL = process.env.API_ROOT;
@@ -56,7 +56,8 @@ axios.interceptors.response.use(response => {
 router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.requireAuth)) {
     // 需要登录才能访问
-    if (store.state.userInfo.token && store.state.userInfo.openid) {
+    console.log(store.state.userInfo.openid)
+    if (store.state.userInfo.openid && store.state.userInfo.openid != "[object Object]") {
       // 自定义：可以到后台请求查看当前token是否失效
       next();
     } else {
