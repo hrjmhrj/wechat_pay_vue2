@@ -335,6 +335,7 @@
             if (response.data.obj[0].STATUS == '已支付' & response.data.obj[0].TYPE != 'ps') {
               _this.VIDEOCENG = true//播放层
               _this.ZHEGAICENG = false//遮盖层
+              _this.ONEVIDEO.GOUMAI = true
               _this.STATUS = '已购'
               _this.playerOptions.poster = item.VIDEOCOVER
               _this.playerOptions.sources = item.FILENAME
@@ -343,6 +344,7 @@
                 _this.VIDEOCENG = false//播放层
                 _this.ZHEGAICENG = true//遮盖层
                 if (response.data.obj[0].DEADLINE == '未过期') {
+                  _this.ONEVIDEO.GOUMAI = true
                   _this.STATUS = '已购'
                   Toast({
                     message: '已购买，请联系管理员，联系电话66778811-8645',
