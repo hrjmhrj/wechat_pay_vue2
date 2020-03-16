@@ -30,7 +30,7 @@
         </van-list>
         <!--用户浮标-->
         <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
-          <van-icon name='../../static/images/usertb.png' color="#1989fa" size="3rem"/>
+          <van-icon name='/static/images/usertb.png' color="#1989fa" size="3rem"/>
         </div>
       </div>
     </van-pull-refresh>
