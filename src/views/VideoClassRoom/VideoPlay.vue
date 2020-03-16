@@ -38,35 +38,35 @@
           </div>
           <div class="tuijianqu">
             <!--推荐视频-->
-              <div style="padding:1vh 2vw;min-height: 60vh;width: 96vw;" class="my-info-div">
-                <!--列表组件-->
-                <van-list v-model="listLoading" :finished="listFinished" finished-text="" @load="onLoadList">
-                  <van-grid :column-num="2" gutter="3vw" :border="false">
-                    <van-grid-item v-for="(item,index) in ITEMS" :key="index" @click="videobf1(item)">
-                      <!--骨屏架组件-->
-                      <van-skeleton :row="4" :loading="skeletonLoading" row-width="50%">
-                        <div>
-                          <div style="position: absolute;z-index: 8;margin:2% 4%;">
-                            <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
-                            <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
-                          </div>
-                          <van-image width="43.5vw" height="28vw" lazy-load radius="10" fit="fill"
-                                     :src="item.VIDEOCOVER" style="border: 1px solid #f3f3f3;box-sizing: border-box">
-                          </van-image>
+            <div style="padding:1vh 2vw;min-height: 60vh;width: 96vw;" class="my-info-div">
+              <!--列表组件-->
+              <van-list v-model="listLoading" :finished="listFinished" finished-text="" @load="onLoadList">
+                <van-grid :column-num="2" gutter="3vw" :border="false">
+                  <van-grid-item v-for="(item,index) in ITEMS" :key="index" @click="videobf1(item)">
+                    <!--骨屏架组件-->
+                    <van-skeleton :row="4" :loading="skeletonLoading" row-width="50%">
+                      <div>
+                        <div style="position: absolute;z-index: 8;margin:2% 4%;">
+                          <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
+                          <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
                         </div>
-                        <div>
+                        <van-image width="43.5vw" height="28vw" lazy-load radius="10" fit="fill"
+                                   :src="item.VIDEOCOVER" style="border: 1px solid #f3f3f3;box-sizing: border-box">
+                        </van-image>
+                      </div>
+                      <div>
                             <span class="text-overflow text-overflow-title">
                               {{item.VIDEONAME}}
                             </span>
-                          <span class="text-overflow text-overflow-body">
+                        <span class="text-overflow text-overflow-body">
                               {{item.VIDEOMS}}
                             </span>
-                        </div>
-                      </van-skeleton>
-                    </van-grid-item>
-                  </van-grid>
-                </van-list>
-              </div>
+                      </div>
+                    </van-skeleton>
+                  </van-grid-item>
+                </van-grid>
+              </van-list>
+            </div>
           </div>
           <!--购买区-->
           <van-submit-bar style="background-color:#f7f7f7;" v-show="ONEVIDEO.IS_FREE != 'Y'"
@@ -153,7 +153,7 @@
           TYPE: '',//视频：video；产品服务（productService）：ps
           ONLINE: '',//是否在线：是Y；否N
           DEADLINE: '',//到期时间
-          GOUMAI: false,//购买是否失效
+          GOUMAI: true,//购买是否失效
         },
         STATUS: '购买',//是否支付
         ZHEZHAOFM: 'static/images/pxfm.png',//遮盖图
@@ -202,6 +202,7 @@
       getOneVideo() {
         this.VIDEOCENG = false//播放层
         this.ZHEGAICENG = false//遮盖层
+        this.ONEVIDEO.GOUMAI = true
         let _this = this;
         let a = {
           VIDEOID: _this.ONEVIDEO.VIDEOID,//视频ID
@@ -212,21 +213,22 @@
         axios.post('/aisino/selectVideoList', a).then(response => {
           //console.log(response.data.obj[1][0])当前单个视频的信息
           if (response.data.success) {
-            _this.playerOptions.sources = response.data.obj[1][0].FILENAME
-            _this.playerOptions.poster = response.data.obj[1][0].VIDEOCOVER
-            _this.ONEVIDEO = response.data.obj[1][0]
             if (response.data.obj[1][0].IS_FREE != 'Y') {
-              _this.userorder();
+              _this.userorder(response.data.obj[1][0]);
+            } else {
+              _this.ONEVIDEO = response.data.obj[1][0]
+              _this.playerOptions.poster = response.data.obj[1][0].VIDEOCOVER
+              _this.playerOptions.sources = response.data.obj[1][0].FILENAME
+              //遮盖层
+              if (response.data.obj[1][0].TYPE == 'ps') {
+                _this.VIDEOCENG = false//播放层
+                _this.ZHEGAICENG = true//遮盖层
+              } else {
+                _this.VIDEOCENG = true//播放层
+                _this.ZHEGAICENG = false//遮盖层
+              }
+              _this.videobf1(_this.ONEVIDEO)
             }
-            //遮盖层
-            if (response.data.obj[1][0].TYPE == 'ps') {
-              _this.VIDEOCENG = false//播放层
-              _this.ZHEGAICENG = true//遮盖层
-            }else {
-              _this.VIDEOCENG = true//播放层
-              _this.ZHEGAICENG = false//遮盖层
-            }
-            _this.videobf1(_this.ONEVIDEO)
           } else {
             _this.VIDEOCENG = true//播放层
             _this.ZHEGAICENG = false//遮盖层
@@ -246,36 +248,38 @@
       },
       //推荐区播放
       videobf1(item) {
+        this.ONEVIDEO.GOUMAI = true
         this.VIDEOCENG = false//播放层
         this.ZHEGAICENG = false//遮盖层
         this.ONEVIDEO = item;
         let _this = this
         //判断视频是不是收费
         if (item.IS_FREE != 'Y') {
-          _this.userorder();
-        }
-        //判断视频地址是不是空
-        if (item.TYPE != 'ps' & item.FILENAME != null) {
-          _this.playerOptions.sources = item.FILENAME
-        }
-        if (item.TYPE != 'ps' & item.FILENAME == null) {
-          _this.playerOptions.sources = "没有获取到视频地址"
-        }
-        if (item.TYPE == 'ps') {
-          //显示遮罩层
-          _this.VIDEOCENG = false//播放层
-          _this.ZHEGAICENG = true//遮盖层
-        }else {
-          _this.VIDEOCENG = true//播放层
-          _this.ZHEGAICENG = false//遮盖层
-        }
-        //判断封面地址是不是空
-        if (item.VIDEOCOVER != null) {
-          _this.playerOptions.poster = item.VIDEOCOVER
-        } else if (item.TYPE != 'ps') {
-          _this.playerOptions.poster = 'static/images/spfm.png'
-        } else if (item.TYPE == 'ps') {
-          _this.playerOptions.poster = 'static/images/pxfm.png'
+          _this.userorder(item);
+        } else {
+          //判断视频地址是不是空
+          if (item.TYPE != 'ps' & item.FILENAME != null) {
+            _this.playerOptions.sources = item.FILENAME
+          }
+          if (item.TYPE != 'ps' & item.FILENAME == null) {
+            _this.playerOptions.sources = "没有获取到视频地址"
+          }
+          if (item.TYPE == 'ps') {
+            //显示遮罩层
+            _this.VIDEOCENG = false//播放层
+            _this.ZHEGAICENG = true//遮盖层
+          } else {
+            _this.VIDEOCENG = true//播放层
+            _this.ZHEGAICENG = false//遮盖层
+          }
+          //判断封面地址是不是空
+          if (item.VIDEOCOVER != null) {
+            _this.playerOptions.poster = item.VIDEOCOVER
+          } else if (item.TYPE != 'ps') {
+            _this.playerOptions.poster = 'static/images/spfm.png'
+          } else if (item.TYPE == 'ps') {
+            _this.playerOptions.poster = 'static/images/pxfm.png'
+          }
         }
         //点击置顶
         var timer = setInterval(function () {
@@ -290,9 +294,9 @@
       },
       //返回财税小讲堂首页
       fanhuiVD() {
-        if(this.GOFLAG){
+        if (this.GOFLAG) {
           this.$router.go(-1);
-        }else{
+        } else {
           this.$router.push({name: 'VideoClassRoom'})
         }
       },
@@ -316,44 +320,49 @@
         })
       },
       //如果是收费视频则根据openid查订单购买信息
-      userorder() {
+      userorder(item) {
+        this.ONEVIDEO.GOUMAI = true
         let _this = this;
         let a = {
           OPEN_ID: this.userData.OPEN_ID,
           VIDEOID: this.ONEVIDEO.VIDEOID,
         }
+        this.ONEVIDEO = item
         //console.log(a)
         axios.post('/aisino/selectUserOrder', a).then(response => {
           //console.log(response.data.obj)
           //console.log(response.data.obj[0].STATUS)
           //console.log(response.data.obj[0].DEADLINE)
           if (response.data.obj.length != 0 & response.data.success) {
-            if (response.data.obj[0].STATUS == '已支付' & _this.ONEVIDEO.TYPE != 'ps') {
+            _this.playerOptions.poster = item.VIDEOCOVER
+            if (response.data.obj[0].STATUS == '已支付' & response.data.obj[0].TYPE != 'ps') {
               _this.VIDEOCENG = true//播放层
               _this.ZHEGAICENG = false//遮盖层
               _this.STATUS = '已购'
-              _this.ONEVIDEO.GOUMAI = true
-              if (response.data.obj[0].STATUS == '已支付' & _this.ONEVIDEO.TYPE == 'ps') {
+              _this.playerOptions.sources = item.FILENAME
+              if (response.data.obj[0].STATUS == '已支付' & response.data.obj[0].TYPE == 'ps') {
                 //显示遮盖层
                 _this.VIDEOCENG = false//播放层
                 _this.ZHEGAICENG = true//遮盖层
                 if (response.data.obj[0].DEADLINE == '未过期') {
                   _this.STATUS = '已购'
-                  _this.ONEVIDEO.GOUMAI = true
                   Toast({
                     message: '已购买，请联系管理员，联系电话66778811-8645',
                     duration: 5000
                   });
                 } else {
+                  _this.ONEVIDEO.GOUMAI = false
                   _this.STATUS = "购买"
                 }
               }
             } else {
-              if (_this.ONEVIDEO.TYPE == 'ps') {
+              _this.ONEVIDEO.GOUMAI = false
+              _this.playerOptions.poster = item.VIDEOCOVER
+              if (response.data.obj[0].TYPE == 'ps') {
                 //显示遮盖层
                 _this.VIDEOCENG = false//播放层
                 _this.ZHEGAICENG = true//遮盖层
-              }else {
+              } else {
                 //显示播放层
                 _this.VIDEOCENG = true//播放层
                 _this.ZHEGAICENG = false//遮盖层
@@ -362,6 +371,7 @@
               _this.STATUS = "购买"
             }
           } else {
+            _this.ONEVIDEO.GOUMAI = true
             console.info('未查询到订单，请稍候重试！');
           }
         }).catch(error => {
@@ -448,6 +458,7 @@
     mounted() {
       this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
       this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
+      this.ONEVIDEO.GOUMAI = true
       //this.getVideoinfo();
       this.getOneVideo();
       this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
