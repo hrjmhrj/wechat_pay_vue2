@@ -169,6 +169,7 @@
         refreshIsLoading: false, //下拉刷新加载标志
         listFinished: false, //数据全部加载完毕
         listLoading: false, //列表加载标志
+        GOFLAG: false, //返回上一页的方式（false 指定路由 /true -1）
       }
     },
     methods: {
@@ -289,7 +290,11 @@
       },
       //返回财税小讲堂首页
       fanhuiVD() {
-        this.$router.go(-1);
+        if(this.GOFLAG){
+          this.$router.go(-1);
+        }else{
+          this.$router.push({name: 'VideoClassRoom'})
+        }
       },
       //购买
       purchase() {
@@ -446,6 +451,7 @@
     },
     mounted() {
       this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
+      this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
       //this.getVideoinfo();
       this.getOneVideo();
       this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID

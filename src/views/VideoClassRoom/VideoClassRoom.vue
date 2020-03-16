@@ -80,7 +80,7 @@
       //点击播放路由跳转
       videobf(VIDEOID) {
         this.$router.push({
-          path: `/VideoPlay/${VIDEOID}`,
+          path: `/VideoPlay/${VIDEOID}/goMinusOne`,
         })
       },
       //用户信息

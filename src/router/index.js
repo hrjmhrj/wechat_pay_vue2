@@ -32,7 +32,7 @@ export default new Router({
       },
       component: VideoClassRoom
     }, {
-      path: '/VideoPlay/:VIDEOID',
+      path: '/VideoPlay/:VIDEOID/:GOFLAG',
       name: 'VideoPlay',
       meta: {
         title: '视频播放',

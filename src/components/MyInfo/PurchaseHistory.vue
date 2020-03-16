@@ -92,7 +92,7 @@
       },//请求后台 (路由，数据，成功的执行函数，失败的执行函数)
       clickItem(VIDEOID){
         this.$router.push({
-          path: `/VideoPlay/${VIDEOID}`,
+          path: `/VideoPlay/${VIDEOID}/goMinusOne`,
         })
       },//点击
       onRefresh() {
