@@ -302,17 +302,24 @@
           //console.log(response.data.obj[0].STATUS)
           //console.log(response.data.obj[0].DEADLINE)
           if (response.data.obj.length != 0 & response.data.success) {
-            if (response.data.obj[0].STATUS == '已支付') {
+            if (response.data.obj[0].STATUS == '已支付' & _this.ONEVIDEO.TYPE != 'ps') {
               _this.STATUS = '已购'
               _this.ONEVIDEO.GOUMAI = true
-              if (_this.ONEVIDEO.TYPE == 'ps') {
-                Toast({
-                  message: '已购买，请联系管理员，联系电话66778811-8645',
-                  duration: 5000
-                });
+              if (response.data.obj[0].STATUS == '已支付' & _this.ONEVIDEO.TYPE == 'ps') {
                 //显示遮盖层
                 _this.VIDEOCENG = false//播放层
                 _this.ZHEGAICENG = true//遮盖层
+                if (response.data.obj[0].DEADLINE == '未过期') {
+                  _this.STATUS = '已购'
+                  _this.ONEVIDEO.GOUMAI = true
+                  Toast({
+                    message: '已购买，请联系管理员，联系电话66778811-8645',
+                    duration: 5000
+                  });
+                } else {
+                  _this.STATUS = "购买"
+                  _this.playerOptions.sources = "需购买"
+                }
               }
             } else {
               if (_this.ONEVIDEO.TYPE == 'ps') {
