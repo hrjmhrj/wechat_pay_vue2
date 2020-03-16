@@ -37,7 +37,7 @@
           </div>
           <div class="tuijianqu">
             <!--推荐视频-->
-            <div style="padding:1vh 2vw;min-height: 60vh;width: 96vw;" class="my-info-div">
+            <div style="padding:1vh 2vw;min-height: 60vh;width: 96vw;margin-bottom: 15%;" class="my-info-div">
               <!--列表组件-->
               <van-list v-model="listLoading" :finished="listFinished" finished-text="" @load="onLoadList">
                 <van-grid :column-num="2" gutter="3vw" :border="false">
@@ -327,13 +327,13 @@
           VIDEOID: this.ONEVIDEO.VIDEOID,
         }
         this.ONEVIDEO = item
-        //console.log(a)
+        this.playerOptions.poster = item.VIDEOCOVER
+        this.playerOptions.sources = "判断"
         axios.post('/aisino/selectUserOrder', a).then(response => {
           //console.log(response.data.obj)
           //console.log(response.data.obj[0].STATUS)
           //console.log(response.data.obj[0].DEADLINE)
           if (response.data.obj.length != 0 & response.data.success) {
-            _this.playerOptions.poster = item.VIDEOCOVER
             if (response.data.obj[0].STATUS == '已支付' & response.data.obj[0].TYPE != 'ps') {
               _this.VIDEOCENG = true//播放层
               _this.ZHEGAICENG = false//遮盖层
@@ -369,9 +369,23 @@
               }
               _this.STATUS = "购买"
             }
-          } else {
+          } else if(response.data.obj.length == 0 & response.data.success) {
+            if(item.TYPE == 'ps'){
+              _this.ZHEGAICENG = true//遮盖层
+            }else {
+              _this.VIDEOCENG = true//播放层
+              _this.playerOptions.poster = item.VIDEOCOVER
+              _this.playerOptions.sources = "判断"
+            }
+            _this.ONEVIDEO.GOUMAI = false
+          }else{
+            _this.ZHEGAICENG = true//遮盖层
             _this.ONEVIDEO.GOUMAI = true
-            console.info('未查询到订单，请稍候重试！');
+            console.info('请求失败，请稍候重试！');
+            Toast({
+              message: '网络异常，请稍候重试！',
+              duration: 3000
+            });
           }
         }).catch(error => {
           console.info(error + '网络异常，请稍候重试！');
