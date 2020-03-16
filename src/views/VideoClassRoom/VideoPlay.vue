@@ -6,7 +6,7 @@
         <!--遮盖页面-->
         <van-image style="z-index: 20" v-if="ZHEGAICENG"
                    width="100vw"
-                   height="10rem"
+                   height="50vw"
                    :src="ZHEZHAOFM"
         />
         <!--播放器-->
@@ -39,9 +39,9 @@
           <div class="tuijianqu">
             <!--推荐视频-->
             <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
-              <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
+              <div style="padding:1vh 2vw;min-height: 60vh;width: 96vw;" class="my-info-div">
                 <!--列表组件-->
-                <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList">
+                <van-list v-model="listLoading" :finished="listFinished" finished-text="" @load="onLoadList">
                   <van-grid :column-num="2" gutter="3vw" :border="false">
                     <van-grid-item v-for="(item,index) in ITEMS" :key="index" @click="videobf1(item)">
                       <!--骨屏架组件-->
@@ -128,7 +128,7 @@
             src: '/static/video/aaaa.mp4',  // 视频路径
             type: 'video/mp4'  // 类型
           }],
-          poster: "https://img.yzcdn.cn/vant/apple-2.jpg", //你的封面地址
+          poster: "/static/images/spfm.png", //你的封面地址
           // width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂无法播放，请刷新后再试（格式不支持或未购买）', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {
@@ -163,7 +163,7 @@
         ZHEGAICENG: false,//遮盖层
 
         userData: { // 请求数据传输的参数
-          limit: 10, //条数
+          limit: 6, //条数
           page: 0, // 页数
           OPEN_ID: '', //用户ID
         },
@@ -175,7 +175,7 @@
     },
     methods: {
       //推荐区视频
-      getVideoinfo() {
+      /*getVideoinfo() {
         axios.post('/aisino/selectVideoList', this.userData).then(response => {
           //console.log(response.data.obj)
           //console.log(response.data.obj[1])
@@ -187,7 +187,7 @@
           } else {
             console.info('网络异常，查询失败，请稍候重试！');
             Toast({
-              message: '网络异常，查询失败，请稍候重试！',
+              message: '网络异常，请稍候重试！',
               duration: 3000
             });
           }
@@ -198,7 +198,7 @@
             duration: 3000
           });
         })
-      },
+      },*/
       //查询当前单个视频信息
       getOneVideo() {
         this.VIDEOCENG = true//播放层
@@ -226,9 +226,9 @@
             }
             _this.videobf1(_this.ONEVIDEO)
           } else {
-            console.info('网络异常，查询失败，请稍候重试！');
+            console.info('查询失败，请稍候重试！');
             Toast({
-              message: '网络异常，未查询到订单，请稍候重试！',
+              message: '网络异常，请稍候重试！',
               duration: 3000
             });
           }
@@ -347,11 +347,7 @@
               _this.playerOptions.sources = "需购买"
             }
           } else {
-            console.info('网络异常，未查询到订单，请稍候重试！');
-            Toast({
-              message: '网络异常，未查询到订单，请稍候重试！',
-              duration: 3000
-            });
+            console.info('未查询到订单，请稍候重试！');
           }
         }).catch(error => {
           console.info(error + '网络异常，请稍候重试！');
@@ -364,7 +360,8 @@
       // 加载列表数据
       onLoadList() {
         this.listLoading = true;
-        this.userData.page++;
+        this.listFinished = true;
+        //this.userData.page++;
         let _this = this
         this.requestAxios("/aisino/selectVideoList", _this.userData, _this.onLoadSuccessFn, _this.onLoadErrorFn);
       },
@@ -379,6 +376,7 @@
           _this.listFinished = true;
           _this.notifyStr("danger", responseData.msg);
         }
+        _this.listFinished = true;
         _this.listLoading = false;
         _this.skeletonLoading = false;
         _this.refreshIsLoading = false;
@@ -390,6 +388,10 @@
         _this.skeletonLoading = false;
         _this.refreshIsLoading = false;
         _this.notifyStr("danger", "获取视频列表失败");
+        Toast({
+          message: '网络异常，请稍候重试！',
+          duration: 3000
+        });
       },
       //请求后台 (路由，数据，成功的执行函数，失败的执行函数)
       requestAxios(url, data, successFn, errorFn) {
@@ -404,7 +406,7 @@
         // 清空列表数据
         this.ITEMS = [];
         this.userData.page = 0;
-        this.listFinished = false;
+        this.listFinished = true;
         // 重新加载数据
         // 将 refreshIsLoading 设置为 true，表示处于加载状态
         this.refreshIsLoading = true;
@@ -434,7 +436,7 @@
     },
     mounted() {
       this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
-      this.getVideoinfo();
+      //this.getVideoinfo();
       this.getOneVideo();
       this.$store.commit('set_openid', 'olA3Y1bL5BRPMv7K10hsGQQWP0Hc');
       this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
