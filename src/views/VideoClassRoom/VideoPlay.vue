@@ -38,7 +38,6 @@
           </div>
           <div class="tuijianqu">
             <!--推荐视频-->
-            <van-pull-refresh v-model="refreshIsLoading">
               <div style="padding:1vh 2vw;min-height: 60vh;width: 96vw;" class="my-info-div">
                 <!--列表组件-->
                 <van-list v-model="listLoading" :finished="listFinished" finished-text="" @load="onLoadList">
@@ -68,7 +67,6 @@
                   </van-grid>
                 </van-list>
               </div>
-            </van-pull-refresh>
           </div>
           <!--购买区-->
           <van-submit-bar style="background-color:#f7f7f7;" v-show="ONEVIDEO.IS_FREE != 'Y'"
@@ -159,7 +157,7 @@
         },
         STATUS: '购买',//是否支付
         ZHEZHAOFM: '/static/images/pxfm.png',//遮盖图
-        VIDEOCENG: true,//播放层
+        VIDEOCENG: false,//播放层
         ZHEGAICENG: false,//遮盖层
 
         userData: { // 请求数据传输的参数
@@ -201,7 +199,7 @@
       },*/
       //查询当前单个视频信息
       getOneVideo() {
-        this.VIDEOCENG = true//播放层
+        this.VIDEOCENG = false//播放层
         this.ZHEGAICENG = false//遮盖层
         let _this = this;
         let a = {
@@ -223,9 +221,14 @@
             if (response.data.obj[1][0].TYPE == 'ps') {
               _this.VIDEOCENG = false//播放层
               _this.ZHEGAICENG = true//遮盖层
+            }else {
+              _this.VIDEOCENG = true//播放层
+              _this.ZHEGAICENG = false//遮盖层
             }
             _this.videobf1(_this.ONEVIDEO)
           } else {
+            _this.VIDEOCENG = true//播放层
+            _this.ZHEGAICENG = false//遮盖层
             console.info('查询失败，请稍候重试！');
             Toast({
               message: '网络异常，请稍候重试！',
@@ -242,7 +245,7 @@
       },
       //推荐区播放
       videobf1(item) {
-        this.VIDEOCENG = true//播放层
+        this.VIDEOCENG = false//播放层
         this.ZHEGAICENG = false//遮盖层
         this.ONEVIDEO = item;
         let _this = this
@@ -261,7 +264,9 @@
           //显示遮罩层
           _this.VIDEOCENG = false//播放层
           _this.ZHEGAICENG = true//遮盖层
-          _this.playerOptions.sources = "没有视频地址"
+        }else {
+          _this.VIDEOCENG = true//播放层
+          _this.ZHEGAICENG = false//遮盖层
         }
         //判断封面地址是不是空
         if (item.VIDEOCOVER != null) {
@@ -319,6 +324,8 @@
           //console.log(response.data.obj[0].DEADLINE)
           if (response.data.obj.length != 0 & response.data.success) {
             if (response.data.obj[0].STATUS == '已支付' & _this.ONEVIDEO.TYPE != 'ps') {
+              _this.VIDEOCENG = true//播放层
+              _this.ZHEGAICENG = false//遮盖层
               _this.STATUS = '已购'
               _this.ONEVIDEO.GOUMAI = true
               if (response.data.obj[0].STATUS == '已支付' & _this.ONEVIDEO.TYPE == 'ps') {
@@ -334,7 +341,6 @@
                   });
                 } else {
                   _this.STATUS = "购买"
-                  _this.playerOptions.sources = "需购买"
                 }
               }
             } else {
@@ -342,9 +348,13 @@
                 //显示遮盖层
                 _this.VIDEOCENG = false//播放层
                 _this.ZHEGAICENG = true//遮盖层
+              }else {
+                //显示播放层
+                _this.VIDEOCENG = true//播放层
+                _this.ZHEGAICENG = false//遮盖层
+                _this.playerOptions.sources = "需购买"
               }
               _this.STATUS = "购买"
-              _this.playerOptions.sources = "需购买"
             }
           } else {
             console.info('未查询到订单，请稍候重试！');
