@@ -64,7 +64,6 @@
       this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
     },
     mounted(){
-      console.log(JSON.stringify(this.$store.state.userInfo))
       this.topBarHeight = document.getElementById('con').offsetHeight;
     }
   }
