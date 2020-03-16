@@ -73,7 +73,7 @@
                           :button-text="STATUS"
                           button-type="info"
                           @submit="purchase"
-                          :disabled="ONEVIDEO.GOUMAI"
+                          :disabled='GOUMAI'
           >
           </van-submit-bar>
         </div>
@@ -152,8 +152,8 @@
           TYPE: '',//视频：video；产品服务（productService）：ps
           ONLINE: '',//是否在线：是Y；否N
           DEADLINE: '',//到期时间
-          GOUMAI: true,//购买是否失效
         },
+        GOUMAI: true,//购买是否失效
         STATUS: '购买',//是否支付
         ZHEZHAOFM: 'static/images/pxfm.png',//遮盖图
         VIDEOCENG: false,//播放层
@@ -201,7 +201,7 @@
       getOneVideo() {
         this.VIDEOCENG = false//播放层
         this.ZHEGAICENG = false//遮盖层
-        this.ONEVIDEO.GOUMAI = true
+        this.GOUMAI = true
         let _this = this;
         let a = {
           VIDEOID: _this.ONEVIDEO.VIDEOID,//视频ID
@@ -247,7 +247,7 @@
       },
       //推荐区播放
       videobf1(item) {
-        this.ONEVIDEO.GOUMAI = true
+        this.GOUMAI = true
         this.VIDEOCENG = false//播放层
         this.ZHEGAICENG = false//遮盖层
         this.ONEVIDEO = item;
@@ -319,7 +319,7 @@
       },
       //如果是收费视频则根据openid查订单购买信息
       userorder(item) {
-        this.ONEVIDEO.GOUMAI = true
+        this.GOUMAI = true
         let _this = this;
         let a = {
           OPEN_ID: this.userData.OPEN_ID,
@@ -349,7 +349,7 @@
                     duration: 5000
                   });
                 } else {
-                  _this.ONEVIDEO.GOUMAI = false
+                  _this.GOUMAI = false
                   _this.STATUS = "购买"
                 }
               }
@@ -376,10 +376,10 @@
               _this.playerOptions.poster = item.VIDEOCOVER
               _this.playerOptions.sources = "判断"
             }
-            _this.ONEVIDEO.GOUMAI = false
+            _this.GOUMAI = false
           }else{
             _this.ZHEGAICENG = true//遮盖层
-            _this.ONEVIDEO.GOUMAI = true
+            _this.GOUMAI = true
             console.info('请求失败，请稍候重试！');
             Toast({
               message: '网络异常，请稍候重试！',
@@ -470,7 +470,7 @@
     mounted() {
       this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
       this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
-      this.ONEVIDEO.GOUMAI = true
+      this.GOUMAI = true
       //this.getVideoinfo();
       this.getOneVideo();
       this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
