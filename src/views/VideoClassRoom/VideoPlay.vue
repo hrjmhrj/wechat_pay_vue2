@@ -4,13 +4,13 @@
     <div style="z-index: 10;position: absolute;top: 0;left: 0;">
       <div class="wrapper">
         <!--遮盖页面-->
-        <van-image style="z-index: 20" v-show="ZHEGAICENG"
+        <van-image style="z-index: 20" v-if="ZHEGAICENG"
                    width="100vw"
                    height="10rem"
                    :src="ZHEZHAOFM"
         />
         <!--播放器-->
-        <div class="player" v-show="VIDEOCENG">
+        <div class="player" v-if="VIDEOCENG">
           <video-player class="video-player vjs-custom-skin"
                         ref="videoPlayer"
                         :playsinline="true"
@@ -186,9 +186,17 @@
             //console.log(_this.ITEMS)列表视频信息
           } else {
             console.info('网络异常，查询失败，请稍候重试！');
+            Toast({
+              message: '网络异常，查询失败，请稍候重试！',
+              duration: 3000
+            });
           }
         }).catch(error => {
           console.info(error + '网络异常，请稍候重试！');
+          Toast({
+            message: '网络异常，请稍候重试！',
+            duration: 3000
+          });
         })
       },
       //查询当前单个视频信息
@@ -219,9 +227,17 @@
             _this.videobf1(_this.ONEVIDEO)
           } else {
             console.info('网络异常，查询失败，请稍候重试！');
+            Toast({
+              message: '网络异常，未查询到订单，请稍候重试！',
+              duration: 3000
+            });
           }
         }).catch(error => {
           console.info(error + '网络异常，请稍候重试！');
+          Toast({
+            message: '网络异常，请稍候重试！',
+            duration: 3000
+          });
         })
       },
       //推荐区播放
@@ -332,9 +348,17 @@
             }
           } else {
             console.info('网络异常，未查询到订单，请稍候重试！');
+            Toast({
+              message: '网络异常，未查询到订单，请稍候重试！',
+              duration: 3000
+            });
           }
         }).catch(error => {
           console.info(error + '网络异常，请稍候重试！');
+          Toast({
+            message: '网络异常，请稍候重试！',
+            duration: 3000
+          });
         })
       },
       // 加载列表数据
