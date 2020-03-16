@@ -1,20 +1,25 @@
 <template>
   <div class="my-info-ykfp-div">
     <!--列表-->
-    <div class="ykfp-list-div">
-      <van-list v-model="loading" :finished="finished" :loading-text="loadText" :offset="100" @load="onLoad">
-        <van-cell class="ykfp-cell" v-for="(item, index) in ykAllData" :key="index" is-link center @click="clickOneYkfp(item.KPSQID)">
-          <template slot="title">
-          <span class="ykfp-cell-text-span" >
-            企业名称(个人)：<span>{{item.QYMC}}</span>
-          </span>
-            <span class="ykfp-cell-text-span" >
-            金　　额：<span>{{item.ZJE}}</span>元
-          </span>
-          </template>
-        </van-cell>
-      </van-list>
-    </div>
+    <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
+      <div class="ykfp-list-div">
+          <van-list v-model="loading" :finished="finished" :loading-text="loadText" :offset="100" @load="onLoad" :immediate-check="false">
+            <div v-for="(item, index) in ykAllData">
+              <van-cell class="ykfp-cell" :key="index" is-link center @click="clickOneYkfp(item.KPSQID)">
+                <span class="ykfp-cell-text-span" >
+                  企业名称(个人)：<span>{{item.QYMC}}</span>
+                </span>
+                <span class="ykfp-cell-text-span" >
+                  金　　额：<span>{{item.ZJE}}</span>元
+                </span>
+                <span class="ykfp-cell-text-span" >
+                  申请时间：<span>{{item.CREATETIME}}</span>
+                </span>
+              </van-cell>
+            </div>
+          </van-list>
+      </div>
+    </van-pull-refresh>
     <!--发票信息-->
     <div v-if="showOverlayFlag" class="ykfp-fpxx">
       <!--头部-->
@@ -54,6 +59,7 @@
             <van-field label="商品名称" :value="item.VIDEONAME" type="textarea" rows="1" autosize input-align="right" disabled  style="color:#969799"/>
             <van-field label="商品类型" :value="item.TYPE == 'ps' ? '产品服务' : '视频课程'" input-align="right" disabled  style="color:#969799"/>
             <van-field label="价　　格" :value="item.COST+'元'" input-align="right" disabled  style="color:#969799"/>
+            <van-field label="时　　间" :value="item.CREATETIME" input-align="right" disabled  style="color:#969799"/>
             <van-divider/>
           </div>
         </van-panel>
@@ -71,10 +77,11 @@
 
 <script>
   import axios from 'axios';
-  import { List,Cell,Sticky,NavBar,Field,Panel,Divider,Loading,Overlay,Notify  } from 'vant';
+  import { List,Cell,Sticky,NavBar,Field,Panel,Divider,Loading,Overlay,Notify,PullRefresh  } from 'vant';
   export default {
     name: "yk-fp",
     components:{
+      [PullRefresh.name]:PullRefresh,
       [Overlay.name]:Overlay,
       [Loading.name]:Loading,
       [Divider.name]:Divider,
@@ -88,77 +95,65 @@
     },
     data(){
       return{
-        loading:false,
-        finished:true,
+        loading:false, // 列表是否在加载中
+        finished:true, //列表是否加载完全
         loadText:"加载中",
-        ykAllData:[
-          {
-            KPSQID:"kpsqid1",//开票申请ID
-            QYMC:"企业名称（个人）1",//企业名称
-            ZJE:123.35//总金额
-          },
-          {
-            KPSQID:"kpsqid2",//开票申请ID
-            QYMC:"企业名称（个人）2",//企业名称
-            ZJE:2123.35//总金额
-          },
-          {
-            KPSQID:"kpsqid3",//开票申请ID
-            QYMC:"企业名称（个人）3",//企业名称
-            ZJE:3123.35//总金额
-          },
-          {
-            KPSQID:"kpsqid4",//开票申请ID
-            QYMC:"企业名称（个人）4",//企业名称
-            ZJE:4123.35//总金额
-          },
-          {
-            KPSQID:"kpsqid5",//开票申请ID
-            QYMC:"企业名称（个人）5",//企业名称
-            ZJE:5123.35//总金额
-          },
-          {
-            KPSQID:"kpsqid6",//开票申请ID
-            QYMC:"企业名称（个人）6",//企业名称
-            ZJE:6123.35//总金额
-          },
-        ],
+        refreshIsLoading:false, //下拉状态
+        ykAllData:[], //已开发票列表
         showOverlayFlag:false,//发票信息显示标志
         ykfpxx:{
-          FPLX:"1",//发票类型
-          QYMC:"宝鸡有一群怀揣着梦想的少年相信在牛大叔的带领下会创造生命的奇迹网络科技有限公司",//企业名称
-          LXDH:"028-3221965",//联系电话
-          EMAIL:"978784945@qq.com",//电子邮箱
-          YJDZ:"四川省成都市锦江区中道街秀色天涯1单元11楼1101号",//邮寄地址
-          SH:"91510105MA6B6FA64H",//税号
-          GSDZ:"四川省成都市锦江区中道街秀色天涯1单元11楼1101号",//公司地址
-          KHYH:"四川省成都市工商银行成都分行锦江区支行",//开户银行
-          YHZH:"6212264402074359851",//银行账户
-          FPHM:"1300053140,1300053141,1300053142",//发票号码
-          FPDM:"02995606,02995607,02995608",//发票代码
+          FPLX:"",//发票类型
+          QYMC:"",//企业名称
+          LXDH:"",//联系电话
+          EMAIL:"",//电子邮箱
+          YJDZ:"",//邮寄地址
+          SH:"",//税号
+          GSDZ:"",//公司地址
+          KHYH:"",//开户银行
+          YHZH:"",//银行账户
+          FPHM:"",//发票号码
+          FPDM:"",//发票代码
           FPMX:[
             {
-              VIDEONAME:"122测试产品服务", //商品名称
-              TYPE:"ps", //商品类型
-              COST:"100",//商品价格
-            },
-            {
-              VIDEONAME:"2222测试视频", //商品名称
-              TYPE:"video", //商品类型
-              COST:"100",//商品价格
+              VIDEONAME:"", //商品名称
+              TYPE:"", //商品类型
+              COST:"",//商品价格
             }
           ],//发票明细
         },//当前申请记录的明细
         lodingOverlayShow:false,//加载遮罩层
+        requestYkListData:{
+          limit: 10,
+          page:0,
+          OPENID: this.$store.state.userInfo.openid,
+        },//请求已开发票列表的参数
+        requestOneYkData:{
+          OPENID:this.$store.state.userInfo.openid,
+          KPSQID:""
+        }//请求已开发票详细信息的参数
       }
     },
     methods:{
       onLoad(){
-
+        this.requestYkListData.page++;
+        this.loading = true;
+        this.requestAxios("/aisino/getYkfpListByOpenid",this.requestYkListData,"请求已开发票列表失败",this.getYkfpListSuccess,this.getYkfpListError,false);
       },//加载列表
+      onRefresh(){
+        // 清空列表数据
+        this.ykAllData = [];
+        this.requestYkListData.page = 0;
+        this.finished = false;
+        // 重新加载数据
+        // 将 refreshIsLoading 设置为 true，表示处于加载状态
+        this.refreshIsLoading = true;
+        this.onLoad();
+      },//下拉刷新操作函数
       clickOneYkfp(KPSQID){
+        this.ykfpxx = [];
+        this.requestOneYkData.KPSQID = KPSQID;
+        this.requestAxios("/aisino/getOneYkfpInfoByKpsqIdAndOpenid",this.requestOneYkData,"请求发票详情失败",this.getOneYkfpInfoSuccess,this.getOneYkfpInfoError,true);
         this.showOverlayFlag = true;
-        this.requestAxios("/aaa/aa/aa",null,"请求失败",this.getHistorySuccess,true)
       },//点击获取当前发票的详情
       notifyStr(type,msg){
         Notify({ type: type, message: msg });
@@ -176,29 +171,69 @@
         }
         return ""
       }, //动态判断发票类型
-      requestAxios(url,data,errorMsg,successFn,layFlag){
+      requestAxios(url,data,errorMsg,successFn,errorFn,layFlag){
         if(layFlag){
           this.lodingOverlayShow = true;
         }
         axios.post(url, data).then(response => {
-          successFn();
+          successFn(response.data);
           this.lodingOverlayShow = false;
-        },error => {
+        }).catch(error => {
+          errorFn(errorMsg);
           this.lodingOverlayShow = false;
-          this.notifyStr("danger",errorMsg);
         });
-      },//请求后台 (路由，数据，失败的msg,成功的执行函数，是否显示加载层)
-    }
+      },//请求后台 (路由，数据，失败的msg,，成功执行函数,失败执行函数,是否显示加载层)
+      getOneYkfpInfoSuccess(responseData){
+        if(responseData.success){
+          this.ykfpxx = responseData.obj;
+        }else{
+          this.notifyStr("danger",responseData.msg);
+        }
+      }, //请求指定已开发票信息成功
+      getOneYkfpInfoError(errorMsg){
+        this.notifyStr("danger",errorMsg);
+      }, //请求指定已开发票信息失败
+      getYkfpListSuccess(responseData){
+        if(responseData.success){
+          if(responseData.obj[1].length>0){
+            this.ykAllData = this.ykAllData.concat(responseData.obj[1])
+          }
+          responseData.obj[0] == this.ykAllData.length ? this.finished = true : null;
+        }else{
+          this.finished = true;
+          this.notifyStr("danger",responseData.msg);
+        }
+        this.refreshIsLoading = false;
+        this.loading = false;
+      },//请求已开发票列表成功
+      getYkfpListError(errorMsg){
+        this.lodingOverlayShow = false;
+        this.loading = false;
+        this.finished = true;
+        this.refreshIsLoading = false;
+        this.notifyStr("danger",errorMsg);
+      },//请求已开发票列表失败
+    },
+    created(){
+      this.onLoad();
+    },
   }
 </script>
 
 <style scoped>
+  .ykfp-list-div{
+    min-height: 100vh;
+  }
+  .van-list .ykfp-cell{
+    background: #fff !important;
+    border-radius: 5px !important;
+    padding:5px 0px 5px 7px !important;
+    margin: 2vw auto !important;
+    border: 1px solid #e9eaeb !important;
+    width: 90vw !important;
+  }
   .ykfp-list-div .van-cell:not(:last-child)::after{
     border:none;
-  }
-  .ykfp-cell{
-    background: #fff;border-radius: 5px;padding:5px 0px 5px 7px;
-    margin: 2vw auto;border: 1px solid #e9eaeb;width: 90vw;
   }
   .ykfp-cell-text-span{
     display: block;
