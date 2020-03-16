@@ -242,7 +242,6 @@
           this.notifyStr("danger","请填写开户银行");
           return;
         }else if((checkData.YHZH[1] && this.requestSqkpData.KPXX.YHZH == "") || (this.requestSqkpData.KPXX.YHZH != null && this.requestSqkpData.KPXX.YHZH != "" && !yhzhReg.test(this.requestSqkpData.KPXX.YHZH))){
-          console.log(this.requestSqkpData)
           this.notifyStr("danger","请填写正确的银行账户");
           return;
         }else if(checkData.YJDZ[1] && this.requestSqkpData.KPXX.YJDZ == ""){
