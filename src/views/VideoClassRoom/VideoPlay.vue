@@ -216,8 +216,6 @@
               _this.userorder(response.data.obj[1][0]);
             } else {
               _this.ONEVIDEO = response.data.obj[1][0]
-              _this.playerOptions.poster = response.data.obj[1][0].VIDEOCOVER
-              _this.playerOptions.sources = response.data.obj[1][0].FILENAME
               //遮盖层
               if (response.data.obj[1][0].TYPE == 'ps') {
                 _this.VIDEOCENG = false//播放层
@@ -225,12 +223,14 @@
               } else {
                 _this.VIDEOCENG = true//播放层
                 _this.ZHEGAICENG = false//遮盖层
+                _this.playerOptions.poster = response.data.obj[1][0].VIDEOCOVER
+                _this.playerOptions.sources = response.data.obj[1][0].FILENAME
               }
               _this.videobf1(_this.ONEVIDEO)
             }
           } else {
-            _this.VIDEOCENG = true//播放层
-            _this.ZHEGAICENG = false//遮盖层
+            _this.VIDEOCENG = false//播放层
+            _this.ZHEGAICENG = true//遮盖层
             console.info('查询失败，请稍候重试！');
             Toast({
               message: '网络异常，请稍候重试！',
@@ -256,13 +256,6 @@
         if (item.IS_FREE != 'Y') {
           _this.userorder(item);
         } else {
-          //判断视频地址是不是空
-          if (item.TYPE != 'ps' & item.FILENAME != null) {
-            _this.playerOptions.sources = item.FILENAME
-          }
-          if (item.TYPE != 'ps' & item.FILENAME == null) {
-            _this.playerOptions.sources = "没有获取到视频地址"
-          }
           if (item.TYPE == 'ps') {
             //显示遮罩层
             _this.VIDEOCENG = false//播放层
@@ -270,6 +263,12 @@
           } else {
             _this.VIDEOCENG = true//播放层
             _this.ZHEGAICENG = false//遮盖层
+          }
+          if (item.TYPE != 'ps' & item.FILENAME != null) {
+            _this.playerOptions.sources = item.FILENAME
+          }
+          if (item.TYPE != 'ps' & item.FILENAME == null) {
+            _this.playerOptions.sources = "没有获取到视频地址"
           }
           //判断封面地址是不是空
           if (item.VIDEOCOVER != null) {
@@ -327,7 +326,6 @@
           VIDEOID: this.ONEVIDEO.VIDEOID,
         }
         this.ONEVIDEO = item
-        this.playerOptions.poster = item.VIDEOCOVER
         this.playerOptions.sources = "判断"
         axios.post('/aisino/selectUserOrder', a).then(response => {
           //console.log(response.data.obj)
@@ -338,6 +336,7 @@
               _this.VIDEOCENG = true//播放层
               _this.ZHEGAICENG = false//遮盖层
               _this.STATUS = '已购'
+              _this.playerOptions.poster = item.VIDEOCOVER
               _this.playerOptions.sources = item.FILENAME
               if (response.data.obj[0].STATUS == '已支付' & response.data.obj[0].TYPE == 'ps') {
                 //显示遮盖层
@@ -356,7 +355,6 @@
               }
             } else {
               _this.ONEVIDEO.GOUMAI = false
-              _this.playerOptions.poster = item.VIDEOCOVER
               if (response.data.obj[0].TYPE == 'ps') {
                 //显示遮盖层
                 _this.VIDEOCENG = false//播放层
@@ -365,6 +363,7 @@
                 //显示播放层
                 _this.VIDEOCENG = true//播放层
                 _this.ZHEGAICENG = false//遮盖层
+                _this.playerOptions.poster = item.VIDEOCOVER
                 _this.playerOptions.sources = "需购买"
               }
               _this.STATUS = "购买"
