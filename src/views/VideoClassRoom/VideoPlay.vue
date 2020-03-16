@@ -298,7 +298,7 @@
         //店铺号
         asd["VIDEOID"] = this.ONEVIDEO.VIDEOID
         asd["OPEN_ID"] = this.userData.OPEN_ID
-        asd["orderNo"] = ""
+        //asd["orderNo"] = ""
         asd["price"] = this.ONEVIDEO.COST
         asd["SPMC"] = '财税小讲堂'
         console.log(this.ONEVIDEO.VIDEOID)
