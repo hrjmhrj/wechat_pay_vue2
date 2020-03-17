@@ -74,6 +74,7 @@
                           button-type="info"
                           @submit="purchase"
                           :disabled='GOUMAI'
+                          :suffix-label='QIXIAN'
           >
           </van-submit-bar>
         </div>
@@ -152,6 +153,7 @@
           TYPE: '',//视频：video；产品服务（productService）：ps
           ONLINE: '',//是否在线：是Y；否N
           DEADLINE: '',//到期时间
+          QIXIAN:'',//期限  永久  /年
         },
         GOUMAI: true,//购买是否失效
         STATUS: '购买',//是否支付
@@ -220,9 +222,11 @@
               if (response.data.obj[1][0].TYPE == 'ps') {
                 _this.VIDEOCENG = false//播放层
                 _this.ZHEGAICENG = true//遮盖层
+                _this.QIXIAN = '/年'
               } else {
                 _this.VIDEOCENG = true//播放层
                 _this.ZHEGAICENG = false//遮盖层
+                _this.QIXIAN = '/永久'
                 _this.playerOptions.poster = response.data.obj[1][0].VIDEOCOVER
                 _this.playerOptions.sources = response.data.obj[1][0].FILENAME
               }
@@ -257,10 +261,12 @@
           _this.userorder(item);
         } else {
           if (item.TYPE == 'ps') {
+            _this.QIXIAN = '/年'
             //显示遮罩层
             _this.VIDEOCENG = false//播放层
             _this.ZHEGAICENG = true//遮盖层
           } else {
+            _this.QIXIAN = '/永久'
             _this.VIDEOCENG = true//播放层
             _this.ZHEGAICENG = false//遮盖层
           }
@@ -336,12 +342,14 @@
               if (response.data.obj[0].TYPE != 'ps') {
                 _this.VIDEOCENG = true//播放层
                 _this.ZHEGAICENG = false//遮盖层
+                _this.QIXIAN = '/永久'
                 _this.GOUMAI = true
                 _this.STATUS = '已购'
                 _this.playerOptions.poster = item.VIDEOCOVER
                 _this.playerOptions.sources = item.FILENAME
               }
               if (response.data.obj[0].TYPE == 'ps') {
+                _this.QIXIAN = "/年"
                 //显示遮盖层
                 _this.VIDEOCENG = false//播放层
                 _this.ZHEGAICENG = true//遮盖层
@@ -360,15 +368,20 @@
             }
           } else if (response.data.obj.length == 0 && response.data.success) {
             if (item.TYPE == 'ps') {
+              _this.QIXIAN = "/年"
               _this.ZHEGAICENG = true//遮盖层
+              _this.VIDEOCENG = false//播放层
             } else {
+              _this.QIXIAN = '/永久'
               _this.VIDEOCENG = true//播放层
+              _this.ZHEGAICENG = false//遮盖层
               _this.playerOptions.poster = item.VIDEOCOVER
               _this.playerOptions.sources = "判断"
             }
             _this.GOUMAI = false
           } else {
             _this.ZHEGAICENG = true//遮盖层
+            _this.VIDEOCENG = false//播放层
             _this.GOUMAI = true
             console.info('请求失败，请稍候重试！');
             Toast({
