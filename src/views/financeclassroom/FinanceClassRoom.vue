@@ -38,7 +38,6 @@
       getOpenId(){
         var fromurl;
         var appid = "wx4d4e347e23a5f170";
-        this.code = this.getUrlKey('code');
         if(!this.code){
           console.error(111)
           fromurl=location.href;
@@ -75,6 +74,8 @@
       console.error("2created"+this.getUrlKey("code"))
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
+        this.code = this.getUrlKey('code');
+        console.error("3created")
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "666666");
