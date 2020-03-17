@@ -159,6 +159,7 @@
           location.href=url;
         }else{
           axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
+            console.log(response.data)
             if(!response.data.obj){
               var newUrl = location.href;
               location.href = newUrl.substring(0,newUrl.indexOf("?"));
@@ -170,6 +171,7 @@
               this.requestData.OPEN_ID = response.data.obj;
             }
           }).catch(function (error) {
+            console.log(error)
             alert("无法获取信息，刷新后重试");
           });
         }

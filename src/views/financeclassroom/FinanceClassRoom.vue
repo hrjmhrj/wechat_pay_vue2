@@ -1,12 +1,6 @@
 <template>
     <div v-if="haveOpenid">
       <van-button type="danger" @click="clickBtn">{{openid}}</van-button>
-      <van-tabs v-model="active">
-        <van-tab title="标签 1">内容 1</van-tab>
-        <van-tab title="标签 2">内容 2</van-tab>
-        <van-tab title="标签 3">内容 3</van-tab>
-        <van-tab title="标签 4">内容 4</van-tab>
-      </van-tabs>
     </div>
 </template>
 
@@ -48,17 +42,21 @@
           location.href=url;
         }else{
           axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
+            console.log(response.data)
             if(!response.data.obj){
+              console.log(2222)
               var newUrl = location.href;
               location.href = newUrl.substring(0,newUrl.indexOf("?"));
               return;
             }else{
+              console.log(33333)
               this.$store.commit('set_openid', response.data.obj);
               this.haveOpenid = true;
               this.openid = response.data.obj;
               //只有成功后才能显示页面
             }
           }).catch(function (error) {
+            console.log(4444)
             alert("无法获取信息，刷新后重试");
           });
         }
@@ -75,6 +73,7 @@
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "666666");
         this.haveOpenid = true;
+        console.log(1111)
       }
       if(this.haveOpenid){
         // 初始化的操作请求
