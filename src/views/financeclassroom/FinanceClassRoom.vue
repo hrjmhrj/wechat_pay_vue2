@@ -46,12 +46,12 @@
             + "&response_type=code"
             + "&scope=snsapi_base"
             + "&state=STATE#wechat_redirect";
-          location.href=url;
+          window.location.href=url;
         }else{
           axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
             if(!response.data.obj){
               var newUrl = location.href;
-              location.href = newUrl.substring(0,newUrl.indexOf("?"));
+              window.location.href = newUrl.substring(0,newUrl.indexOf("?"));
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);

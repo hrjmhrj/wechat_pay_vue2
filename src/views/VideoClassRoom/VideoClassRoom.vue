@@ -149,7 +149,6 @@
         var fromurl;
         var appid = "wx4d4e347e23a5f170";
         this.code = this.getUrlKey('code');
-        debugger
         if(!this.code){
           fromurl=location.href;
           var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
