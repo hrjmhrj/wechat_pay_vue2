@@ -9,7 +9,7 @@
             <!--骨屏架组件-->
             <van-skeleton :row="4" :loading="skeletonLoading" row-width="50%">
               <div>
-                <van-image width="43.5vw" height="28vw"  lazy-load radius="10" fit="fill" :src="'http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/'+item.VIDEOCOVER" style="border: 1px solid #f3f3f3;box-sizing: border-box">
+                <van-image width="43.5vw" height="28vw"  lazy-load radius="10" fit="fill" :src="'http://hyfwzx.schtxxcdfgs.com:9004/hyfwzxht/springboot/'+item.VIDEOCOVER" style="border: 1px solid #d9d9d9;box-sizing: border-box">
                 </van-image>
               </div>
               <div>
@@ -133,7 +133,7 @@
     line-height: 13px;
     height: 13px;
     -webkit-line-clamp: 1;
-    margin: 3px 0 3px 0;
+    margin: 2px 0 0px 0;
   }
   .text-overflow-body {
     width: 43.5vw;
@@ -142,8 +142,10 @@
     height: 11px;
     color:#8a8a8a;
     overflow : hidden ;
+    -webkit-line-clamp: 1;
     text-overflow : ellipsis ;
     white-space : nowrap ;
+    margin: 5px 0 4px 0;
   }
 </style>
 <style>

@@ -14,7 +14,7 @@
                     <van-tag round type="danger" v-show="item.IS_FREE == 'Y'">免费</van-tag>
                     <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
                   </div>
-                  <van-image width="43.5vw" height="28vw"  lazy-load radius="10" fit="fill" :src="item.VIDEOCOVER" style="border: 1px solid #f3f3f3;box-sizing: border-box">
+                  <van-image width="43.5vw" height="28vw"  lazy-load radius="10" fit="fill" :src="item.VIDEOCOVER" style="border: 1px solid #d9d9d9;box-sizing: border-box">
                   </van-image>
                 </div>
                 <div>
@@ -195,9 +195,9 @@
     },
     created() {
       let urlTemp = process.env.API_ROOT
-      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
+      if(urlTemp.indexOf("192.168.84.39") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
         this.getOpenId();
-      }else if(urlTemp.indexOf("localhost") != -1){
+      }else if(urlTemp.indexOf("192.168.84.39") != -1){
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
       }
       if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
@@ -236,7 +236,7 @@
     line-height: 13px;
     height: 13px;
     -webkit-line-clamp: 1;
-    margin: 3px 0 3px 0;
+    margin: 2px 0 0px 0;
   }
   .text-overflow-body {
     width: 43.5vw;
@@ -244,9 +244,9 @@
     line-height: 11px;
     height: 11px;
     color:#8a8a8a;
-    overflow : hidden ;
-    text-overflow : ellipsis ;
+    -webkit-line-clamp: 1;
     white-space : nowrap ;
+    margin: 5px 0 4px 0;
   }
 
   .block {

@@ -50,7 +50,7 @@
                           <van-tag round type="warning" v-show="item.IS_FREE != 'Y'">付费</van-tag>
                         </div>
                         <van-image width="43.5vw" height="28vw" lazy-load radius="10" fit="fill"
-                                   :src="item.VIDEOCOVER" style="border: 1px solid #f3f3f3;box-sizing: border-box">
+                                   :src="item.VIDEOCOVER" style="border: 1px solid #d9d9d9;box-sizing: border-box">
                         </van-image>
                       </div>
                       <div>
@@ -514,7 +514,7 @@
     line-height: 13px;
     height: 13px;
     -webkit-line-clamp: 1;
-    margin: 3px 0 3px 0;
+    margin: 2px 0 0px 0;
   }
 
   .text-overflow-body {
@@ -525,7 +525,9 @@
     color: #8a8a8a;
     overflow: hidden;
     text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
     white-space: nowrap;
+    margin: 5px 0 4px 0;
   }
 
   .block {
