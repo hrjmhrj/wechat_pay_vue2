@@ -51,6 +51,7 @@
     name: "VideoClassRoom",
     data() {
       return {
+        code:"",//获取oepnid所需要的CODE
         haveOpenid: false, // 是否有openid
         VIDEOLIST: [],//相关的全部数据
         VIDEOID: '',//ID
@@ -145,6 +146,7 @@
       },//弹出提示
       //获取openid
       getOpenId(){
+        alert(this.code)
         var fromurl;
         var appid = "wx4d4e347e23a5f170";
         this.code = this.getUrlKey('code');
