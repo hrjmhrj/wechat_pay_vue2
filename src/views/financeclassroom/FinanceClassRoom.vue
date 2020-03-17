@@ -71,7 +71,7 @@
       },
     },
     created(){
-      console.error("created")
+      console.error("created"+this.getUrlKey("code"))
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
         this.getOpenId();
