@@ -15,7 +15,7 @@ import FinanceClassRoom from  '../views/financeclassroom/FinanceClassRoom'
 export default new Router({
   routes: [
     {
-      path: '/FinanceClassRoom',
+      path: '/',
       name: 'FinanceClassRoom',
       meta: {
         title: '我的',

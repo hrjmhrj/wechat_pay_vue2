@@ -32,7 +32,7 @@
     },
     methods:{
       clickBtn(){
-        alert(this.getUrlKey("code"));
+        alert(this.getUrlKey("code")+"****"+this.code);
       },
       //获取openid
       getOpenId(){
@@ -41,7 +41,6 @@
         this.code = this.getUrlKey('code');
         if(!this.code){
           fromurl=location.href;
-          console.error(fromurl)
           var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
             + "&redirect_uri="+ encodeURIComponent(fromurl)
             + "&response_type=code"
