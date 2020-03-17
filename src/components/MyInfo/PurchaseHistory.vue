@@ -3,7 +3,7 @@
   <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
     <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
       <!--列表组件-->
-      <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList">
+      <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList" :offset="100">
         <van-grid :column-num="2" gutter="3vw" :border="false">
           <van-grid-item v-for="(item,index) in listData" :key="index" @click="clickItem(item.VIDEOID)">
             <!--骨屏架组件-->
