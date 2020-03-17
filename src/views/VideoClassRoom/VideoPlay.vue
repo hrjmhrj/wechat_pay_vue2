@@ -27,7 +27,7 @@
           <span style="display: inline-block;width: 14vw;text-align: right;">
                 <van-button type="warning" @click="fanhuiVD" size="mini" round>返回</van-button>
             </span>
-          <div style="color: darkgray; font-size: x-small;margin-top: 1%;">
+          <div style="color: darkgray; font-size: 12px;margin-top: 1%;">
             {{ONEVIDEO.VIDEOMS}}
           </div>
         </div>
@@ -517,7 +517,7 @@
     width: 43.5vw;
     font-size: 13px;
     line-height: 13px;
-    height: 13px;
+    height: 14px;
     -webkit-line-clamp: 1;
     margin: 2px 0 0px 0;
   }
@@ -537,7 +537,7 @@
 
   .block {
     width: 100vw;
-    height: 100vh;
+    height: auto;
     background-color: #fff;
   }
 

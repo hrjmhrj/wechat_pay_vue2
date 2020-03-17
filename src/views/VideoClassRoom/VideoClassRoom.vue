@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userInfo.openid != null && userInfo.openid != '' && userInfo.openid != 'null'">
+  <div v-if="userInfo.openid != null && userInfo.openid != '' && userInfo.openid != 'null'" class="block">
     <!--下拉刷新组件-->
     <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
       <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
@@ -234,7 +234,7 @@
     width: 43.5vw;
     font-size: 13px;
     line-height: 13px;
-    height: 13px;
+    height: 14px;
     -webkit-line-clamp: 1;
     margin: 2px 0 0px 0;
   }
@@ -248,7 +248,9 @@
     white-space : nowrap ;
     margin: 5px 0 4px 0;
   }
-
+  .my-info-div{
+    background: #fff;
+  }
   .block {
     width: 100vw;
     height: 100vh;

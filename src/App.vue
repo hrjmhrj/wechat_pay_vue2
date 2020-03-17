@@ -22,5 +22,8 @@
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
+    min-height:100vh !important;
+    width: 100vw !important;
+    background: #fff !important;
   }
 </style>

@@ -131,7 +131,7 @@
     width: 43.5vw;
     font-size: 13px;
     line-height: 13px;
-    height: 13px;
+    height: 14px;
     -webkit-line-clamp: 1;
     margin: 2px 0 0px 0;
   }
