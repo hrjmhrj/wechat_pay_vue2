@@ -27,7 +27,7 @@ export default new Router({
       meta: {
         title: '财税小讲堂视频',
         requireAuth: false, // 判断该路由的访问是否需要登录
-        keepAlive:false
+        keepAlive:true
       },
       component: VideoClassRoom
     }, {
