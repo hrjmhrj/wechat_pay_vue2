@@ -31,7 +31,9 @@
     },
     methods:{
       clickBtn(){
-        alert(123)
+        let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue/index.html?code=071hBCgl1pSChq0SX4gl1WfIgl1hBCgP&state=STATE#/";
+        let str = decodeURIComponent((new RegExp('[?|&]' + "code" + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(/\+/g, '%20'))
+        alert(str)
       },
       //获取openid
       getOpenId(){
@@ -49,6 +51,7 @@
             + "&state=STATE#wechat_redirect";
           location.href=url;
         }else{
+          alert(this.code+"*****")
           axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
             if(!response.data.obj){
               var newUrl = location.href;
