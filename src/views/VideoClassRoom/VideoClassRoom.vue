@@ -165,7 +165,7 @@
               this.$store.commit('set_openid', response.data.obj);
               this.haveOpenid = true;
               //只有成功后才能显示页面
-              alert(response.data.obj)
+              this.requestData.OPEN_ID = response.data.obj;
             }
           }).catch(function (error) {
             alert("无法获取信息，刷新后重试");
@@ -197,10 +197,8 @@
     created() {
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
-        alert(1)
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
-        alert(2)
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
         this.haveOpenid = true;
       }
