@@ -23,7 +23,7 @@ export default new Router({
       },
       component: MyInfo
     }, {
-      path: '/VideoClassRoom',
+      path: '/',
       name: 'VideoClassRoom',
       meta: {
         title: '财税小讲堂视频',

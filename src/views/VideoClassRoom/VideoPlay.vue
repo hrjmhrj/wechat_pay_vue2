@@ -295,7 +295,7 @@
         if (this.GOFLAG) {
           this.$router.go(-1);
         } else {
-          this.$router.push({name: 'VideoClassRoom'})
+          this.$router.push({name: '/'})
         }
       },
       //购买
