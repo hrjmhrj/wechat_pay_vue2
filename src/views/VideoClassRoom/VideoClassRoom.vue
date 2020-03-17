@@ -198,7 +198,6 @@
     },
     created() {
       let urlTemp = process.env.API_ROOT
-      alert(urlTemp)
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
