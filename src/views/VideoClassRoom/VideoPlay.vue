@@ -10,12 +10,14 @@
                    :src="ZHEZHAOFM"
         />
         <!--播放器-->
-        <div class="player" v-if="VIDEOCENG">
-          <video-player class="video-player vjs-custom-skin"
-                        ref="videoPlayer"
-                        :playsinline="true"
-                        :options="playerOptions"
-          ></video-player>
+        <div style="width: 100vw;min-height: 50vw;" v-if="!ZHEGAICENG">
+          <div class="player" v-if="VIDEOCENG">
+            <video-player class="video-player vjs-custom-skin"
+                          ref="videoPlayer"
+                          :playsinline="true"
+                          :options="playerOptions"
+            ></video-player>
+          </div>
         </div>
         <!--标题和详细介绍内容-->
         <div class="caption" style="padding: 2%;">
@@ -256,26 +258,29 @@
         this.ZHEGAICENG = false//遮盖层
         this.ONEVIDEO = item;
         let _this = this
+        _this.VIDEOCENG = false//播放层
         //判断视频是不是收费
         if (item.IS_FREE != 'Y') {
           _this.userorder(item);
         } else {
-          if (item.TYPE == 'ps') {
-            _this.QIXIAN = '/年'
-            //显示遮罩层
-            _this.VIDEOCENG = false//播放层
-            _this.ZHEGAICENG = true//遮盖层
-          } else {
-            _this.QIXIAN = '/永久'
-            _this.VIDEOCENG = true//播放层
-            _this.ZHEGAICENG = false//遮盖层
-          }
           if (item.TYPE != 'ps' & item.FILENAME != null) {
             _this.playerOptions.sources = item.FILENAME
           }
           if (item.TYPE != 'ps' & item.FILENAME == null) {
             _this.playerOptions.sources = "没有获取到视频地址"
           }
+          setTimeout(function(){
+            if (item.TYPE == 'ps') {
+              _this.QIXIAN = '/年'
+              //显示遮罩层
+              _this.VIDEOCENG = false//播放层
+              _this.ZHEGAICENG = true//遮盖层
+            } else {
+              _this.QIXIAN = '/永久'
+              _this.VIDEOCENG = true//播放层
+              _this.ZHEGAICENG = false//遮盖层
+            }
+          }, 500);
           //判断封面地址是不是空
           if (item.VIDEOCOVER != null) {
             _this.playerOptions.poster = item.VIDEOCOVER
