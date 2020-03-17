@@ -40,6 +40,8 @@
         this.code = this.getUrlKey('code');
         if(!this.code){
           fromurl=location.href;
+          alert(fromurl)
+          console.error(fromurl)
           var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
             + "&redirect_uri="+ encodeURIComponent(fromurl)
             + "&response_type=code"
