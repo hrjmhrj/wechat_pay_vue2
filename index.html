@@ -10,41 +10,44 @@
     <div id="app"></div>
   </body>
   <script>
-    //只允许微信浏览器打开
-    // var useragent = navigator.userAgent;
-    // if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
-    //   // 这里警告框会阻塞当前页面继续加载
-    //   alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！');
-    //   // 以下代码是用javascript强行关闭当前页面
-    //   var opened = window.open('about:blank', '_self');
-    //   opened.opener = null;
-    //   opened.close();
-    // }else{
-    //   //平台、设备和操作系统
-    //   var system = {
-    //     iphone: false,
-    //     x11: false,
-    //   };
-    //   //检测平台
-    //   var p = navigator.platform;
-    //   //苹果手机
-    //   system.iphone = p.indexOf("iPhone") == 0;
-    //   //X11 windows手机  Linux 安卓手机
-    //   system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
-    //   //跳转语句
-    //   if (system.iphone || system.x11) {
-    //   } else {
-    //     alert('已禁止本次访问：请使用手机访问本页面！');
-    //     var opened = window.open('about:blank', '_self');
-    //     opened.opener = null;
-    //     opened.close();
-    //   }
-    // }
-    // document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-    //   // 隐藏微信网页右上角的按钮
-    //   WeixinJSBridge.call('hideOptionMenu');
-    //   // 隐藏微信网页底部的导航栏
-    //   WeixinJSBridge.call('hideToolbar');
-    // });
+    let fromurl=location.href;
+    if(fromurl.indexOf("localhost") == -1){
+      //只允许微信浏览器打开
+      var useragent = navigator.userAgent;
+      if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+        // 这里警告框会阻塞当前页面继续加载
+        alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！');
+        // 以下代码是用javascript强行关闭当前页面
+        var opened = window.open('about:blank', '_self');
+        opened.opener = null;
+        opened.close();
+      }else{
+        //平台、设备和操作系统
+        var system = {
+          iphone: false,
+          x11: false,
+        };
+        //检测平台
+        var p = navigator.platform;
+        //苹果手机
+        system.iphone = p.indexOf("iPhone") == 0;
+        //X11 windows手机  Linux 安卓手机
+        system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+        //跳转语句
+        if (system.iphone || system.x11) {
+        } else {
+          alert('已禁止本次访问：请使用手机访问本页面！');
+          var opened = window.open('about:blank', '_self');
+          opened.opener = null;
+          opened.close();
+        }
+      }
+      document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 隐藏微信网页右上角的按钮
+        WeixinJSBridge.call('hideOptionMenu');
+        // 隐藏微信网页底部的导航栏
+        WeixinJSBridge.call('hideToolbar');
+      });
+    }
   </script>
 </html>
