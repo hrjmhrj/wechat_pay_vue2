@@ -92,9 +92,6 @@
       },
       // 加载列表数据
       onLoadList() {
-        if(!this.requestData.OPEN_ID){
-          return;
-        }
         this.listLoading = true;
         this.requestData.page++;
         this.requestAxios("/aisino/selectVideoList",this.requestData,this.onLoadSuccessFn,this.onLoadErrorFn);
@@ -130,14 +127,18 @@
       },
       //下拉刷新
       onRefresh() {
-        // 清空列表数据
-        this.VIDEOLIST = [];
-        this.requestData.page = 0;
-        this.listFinished = false;
-        // 重新加载数据
-        // 将 refreshIsLoading 设置为 true，表示处于加载状态
-        this.refreshIsLoading = true;
-        this.onLoadList();
+        if(!this.requestData.OPEN_ID){
+          return;
+        }else {
+          // 清空列表数据
+          this.VIDEOLIST = [];
+          this.requestData.page = 0;
+          this.listFinished = false;
+          // 重新加载数据
+          // 将 refreshIsLoading 设置为 true，表示处于加载状态
+          this.refreshIsLoading = true;
+          this.onLoadList();
+        }
       }, // 下拉刷新
       notifyStr(type,msg){
         Notify({ type: type, message: msg });
@@ -196,6 +197,7 @@
     },
     created() {
       let urlTemp = process.env.API_ROOT
+      alert(urlTemp)
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
