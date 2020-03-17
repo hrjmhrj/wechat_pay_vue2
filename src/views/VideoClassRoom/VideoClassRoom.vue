@@ -1,5 +1,5 @@
 <template>
-  <div v-if="requestData.OPEN_ID != null && requestData.OPEN_ID != '' && requestData.OPEN_ID != 'null'">
+  <div v-if="userInfo.openid != null && userInfo.openid != '' && userInfo.openid != 'null'">
     <!--下拉刷新组件-->
     <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
       <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
@@ -42,10 +42,9 @@
 
   import {Notify,Popup,Grid,GridItem,Toast,Tag,Image,Icon,Button,SubmitBar,Loading,List,Skeleton,PullRefresh} from 'vant';
   import axios from 'axios'
-  import Bus from "../../components/utils/bus";
   import {videoPlayer} from 'vue-video-player'
   import 'video.js/dist/video-js.css'
-
+  import {mapState} from 'vuex'
 
   export default {
     name: "VideoClassRoom",
@@ -209,6 +208,9 @@
     mounted() {
       if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
       }
+    },
+    computed: {
+      ...mapState(['userInfo'])
     },
   }
 </script>
