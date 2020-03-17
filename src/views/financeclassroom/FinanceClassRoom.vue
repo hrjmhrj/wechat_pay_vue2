@@ -77,6 +77,8 @@
       console.error(urlTemp.indexOf("localhost") == -1)
       console.error(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')
       console.error(this.$store.state.userInfo.openid)
+      console.error(this.$store.state.userInfo.openid == null)
+      console.error(this.$store.state.userInfo.openid == '')
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
         this.code = this.getUrlKey('code');
         console.error("3created")
