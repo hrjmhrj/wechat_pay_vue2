@@ -156,13 +156,12 @@
             + "&response_type=code"
             + "&scope=snsapi_base"
             + "&state=STATE#wechat_redirect";
-          location.href=url;
+          window.location.href=url;
         }else{
           axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
-            console.log(response.data)
             if(!response.data.obj){
               var newUrl = location.href;
-              location.href = newUrl.substring(0,newUrl.indexOf("?"));
+              window.location.href = newUrl.substring(0,newUrl.indexOf("?"));
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);
@@ -171,7 +170,6 @@
               this.requestData.OPEN_ID = response.data.obj;
             }
           }).catch(function (error) {
-            console.log(error)
             alert("无法获取信息，刷新后重试");
           });
         }
@@ -200,7 +198,7 @@
     },
     created() {
       let urlTemp = process.env.API_ROOT
-      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
@@ -212,7 +210,7 @@
       }
     },
     mounted() {
-      if(this.$store.state.openid !== null||this.$store.state.openid != ''){
+      if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
         this.haveOpenid = true;
       }
     },
