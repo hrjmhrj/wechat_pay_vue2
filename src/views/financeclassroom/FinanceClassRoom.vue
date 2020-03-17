@@ -32,9 +32,7 @@
     },
     methods:{
       clickBtn(){
-        let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue/index.html?code=071hBCgl1pSChq0SX4gl1WfIgl1hBCgP&state=STATE#/";
-        let str = decodeURIComponent((new RegExp('[?|&]' + "code" + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(/\+/g, '%20'))
-        alert(str)
+        alert(this.getUrlKey("code"));
       },
       //获取openid
       getOpenId(){
