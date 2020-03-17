@@ -92,6 +92,9 @@
       },
       // 加载列表数据
       onLoadList() {
+        if(!this.requestData.OPEN_ID){
+          return;
+        }
         this.listLoading = true;
         this.requestData.page++;
         this.requestAxios("/aisino/selectVideoList",this.requestData,this.onLoadSuccessFn,this.onLoadErrorFn);
@@ -194,8 +197,10 @@
     created() {
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
+        alert(1)
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
+        alert(2)
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
         this.haveOpenid = true;
       }
