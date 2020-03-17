@@ -146,7 +146,6 @@
       },//弹出提示
       //获取openid
       getOpenId(){
-        alert(this.code)
         var fromurl;
         var appid = "wx4d4e347e23a5f170";
         this.code = this.getUrlKey('code');
