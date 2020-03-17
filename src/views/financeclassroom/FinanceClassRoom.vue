@@ -1,6 +1,6 @@
 <template>
     <div v-if="haveOpenid">
-      <van-button type="danger" @click="clickBtn">{{openid}}</van-button>
+      <van-button type="danger" @click="clickBtn">{{openid}}{{haveOpenid}}</van-button>
       <van-tabs v-model="active">
         <van-tab title="标签 1">{{code}}</van-tab>
         <van-tab title="标签 2">内容 2</van-tab>
@@ -40,6 +40,7 @@
         var appid = "wx4d4e347e23a5f170";
         this.code = this.getUrlKey('code');
         if(!this.code){
+          console.error(111)
           fromurl=location.href;
           var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
             + "&redirect_uri="+ encodeURIComponent(fromurl)
@@ -48,6 +49,7 @@
             + "&state=STATE#wechat_redirect";
           window.location.href=url;
         }else{
+          console.error(222)
           axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
             if(!response.data.obj){
               var newUrl = location.href;
