@@ -5,7 +5,7 @@
         <!--列表-->
         <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
           <van-checkbox-group v-model="wkFpCheckData" @change="checkboxGroupChange">
-            <van-list v-model="loading" :finished="finished" :loading-text="loadText" @load="onLoad" :offset="100" :immediate-check="false">
+            <van-list v-model="loading" :finished="finished" finished-text="没有更多了" :loading-text="loadText" @load="onLoad" :offset="100" :immediate-check="false">
               <van-cell class="tab-checkbox-info" v-for="(item, index) in wkAllData" :key="index">
                 <van-checkbox :name="index">
                 <span class="checkbox-text-span" >

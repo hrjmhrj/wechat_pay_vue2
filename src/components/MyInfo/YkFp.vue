@@ -3,7 +3,7 @@
     <!--列表-->
     <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
       <div class="ykfp-list-div">
-          <van-list v-model="loading" :finished="finished" :loading-text="loadText" :offset="100" @load="onLoad" :immediate-check="false">
+          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" :loading-text="loadText" :offset="100" @load="onLoad" :immediate-check="false">
             <div v-for="(item, index) in ykAllData">
               <van-cell class="ykfp-cell" :key="index" is-link center @click="clickOneYkfp(item.KPSQID)">
                 <span class="ykfp-cell-text-span" >
