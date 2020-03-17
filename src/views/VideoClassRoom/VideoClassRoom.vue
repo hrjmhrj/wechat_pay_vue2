@@ -206,6 +206,7 @@
       }
       if(this.haveOpenid){
         // 初始化的操作请求
+        console.error("this.haveOpenid = true;")
         this.onLoadList();
       }
     },
