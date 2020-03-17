@@ -204,6 +204,7 @@
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
         this.haveOpenid = true;
       }
+      console.log(this.haveOpenid)
       if(this.haveOpenid){
         // 初始化的操作请求
         console.error("this.haveOpenid = true;")
