@@ -1,5 +1,5 @@
 <template>
-  <div v-if="haveOpenid">
+  <div v-if="requestData.OPEN_ID != null && requestData.OPEN_ID != '' && requestData.OPEN_ID != 'null'">
     <!--下拉刷新组件-->
     <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
       <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
@@ -52,7 +52,6 @@
     data() {
       return {
         code:"",//获取oepnid所需要的CODE
-        haveOpenid: false, // 是否有openid
         VIDEOLIST: [],//相关的全部数据
         VIDEOID: '',//ID
         VIDEONAME: '',//名称
@@ -165,7 +164,6 @@
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);
-              this.haveOpenid = true;
               //只有成功后才能显示页面
               this.requestData.OPEN_ID = response.data.obj;
             }
@@ -202,18 +200,14 @@
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
-        this.haveOpenid = true;
       }
-      console.log(this.haveOpenid)
-      if(this.haveOpenid){
+      if(this.requestData.OPEN_ID != null && this.requestData.OPEN_ID != '' && this.requestData.OPEN_ID != 'null'){
         // 初始化的操作请求
-        console.error("this.haveOpenid = true;")
         this.onLoadList();
       }
     },
     mounted() {
       if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
-        this.haveOpenid = true;
       }
     },
   }
