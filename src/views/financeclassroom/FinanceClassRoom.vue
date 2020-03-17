@@ -71,6 +71,7 @@
       },
     },
     created(){
+      console.error("created")
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
         this.getOpenId();
@@ -78,19 +79,16 @@
         this.$store.commit('set_openid', "666666");
         this.haveOpenid = true;
       }
-    },
-    activated(){
-      if(this.$store.state.openid !== null||this.$store.state.openid != ''){
-        this.haveOpenid = true;
-      }
-      let urlTemp = process.env.API_ROOT
-      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
-        this.getOpenId();
-      }
       if(this.haveOpenid){
         // 初始化的操作请求
       }
-    }
+    },
+    mounted(){
+      console.error("mounted")
+      if(this.$store.state.openid != null && this.$store.state.openid != ''){
+        this.haveOpenid = true;
+      }
+    },
   }
 
 </script>
