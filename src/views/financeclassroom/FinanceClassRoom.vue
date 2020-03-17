@@ -70,9 +70,19 @@
       },
     },
     created(){
+      console.error("1created"+location.href)
+      console.error("2created"+this.getUrlKey("code"))
       let urlTemp = process.env.API_ROOT
-      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
+      console.error(urlTemp)
+      console.error(urlTemp.indexOf("localhost") == -1)
+      console.error(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')
+      console.error(this.$store.state.userInfo.openid)
+      console.error(this.$store.state.userInfo.openid == "null")
+      console.error(this.$store.state.userInfo.openid == null)
+      console.error(this.$store.state.userInfo.openid == '')
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
         this.code = this.getUrlKey('code');
+        console.error("3created")
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "666666");
@@ -83,6 +93,7 @@
       }
     },
     mounted(){
+      console.error("mounted")
       if(this.$store.state.openid != null && this.$store.state.openid != ''){
         this.haveOpenid = true;
       }
