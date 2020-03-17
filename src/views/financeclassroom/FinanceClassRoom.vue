@@ -73,9 +73,10 @@
       console.error("1created"+location.href)
       console.error("2created"+this.getUrlKey("code"))
       let urlTemp = process.env.API_ROOT
-      console.error("1*"+urlTemp.indexOf("localhost") == -1)
-      console.error("2*"+this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')
-      console.error("3*"+this.$store.state.userInfo.openid)
+      console.error(urlTemp)
+      console.error(urlTemp.indexOf("localhost") == -1)
+      console.error(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')
+      console.error(this.$store.state.userInfo.openid)
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
         this.code = this.getUrlKey('code');
         console.error("3created")
