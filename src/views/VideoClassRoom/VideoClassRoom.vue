@@ -201,7 +201,7 @@
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
       }
-      if(this.requestData.OPEN_ID != null && this.requestData.OPEN_ID != '' && this.requestData.OPEN_ID != 'null'){
+      if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
         // 初始化的操作请求
         this.onLoadList();
       }
