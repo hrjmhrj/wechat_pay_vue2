@@ -32,6 +32,7 @@
           </div>
         </div>
         <!--分割线-->
+        <div style="background-color: #F7F7F7;height: 1.2vh;"></div>
         <!--推荐的内容-->
         <div class="recommend">
           <div style="padding: 2%;display: inline-block;width: 82vw;text-align:left;font-size: 4vw;font-weight: bold;">
