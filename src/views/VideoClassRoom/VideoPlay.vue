@@ -301,7 +301,7 @@
         if (this.GOFLAG) {
           this.$router.go(-1);
         } else {
-          this.$router.push({name: 'VideoClassRoom'})
+          this.$router.push({name: '/'})
         }
       },
       //购买
@@ -337,7 +337,7 @@
           //console.log(response.data.obj)
           //console.log(response.data.obj[0].STATUS)
           //console.log(response.data.obj[0].DEADLINE)
-          if (response.data.obj.length != 0 & response.data.success) {
+          if (response.data.obj.length != 0 && response.data.success) {
             if (response.data.obj[0].STATUS == '已支付') {
               if (response.data.obj[0].TYPE != 'ps') {
                 _this.VIDEOCENG = true//播放层
@@ -365,24 +365,8 @@
                   _this.STATUS = "购买"
                 }
               }
-            } else {
-              _this.GOUMAI = false
-              _this.STATUS = "购买"
-              if (response.data.obj[0].TYPE == 'ps') {
-                _this.QIXIAN = "/年"
-                //显示遮盖层
-                _this.VIDEOCENG = false//播放层
-                _this.ZHEGAICENG = true//遮盖层
-              } else {
-                _this.QIXIAN = '/永久'
-                //显示播放层
-                _this.VIDEOCENG = true//播放层
-                _this.ZHEGAICENG = false//遮盖层
-                _this.playerOptions.poster = item.VIDEOCOVER
-                _this.playerOptions.sources = "需购买"
-              }
             }
-          } else if (response.data.obj.length == 0 & response.data.success) {
+          } else if (response.data.obj.length == 0 && response.data.success) {
             if (item.TYPE == 'ps') {
               _this.QIXIAN = "/年"
               _this.ZHEGAICENG = true//遮盖层

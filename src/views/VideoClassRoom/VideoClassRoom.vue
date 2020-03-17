@@ -1,9 +1,10 @@
 <template>
+  <div v-if="haveOpenid">
     <!--下拉刷新组件-->
     <van-pull-refresh v-model="refreshIsLoading" @refresh="onRefresh">
       <div style="padding:1vh 2vw;min-height: 100vh;width: 96vw;" class="my-info-div">
         <!--列表组件-->
-        <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList">
+        <van-list v-model="listLoading" :finished="listFinished" finished-text="没有更多了" @load="onLoadList" :immediate-check="false">
           <van-grid :column-num="2" gutter="3vw" :border="false">
             <van-grid-item v-for="(item,index) in VIDEOLIST" :key="index" @click="videobf(item.VIDEOID)">
               <!--骨屏架组件-->
@@ -34,6 +35,7 @@
         </div>
       </div>
     </van-pull-refresh>
+  </div>
 </template>
 
 <script>
@@ -49,6 +51,8 @@
     name: "VideoClassRoom",
     data() {
       return {
+        code:"",//获取oepnid所需要的CODE
+        haveOpenid: false, // 是否有openid
         VIDEOLIST: [],//相关的全部数据
         VIDEOID: '',//ID
         VIDEONAME: '',//名称
@@ -124,18 +128,58 @@
       },
       //下拉刷新
       onRefresh() {
-        // 清空列表数据
-        this.VIDEOLIST = [];
-        this.requestData.page = 0;
-        this.listFinished = false;
-        // 重新加载数据
-        // 将 refreshIsLoading 设置为 true，表示处于加载状态
-        this.refreshIsLoading = true;
-        this.onLoadList();
+        if(!this.requestData.OPEN_ID){
+          return;
+        }else {
+          // 清空列表数据
+          this.VIDEOLIST = [];
+          this.requestData.page = 0;
+          this.listFinished = false;
+          // 重新加载数据
+          // 将 refreshIsLoading 设置为 true，表示处于加载状态
+          this.refreshIsLoading = true;
+          this.onLoadList();
+        }
       }, // 下拉刷新
       notifyStr(type,msg){
         Notify({ type: type, message: msg });
       },//弹出提示
+      //获取openid
+      getOpenId(){
+        var fromurl;
+        var appid = "wx4d4e347e23a5f170";
+        this.code = this.getUrlKey('code');
+        if(!this.code){
+          fromurl=location.href;
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
+            + "&redirect_uri="+ encodeURIComponent(fromurl)
+            + "&response_type=code"
+            + "&scope=snsapi_base"
+            + "&state=STATE#wechat_redirect";
+          location.href=url;
+        }else{
+          axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
+            console.log(response.data)
+            if(!response.data.obj){
+              var newUrl = location.href;
+              location.href = newUrl.substring(0,newUrl.indexOf("?"));
+              return;
+            }else{
+              this.$store.commit('set_openid', response.data.obj);
+              this.haveOpenid = true;
+              //只有成功后才能显示页面
+              this.requestData.OPEN_ID = response.data.obj;
+            }
+          }).catch(function (error) {
+            console.log(error)
+            alert("无法获取信息，刷新后重试");
+          });
+        }
+      },
+      //获取url后面指定参数
+      getUrlKey(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+      },
     },
     components: {
       [Notify.name]: Notify,
@@ -154,15 +198,24 @@
       [Skeleton.name]:Skeleton, //骨屏架
       [PullRefresh.name]:PullRefresh //下拉刷新
     },
-    mounted() {
-      let openid = "olA3Y1bL5BRPMv7K10hsGQQWP0Hc";
-      this.$store.commit('set_openid', openid);
-      this.requestData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
-      console.log(this.$store.state.userInfo.openid)
-    },
-
     created() {
-    }
+      let urlTemp = process.env.API_ROOT
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '')){
+        this.getOpenId();
+      }else if(urlTemp.indexOf("localhost") != -1){
+        this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
+        this.haveOpenid = true;
+      }
+      if(this.haveOpenid){
+        // 初始化的操作请求
+        this.onLoadList();
+      }
+    },
+    mounted() {
+      if(this.$store.state.openid !== null||this.$store.state.openid != ''){
+        this.haveOpenid = true;
+      }
+    },
   }
 </script>
 
