@@ -195,9 +195,9 @@
     },
     created() {
       let urlTemp = process.env.API_ROOT
-      if(urlTemp.indexOf("192.168.84.39") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
         this.getOpenId();
-      }else if(urlTemp.indexOf("192.168.84.39") != -1){
+      }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
       }
       if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
