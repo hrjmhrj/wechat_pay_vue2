@@ -321,7 +321,7 @@
         asd["OPEN_ID"] = this.userData.OPEN_ID
         //asd["orderNo"] = ""
         asd["price"] = this.ONEVIDEO.COST
-        asd["SPMC"] = '财税小讲堂'
+        asd["SPMC"] = this.ONEVIDEO.VIDEONAME
         console.log(this.ONEVIDEO.VIDEOID)
         console.log(this.userData.OPEN_ID)
         console.log(this.ONEVIDEO.COST)
