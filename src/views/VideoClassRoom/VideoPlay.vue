@@ -183,7 +183,7 @@
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);
-              if(this.userData.OPEN_ID != null && this.userData.OPEN_ID != '' && this.userData.OPEN_ID !== 'null'){
+              if(response.data.obj != null && response.data.obj != '' && response.data.obj !== 'null'){
                 this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
                 this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
                 this.GOUMAI = true
