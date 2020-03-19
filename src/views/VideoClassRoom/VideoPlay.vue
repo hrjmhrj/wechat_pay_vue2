@@ -472,8 +472,8 @@
         this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
         this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
         this.GOUMAI = true
+        this.userData.OPEN_ID = this.$store.state.userInfo.openid;
         this.getOneVideo();
-        this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
       }
     },
     computed: {
