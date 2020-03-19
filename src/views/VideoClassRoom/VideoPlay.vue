@@ -319,8 +319,14 @@
         asd["SPMC"] = this.ONEVIDEO.VIDEONAME
         //跳转支付页面
         axios.post('/nuonuoPay', asd).then(response => {
-          let todata = response.data.obj
-          window.location.href = todata
+          if(response.data.success){
+            let todata = response.data.obj
+            window.location.href = todata
+          }else{
+            this.notifyStr("danger", response.data.msg);
+          }
+        }).catch(error => {
+          this.notifyStr("danger", "服务异常，请稍后重试");
         })
       },
       //如果是收费视频则根据openid查订单购买信息
