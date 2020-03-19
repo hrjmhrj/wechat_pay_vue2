@@ -36,7 +36,7 @@
         <!--联系电话-->
         <van-field label="联系电话" :value="ykfpxx.LXDH" input-align="right" disabled  required/>
         <!--邮箱-->
-        <van-field label="邮　　箱" :value="ykfpxx.EMAIL" input-align="right" disabled  />
+        <van-field label="邮　　箱" :value="ykfpxx.EMAIL" input-align="right" disabled  required/>
         <!--邮寄地址-->
         <van-field label="邮寄地址" :value="ykfpxx.YJDZ" type="textarea" rows="1" autosize input-align="right" disabled  />
         <!--税号-->
