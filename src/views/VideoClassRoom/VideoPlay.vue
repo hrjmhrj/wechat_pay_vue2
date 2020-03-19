@@ -1,5 +1,5 @@
 <template>
-  <div class="block">
+  <div class="block" v-if="userInfo.openid != null && userInfo.openid != '' && userInfo.openid != 'null'">
     <!--播放页面-->
     <div style="z-index: 10;position: absolute;top: 0;left: 0;">
       <div class="wrapper">
@@ -90,24 +90,9 @@
 
 <script>
 
-  import {
-    Notify,
-    Popup,
-    Grid,
-    GridItem,
-    Toast,
-    Tag,
-    Image,
-    Icon,
-    Button,
-    SubmitBar,
-    Loading,
-    List,
-    Skeleton,
-    PullRefresh
-  } from 'vant';
+  import {Notify, Popup, Grid, GridItem, Toast, Tag, Image, Icon, Button, SubmitBar, Loading, List, Skeleton,PullRefresh} from 'vant';
+  import {mapState} from 'vuex'
   import axios from 'axios'
-  import Bus from "../../components/utils/bus";
   import {videoPlayer} from 'vue-video-player'
   import 'video.js/dist/video-js.css'
 
@@ -163,7 +148,6 @@
         ZHEZHAOFM: 'static/images/pxfm.png',//遮盖图
         VIDEOCENG: false,//播放层
         ZHEGAICENG: false,//遮盖层
-
         userData: { // 请求数据传输的参数
           limit: 6, //条数
           page: 0, // 页数
@@ -174,34 +158,41 @@
         listFinished: false, //数据全部加载完毕
         listLoading: false, //列表加载标志
         GOFLAG: false, //返回上一页的方式（false 指定路由 /true -1）
+        code:"",//获取oepnid所需要的CODE
       }
     },
     methods: {
-      //推荐区视频
-      /*getVideoinfo() {
-        axios.post('/aisino/selectVideoList', this.userData).then(response => {
-          //console.log(response.data.obj)
-          //console.log(response.data.obj[1])
-          let _this = this;
-          if (response.data.success) {
-            _this.ITEMS = [];
-            _this.ITEMS = response.data.obj[1]
-            //console.log(_this.ITEMS)列表视频信息
-          } else {
-            console.info('网络异常，查询失败，请稍候重试！');
-            Toast({
-              message: '网络异常，请稍候重试！',
-              duration: 3000
-            });
-          }
-        }).catch(error => {
-          console.info(error + '网络异常，请稍候重试！');
-          Toast({
-            message: '网络异常，请稍候重试！',
-            duration: 3000
+      //获取openid
+      getOpenId(){
+        var fromurl;
+        var appid = "wx4d4e347e23a5f170";
+        this.code = this.getUrlKey('code');
+        if(!this.code){
+          fromurl=location.href;
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
+            + "&redirect_uri="+ encodeURIComponent(fromurl)
+            + "&response_type=code"
+            + "&scope=snsapi_base"
+            + "&state=STATE#wechat_redirect";
+          window.location.href=url;
+        }else{
+          axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
+            if(!response.data.obj){
+              var newUrl = location.href;
+              window.location.href = newUrl.substring(0,newUrl.indexOf("?"));
+              return;
+            }else{
+              this.$store.commit('set_openid', response.data.obj);
+            }
+          }).catch(function (error) {
+            alert("无法获取信息，刷新后重试");
           });
-        })
-      },*/
+        }
+      },
+      //获取url后面指定参数
+      getUrlKey(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+      },
       //查询当前单个视频信息
       getOneVideo() {
         this.VIDEOCENG = false//播放层
@@ -478,13 +469,23 @@
       [Skeleton.name]: Skeleton, //骨屏架
       [PullRefresh.name]: PullRefresh //下拉刷新
     },
-    mounted() {
-      this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
-      this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
-      this.GOUMAI = true
-      //this.getVideoinfo();
-      this.getOneVideo();
-      this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
+    created(){
+      let urlTemp = process.env.API_ROOT
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
+        this.getOpenId();
+      }else if(urlTemp.indexOf("localhost") != -1){
+        this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
+      }
+      if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
+        this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
+        this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
+        this.GOUMAI = true
+        this.getOneVideo();
+        this.userData.OPEN_ID = this.$store.state.userInfo.openid //用户ID
+      }
+    },
+    computed: {
+      ...mapState(['userInfo'])
     },
   }
 </script>
