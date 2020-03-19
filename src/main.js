@@ -56,7 +56,6 @@ axios.interceptors.response.use(response => {
 router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.requireAuth)) {
     // 需要登录才能访问
-    console.log(store.state.userInfo.openid)
     if (store.state.userInfo.openid && store.state.userInfo.openid != "[object Object]") {
       // 自定义：可以到后台请求查看当前token是否失效
       next();

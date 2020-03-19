@@ -35,7 +35,7 @@ export default new Router({
       name: 'VideoPlay',
       meta: {
         title: '视频播放',
-        requireAuth: true // 判断该路由的访问是否需要登录
+        requireAuth: false // 判断该路由的访问是否需要登录
       },
       component: VideoPlay
     },{
