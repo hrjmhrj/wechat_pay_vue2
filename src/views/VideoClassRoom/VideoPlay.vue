@@ -183,7 +183,13 @@
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);
-              this.userData.OPEN_ID = response.data.obj;
+              if(this.userData.OPEN_ID != null && this.userData.OPEN_ID != '' && this.userData.OPEN_ID !== 'null'){
+                this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
+                this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
+                this.GOUMAI = true
+                this.userData.OPEN_ID = this.$store.state.userInfo.openid;
+                this.getOneVideo();
+              }
             }
           }).catch(function (error) {
             alert("无法获取信息，刷新后重试");
@@ -467,12 +473,10 @@
         this.getOpenId();
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
-      }
-      if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
         this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
         this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
         this.GOUMAI = true
-        this.userData.OPEN_ID = this.$store.state.userInfo.openid;
+        this.userData.OPEN_ID = "olA3Y1bL5BRPMv7K10hsGQQWP0Hc";
         this.getOneVideo();
       }
     },
