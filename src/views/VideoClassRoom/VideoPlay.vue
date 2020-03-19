@@ -183,6 +183,7 @@
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);
+              this.userData.OPEN_ID = response.data.obj;
             }
           }).catch(function (error) {
             alert("无法获取信息，刷新后重试");
@@ -204,9 +205,7 @@
           limit: 10, //条数
           page: 0, // 页数
         }
-        //console.log(a)
         axios.post('/aisino/selectVideoList', a).then(response => {
-          //console.log(response.data.obj[1][0])当前单个视频的信息
           if (response.data.success) {
             if (response.data.obj[1][0].IS_FREE != 'Y') {
               _this.userorder(response.data.obj[1][0]);
@@ -305,7 +304,6 @@
       },
       //购买
       purchase() {
-        console.log("购买")
         var asd = {}
         //店铺号
         asd["VIDEOID"] = this.ONEVIDEO.VIDEOID
@@ -313,9 +311,6 @@
         //asd["orderNo"] = ""
         asd["price"] = this.ONEVIDEO.COST
         asd["SPMC"] = this.ONEVIDEO.VIDEONAME
-        console.log(this.ONEVIDEO.VIDEOID)
-        console.log(this.userData.OPEN_ID)
-        console.log(this.ONEVIDEO.COST)
         //跳转支付页面
         axios.post('/nuonuoPay', asd).then(response => {
           let todata = response.data.obj
@@ -333,9 +328,6 @@
         this.ONEVIDEO = item
         this.playerOptions.sources = "判断"
         axios.post('/aisino/selectUserOrder', a).then(response => {
-          //console.log(response.data.obj)
-          //console.log(response.data.obj[0].STATUS)
-          //console.log(response.data.obj[0].DEADLINE)
           if (response.data.obj.length != 0 && response.data.success) {
             if (response.data.obj[0].STATUS == '已支付') {
               if (response.data.obj[0].TYPE != 'ps') {
