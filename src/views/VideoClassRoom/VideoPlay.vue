@@ -468,6 +468,15 @@
       [PullRefresh.name]: PullRefresh //下拉刷新
     },
     created(){
+      if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
+        this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
+        this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
+        this.GOUMAI = true
+        this.userData.OPEN_ID = this.$store.state.userInfo.openid;
+        this.getOneVideo();
+        return;
+      }
+
       let urlTemp = process.env.API_ROOT
       if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
         this.getOpenId();
@@ -477,13 +486,6 @@
         this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
         this.GOUMAI = true
         this.userData.OPEN_ID = "olA3Y1bL5BRPMv7K10hsGQQWP0Hc";
-        this.getOneVideo();
-      }
-      if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
-        this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
-        this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
-        this.GOUMAI = true
-        this.userData.OPEN_ID = this.$store.state.userInfo.openid;
         this.getOneVideo();
       }
     },
