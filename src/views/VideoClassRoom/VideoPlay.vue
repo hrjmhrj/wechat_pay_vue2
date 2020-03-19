@@ -477,11 +477,7 @@
         flag = false;
       }else if(urlTemp.indexOf("localhost") != -1){
         this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
-        this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;
-        this.$route.params.GOFLAG == "goRoute" ? this.GOFLAG = false : this.GOFLAG = true;
-        this.GOUMAI = true
         this.userData.OPEN_ID = "olA3Y1bL5BRPMv7K10hsGQQWP0Hc";
-        this.getOneVideo();
       }
       if(flag && this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
         this.ONEVIDEO.VIDEOID = this.$route.params.VIDEOID;

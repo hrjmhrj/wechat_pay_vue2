@@ -40,7 +40,10 @@
         <van-form style="padding-bottom: 50px;">
           <p/>
           <!--选择发票类型-->
-          <van-field center label="开票类型" :required="true">
+          <van-field  type="text" label="开票类型" required  value="电子发票" readonly input-align="right">
+            电子发票
+          </van-field>
+          <!--<van-field center label="开票类型" :required="true">
             <template #input>
               <van-radio-group v-model="requestSqkpData.FPLX" direction="horizontal">
                 <van-radio name="0">电子发票</van-radio>
@@ -48,7 +51,7 @@
                 <van-radio name="2">普票</van-radio>
               </van-radio-group>
             </template>
-          </van-field>
+          </van-field>-->
           <p/>
           <!--填写企业名称/个人-->
           <van-field v-model="requestSqkpData.KPXX.QYMC" v-if="requiredFlagList[requestSqkpData.FPLX].QYMC[0]" :required="requiredFlagList[requestSqkpData.FPLX].QYMC[1]"  maxlength="100" clearable center input-align="right" label="企业名称/个人" placeholder="企业名称（个人）">
@@ -352,10 +355,12 @@
   }
 </script>
 
+
 <style scoped>
   .van-checkbox-group{
     min-height: 100vh;
   }
+
   .checkbox-text-span{
     display: block;
     padding:1px 0;color: #5f5f5f;font-size: 14px;
