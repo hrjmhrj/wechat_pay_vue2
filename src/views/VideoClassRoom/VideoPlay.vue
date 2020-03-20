@@ -90,7 +90,7 @@
 
 <script>
 
-  import {Notify, Popup, Grid, GridItem, Toast, Tag, Image, Icon, Button, SubmitBar, Loading, List, Skeleton,PullRefresh} from 'vant';
+  import {Notify,Dialog , Popup, Grid, GridItem, Tag, Image, Icon, Button, SubmitBar, Loading, List, Skeleton,PullRefresh} from 'vant';
   import {mapState} from 'vuex'
   import axios from 'axios'
   import {videoPlayer} from 'vue-video-player'
@@ -234,18 +234,10 @@
           } else {
             _this.VIDEOCENG = false//播放层
             _this.ZHEGAICENG = true//遮盖层
-            console.info('查询失败，请稍候重试！');
-            Toast({
-              message: '网络异常，请稍候重试！',
-              duration: 3000
-            });
+            this.notifyStr("danger","网络异常，请稍候重试！");
           }
         }).catch(error => {
-          console.info(error + '网络异常，请稍候重试！');
-          Toast({
-            message: '网络异常，请稍候重试！',
-            duration: 3000
-          });
+          this.notifyStr("danger","网络异常，请稍候重试！");
         })
       },
       //推荐区播放
@@ -358,9 +350,10 @@
                 if (response.data.obj[0].DEADLINE == '未过期') {
                   _this.GOUMAI = true
                   _this.STATUS = '已购'
-                  Toast({
-                    message: '已购买，请联系管理员，联系电话66778811-8645',
-                    duration: 10000
+                  Dialog.alert({
+                    title: '提示',
+                    message: '已购买，请联系管理员，联系电话66778811-8645'
+                  }).then(() => {
                   });
                 } else {
                   _this.GOUMAI = false
@@ -385,18 +378,10 @@
             _this.ZHEGAICENG = true//遮盖层
             _this.VIDEOCENG = false//播放层
             _this.GOUMAI = true
-            console.info('请求失败，请稍候重试！');
-            Toast({
-              message: '网络异常，请稍候重试！',
-              duration: 3000
-            });
+            this.notifyStr("danger","网络异常，请稍候重试！");
           }
         }).catch(error => {
-          console.info(error + '网络异常，请稍候重试！');
-          Toast({
-            message: '网络异常，请稍候重试！',
-            duration: 3000
-          });
+          this.notifyStr("danger","网络异常，请稍候重试！");
         })
       },
       // 加载列表数据
@@ -456,11 +441,11 @@
 
     },
     components: {
+      [Dialog.name]:Dialog,
       [Notify.name]: Notify,
       [Popup.name]: Popup,
       [Grid.name]: Grid,
       [GridItem.name]: GridItem,
-      [Toast.name]: Toast,
       [Tag.name]: Tag,
       [Image.name]: Image,
       [Icon.name]: Icon,
