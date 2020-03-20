@@ -361,7 +361,7 @@
                   _this.STATUS = '已购'
                   Toast({
                     message: '已购买，请联系管理员，联系电话66778811-8645',
-                    duration: 5000
+                    duration: 10000
                   });
                 } else {
                   _this.GOUMAI = false
