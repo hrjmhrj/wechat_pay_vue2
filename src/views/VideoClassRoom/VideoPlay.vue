@@ -352,7 +352,7 @@
                   _this.STATUS = '已购'
                   Dialog.alert({
                     title: '提示',
-                    message: '已购买，请联系管理员，联系电话66778811-8645'
+                    message: '已购买，请联系管理员\n联系电话:66778811-8645'
                   }).then(() => {
                   });
                 } else {
