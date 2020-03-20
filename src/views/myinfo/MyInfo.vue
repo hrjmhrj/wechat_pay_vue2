@@ -32,6 +32,7 @@
 
 <script>
   import {mapState} from 'vuex'
+  import axios from 'axios'
   import purchaseHistory from '../../components/MyInfo/PurchaseHistory'
   import WkFp from '../../components/MyInfo/WkFp'
   import YkFp from '../../components/MyInfo/YkFp'
@@ -84,6 +85,7 @@
               return;
             }else{
               this.$store.commit('set_openid', response.data.obj);
+
             }
           }).catch(function (error) {
             alert("无法获取信息，刷新后重试");
@@ -104,7 +106,9 @@
       }
     },
     mounted(){
-      this.topBarHeight = document.getElementById('con').offsetHeight;
+      if(this.$store.state.openid !== null && this.$store.state.openid != '' && this.$store.state.openid !== 'null'){
+        this.topBarHeight = document.getElementById('con').offsetHeight;
+      }
     },
     computed: {
       ...mapState(['userInfo'])
