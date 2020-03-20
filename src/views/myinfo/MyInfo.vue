@@ -1,5 +1,5 @@
 <template>
-  <div class="my-info-div">
+  <div class="my-info-div" v-if="userInfo.openid != null && userInfo.openid != '' && userInfo.openid != 'null'">
     <!--头部-->
     <van-sticky :offset-top="0">
       <van-nav-bar
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
   import purchaseHistory from '../../components/MyInfo/PurchaseHistory'
   import WkFp from '../../components/MyInfo/WkFp'
   import YkFp from '../../components/MyInfo/YkFp'
@@ -52,17 +53,62 @@
         active:0,
         topBarHeight:46,
         isLoading:false,
+        code:"",
+
       }
     },
     methods:{
       //点击头部返回
       onClickBarLeft(){
-        this.$router.go(-1);
+        let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue/index.html#/";
+        window.location.href=url;
       },
+      //获取openid
+      getOpenId(){
+        var fromurl;
+        var appid = "wx4d4e347e23a5f170";
+        this.code = this.getUrlKey('code');
+        if(!this.code){
+          fromurl=location.href;
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ appid
+            + "&redirect_uri="+ encodeURIComponent(fromurl)
+            + "&response_type=code"
+            + "&scope=snsapi_base"
+            + "&state=STATE#wechat_redirect";
+          window.location.href=url;
+        }else{
+          axios.post('/aisino/getOpenidByCode?code='+this.code, null).then(response => {
+            if(!response.data.obj){
+              var newUrl = location.href;
+              window.location.href = newUrl.substring(0,newUrl.indexOf("?"));
+              return;
+            }else{
+              this.$store.commit('set_openid', response.data.obj);
+            }
+          }).catch(function (error) {
+            alert("无法获取信息，刷新后重试");
+          });
+        }
+      },
+      //获取url后面指定参数
+      getUrlKey(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+      },
+    },
+    created() {
+      let urlTemp = process.env.API_ROOT
+      if(urlTemp.indexOf("localhost") == -1&&(this.$store.state.userInfo.openid == null||this.$store.state.userInfo.openid == '' || this.$store.state.userInfo.openid == 'null')){
+        this.getOpenId();
+      }else if(urlTemp.indexOf("localhost") != -1){
+        this.$store.commit('set_openid', "olA3Y1bL5BRPMv7K10hsGQQWP0Hc");
+      }
     },
     mounted(){
       this.topBarHeight = document.getElementById('con').offsetHeight;
-    }
+    },
+    computed: {
+      ...mapState(['userInfo'])
+    },
   }
 </script>
 

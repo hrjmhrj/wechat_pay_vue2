@@ -18,7 +18,7 @@ export default new Router({
       name: 'MyInfo',
       meta: {
         title: '我的',
-        requireAuth: true // 判断该路由的访问是否需要登录
+        requireAuth: false // 判断该路由的访问是否需要登录
       },
       component: MyInfo
     }, {

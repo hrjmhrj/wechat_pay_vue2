@@ -303,7 +303,6 @@
         if (this.GOFLAG) {
           this.$router.go(-1);
         } else {
-          this.$router.push({name: '/'})
           let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue/index.html#/";
           window.location.href=url;
         }
