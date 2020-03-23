@@ -30,11 +30,15 @@
           </van-grid>
         </van-list>
         <!--用户浮标-->
-        <div style="position: fixed;z-index: 8;top: 77%;right: 3%;" @click="userinfo">
-          <van-icon name='static/images/usertb.png' color="#1989fa" size="3rem"/>
+        <div style="position: fixed;z-index: 8;top: 78%;right: 3%;" @click="userinfo">
+          <van-icon name='static/images/usertb.png' color="#1989fa" size="4rem"/>
         </div>
       </div>
     </van-pull-refresh>
+    <!--用户浮标2-->
+    <div style="position: fixed;z-index: 8;top: 77%;left: 0;" @click="clickTz">
+      <van-icon name='static/images/tiaozhuan.png' color="#1989fa" size="5rem"/>
+    </div>
   </div>
 </template>
 
@@ -79,6 +83,9 @@
       }
     },
     methods: {
+      clickTz(){
+        window.location.href = "https://appCXeWeaoO6557.h5.xiaoeknow.com";
+      },
       //点击播放路由跳转
       videobf(VIDEOID) {
         this.$router.push({
