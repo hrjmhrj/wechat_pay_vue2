@@ -213,6 +213,7 @@
         }
         axios.post('/aisino/selectVideoList', a).then(response => {
           if (response.data.success) {
+            this.ZHEZHAOFM = response.data.obj[1][0].VIDEOCOVER;
             if (response.data.obj[1][0].IS_FREE != 'Y') {
               _this.userorder(response.data.obj[1][0]);
             } else {
