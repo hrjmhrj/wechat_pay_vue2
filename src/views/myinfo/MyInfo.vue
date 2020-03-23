@@ -61,7 +61,7 @@
     methods:{
       //点击头部返回
       onClickBarLeft(){
-        let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue/index.html#/";
+        let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue_zs/index.html#/";
         window.location.href=url;
       },
       //获取openid

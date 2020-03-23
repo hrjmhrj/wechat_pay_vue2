@@ -295,7 +295,7 @@
         if (this.GOFLAG) {
           this.$router.go(-1);
         } else {
-          let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue/index.html#/";
+          let url = "http://hyfwzx.schtxxcdfgs.com/vueproject/nbxm_hyfwzx_vue_zs/index.html#/";
           window.location.href=url;
         }
       },
